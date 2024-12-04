@@ -1,10 +1,6 @@
 <?php
 
-session_start();
-require '../includes/db.php';
-require '../includes/auth.php';
-require '../includes/url.php';
-require 'includes/product-functions.php';
+require 'includes/init.php';
 
 if (!has_permission('add_product')) {
     header('HTTP/1.1 403 Forbidden');

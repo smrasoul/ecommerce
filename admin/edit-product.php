@@ -1,10 +1,6 @@
 <?php
 
-session_start();
-require '../includes/db.php';
-require '../includes/auth.php';
-require '../includes/url.php';
-require 'includes/product-functions.php';
+require 'includes/init.php';
 
 // Ensure the user has permission to edit products
 if (!has_permission('edit_product')) {
