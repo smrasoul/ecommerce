@@ -2,13 +2,13 @@
 
 require 'includes/init.php';
 
-if (!has_permission('add_product')) {
+if (!hasPermission('add_product')) {
     header('HTTP/1.1 403 Forbidden');
     echo "You do not have permission to access this page.";
     exit;
 }
 
-$conn = get_db_connection();
+$conn = getDbConnection();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $photo = $_FILES['photo'];
 
     // Validation
-    $errors = validate_product($name, $price, $photo);
+    $errors = validateProduct($name, $price, $photo);
 
     // If no errors, save the product
     if (empty($errors)) {
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (move_uploaded_file($photo['tmp_name'], $upload_path))
         {
-            add_product($name, $price, $photo_name, $conn);
+            addProduct($name, $price, $photo_name, $conn);
         } else {
             $errors[] = "Failed to upload photo.";
         }

@@ -9,7 +9,7 @@
             </li>
 
 
-            <?php if ( has_permission('view_product')) : ?>
+            <?php if ( hasPermission('view_product')) : ?>
                 <li class="nav-item">
                     <a class="nav-link" href="/admin/dashboard.php">Administration</a>
                 </li>

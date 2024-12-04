@@ -3,7 +3,7 @@
 require 'config.php' ;
 
 
-function get_db_connection()
+function getDbConnection()
 {
 
     $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);

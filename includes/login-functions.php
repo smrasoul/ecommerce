@@ -1,7 +1,7 @@
 <?php
 
 
-function validate_login($username, $password)
+function validateLogin($username, $password)
 {
     $errors = array();
 
@@ -15,7 +15,7 @@ function validate_login($username, $password)
     return $errors;
 }
 
-function authenticate_user($username, $password, $conn) {
+function authenticateUser($username, $password, $conn) {
     $errors = array();
 
     // Fetch user record
@@ -43,14 +43,14 @@ function authenticate_user($username, $password, $conn) {
     return $errors;
 }
 
-function login_user($user) {
-    session_start();
+function loginUser($user) {
+
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['username'] = $user['username'];
     $_SESSION['role_id'] = $user['role_id']; // Admin or User role
 }
 
-function get_user_permissions($user_id, $conn) {
+function getUserPermissions($user_id, $conn) {
     $query = "
         SELECT p.name AS permission_name
         FROM permissions p

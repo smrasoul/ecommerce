@@ -1,6 +1,6 @@
 <?php
 
-function validate_product($name, $price, $photo, $is_update = false)
+function validateProduct($name, $price, $photo, $is_update = false)
 {
     $errors = array();
 
@@ -32,7 +32,7 @@ function validate_product($name, $price, $photo, $is_update = false)
 }
 
 
-function add_product($name, $price, $photo_name, $conn)
+function addProduct($name, $price, $photo_name, $conn)
 {
 
     $query = "INSERT INTO products (name, price, photo) VALUES (?, ?, ?)";
@@ -48,7 +48,7 @@ function add_product($name, $price, $photo_name, $conn)
     return $errors;
 }
 
-function get_by_id($conn, $product_id) {
+function getById($conn, $product_id) {
 
     $query = "SELECT * FROM products WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
@@ -58,7 +58,7 @@ function get_by_id($conn, $product_id) {
     return $product = mysqli_fetch_assoc($result);
 }
 
-function delete_product($product, $conn) {
+function deleteProduct($product, $conn) {
 
     $errors = [];
 
@@ -82,7 +82,7 @@ function delete_product($product, $conn) {
     return $errors;
 }
 
-function handle_photo ($product, $photo)
+function handlePhoto ($product, $photo)
 {
     // Handle photo upload
     $photo_name = $product['photo']; // Default to the existing photo
@@ -102,7 +102,7 @@ function handle_photo ($product, $photo)
     return $photo_name;
 }
 
-function update_product ($conn, $name, $price, $photo_name, $product_id ){
+function updateProduct ($conn, $name, $price, $photo_name, $product_id ){
 
     $query = "UPDATE products SET name = ?, price = ?, photo = ? WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);

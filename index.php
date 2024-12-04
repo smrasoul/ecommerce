@@ -1,14 +1,11 @@
 <?php
 
 require 'includes/init.php';
+require 'includes/functions.php';
 
 // Fetch products from the database
 
-$query = "SELECT * FROM products";
-$result = mysqli_query($conn, $query);
-$products = mysqli_fetch_all($result, MYSQLI_ASSOC);
-mysqli_free_result($result);
-mysqli_close($conn);
+$products = getAllProducts($conn);
 
 require 'includes/header.php'; ?>
 

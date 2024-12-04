@@ -3,13 +3,13 @@
 require 'includes/init.php';
 
 // Ensure the user has permission to edit products
-if (!has_permission('edit_product')) {
+if (!hasPermission('edit_product')) {
     header('HTTP/1.1 403 Forbidden');
     echo "You do not have permission to access this page.";
     exit;
 }
 
-$conn = get_db_connection();
+$conn = getDbConnection();
 
 // Check if the product ID is provided
 if (!isset($_GET['id'])) {
@@ -19,7 +19,7 @@ if (!isset($_GET['id'])) {
 $product_id = $_GET['id'];
 
 // Fetch product details
-$product = get_by_id($conn, $product_id);
+$product = getById($conn, $product_id);
 if (!$product) {
     die("Product not found.");
 }
@@ -34,17 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $photo = $_FILES['photo'];
 
     // Validate input fields
-    $errors = validate_product($name, $price, $photo, true);
+    $errors = validateProduct($name, $price, $photo, true);
 
     if (empty($errors)) {
 
-            if(! $photo_name = handle_photo($product, $photo)) {
+            if(! $photo_name = handlePhoto($product, $photo)) {
                 $errors[] = "Failed to upload the new photo.";
             }
         // Update the product in the database
         if (empty($errors)) {
 
-            if(! update_product ($conn, $name, $price, $photo_name, $product_id )){
+            if(! updateProduct ($conn, $name, $price, $photo_name, $product_id )){
                 $errors[] = "Failed to update the product.";
             }
         }

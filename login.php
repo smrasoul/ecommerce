@@ -12,16 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = htmlspecialchars($_POST['password']);
 
     // Step 1: Validate inputs
-    $errors = validate_login($username, $password);
+    $errors = validateLogin($username, $password);
 
     // Step 2: Authenticate user if no validation errors
     if (empty($errors)) {
-        $result = authenticate_user($username, $password, $conn);
+        $result = authenticateUser($username, $password, $conn);
 
         // Check if authentication was successful
         if (is_array($result) && isset($result['id'])) {
-            login_user($result); // Log the user in
-            $_SESSION['permissions'] = get_user_permissions($_SESSION['user_id'], $conn);
+            loginUser($result); // Log the user in
+            $_SESSION['permissions'] = getUserPermissions($_SESSION['user_id'], $conn);
             redirect("/index.php");
             exit;
         } else {
@@ -47,13 +47,13 @@ require 'includes/header.php';
         <div class="form-group mb-2 row">
             <label for="username">Username</label>
             <div class="col-4">
-                <input type="text" class="form-control" id="username" name="username" value="<?= $username ?>">
+                <input type="text" class="form-control" id="username" name="username" value="<?= $username ?>" required>
             </div>
         </div>
         <div class="form-group mb-2 row">
             <label for="password">Password</label>
             <div class="col-4">
-                <input type="password" class="form-control" id="password" name="password" value="<?= $password ?>">
+                <input type="password" class="form-control" id="password" name="password" value="<?= $password ?>" required>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Login</button>

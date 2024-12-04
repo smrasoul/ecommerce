@@ -1,7 +1,7 @@
 <?php
 
 
-function validate_signup($username, $password) {
+function validateSignup($username, $password) {
 
     $errors = array();
 
@@ -14,7 +14,7 @@ function validate_signup($username, $password) {
     return $errors;
 }
 
-function check_username_availability($username, $conn) {
+function checkUsernameAvailability($username, $conn) {
 
     $errors = array();
 
@@ -37,7 +37,7 @@ function check_username_availability($username, $conn) {
 
 }
 
-function signup($username, $password, $conn) {
+function signUp($username, $password, $conn) {
 
     $errors = array();
 
