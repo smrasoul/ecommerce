@@ -1,10 +1,9 @@
 <?php
-session_start();
-require 'includes/db.php';
-require 'includes/auth.php';
+
+require 'includes/init.php';
 
 // Fetch products from the database
-$conn = get_db_connection();
+
 $query = "SELECT * FROM products";
 $result = mysqli_query($conn, $query);
 $products = mysqli_fetch_all($result, MYSQLI_ASSOC);

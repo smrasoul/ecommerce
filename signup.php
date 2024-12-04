@@ -1,10 +1,8 @@
 <?php
 
-require 'includes/db.php';
-require 'includes/signup-functions.php';
+require 'includes/init.php';
 require 'includes/url.php';
-
-$conn = get_db_connection();
+require 'includes/signup-functions.php';
 
 $username = '';
 $password = '';
