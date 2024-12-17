@@ -2,38 +2,36 @@
 
 
 function validateSignup($firstName, $lastName, $email, $username, $password) {
-    $errors = array();
+
 
     if ($firstName == '') {
-        $errors['firstName'] = "First Name is required";
+       $_SESSION['signup_errors']['firstName'] = "First Name is required";
     }
 
     if ($lastName == '') {
-        $errors['lastName'] = "Last Name is required";
+        $_SESSION['signup_errors']['lastName'] = "Last Name is required";
     }
 
     if ($email == '') {
 
-        $errors['email'] = "Email is required";
+        $_SESSION['signup_errors']['email'] = "Email is required";
 
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-        $errors['email'] = "Invalid email format"; }
+        $_SESSION['signup_errors']['email'] = "Invalid email format"; }
 
     if ($username == '') {
-        $errors['username'] = "Username is required";
+        $_SESSION['signup_errors']['username'] = "Username is required";
     }
 
     if ($password == '') {
-        $errors['password'] = "Password is required";
+        $_SESSION['signup_errors']['password'] = "Password is required";
     }
-
-    return $errors;
 }
 
 
 function checkEmailAvailability($email, $conn) {
-    $errors = array();
+
 
     $query = "SELECT * FROM users WHERE email = ?";
     $stmt = mysqli_prepare($conn, $query);
@@ -42,15 +40,12 @@ function checkEmailAvailability($email, $conn) {
     $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-        $errors['email'] = "This email is already taken.";
+        $_SESSION['signup_errors']['email'] = "This email is already taken.";
     }
-
-    return $errors;
 }
 
 
 function checkUsernameAvailability($username, $conn) {
-    $errors = array();
 
     $query = "SELECT * FROM users WHERE username = ?";
     $stmt = mysqli_prepare($conn, $query);
@@ -59,15 +54,12 @@ function checkUsernameAvailability($username, $conn) {
     $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-        $errors['username'] = "This username is already taken.";
+        $_SESSION['signup_errors']['username'] = "This username is already taken.";
     }
-
-    return $errors;
 }
 
 
 function signUp($firstName, $lastName, $email, $username, $password, $conn) {
-    $errors = array();
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $role_id = 2;
@@ -78,9 +70,15 @@ function signUp($firstName, $lastName, $email, $username, $password, $conn) {
     mysqli_stmt_bind_param($stmt, 'sssssi', $firstName, $lastName, $email, $username, $hashedPassword, $role_id);
 
     if (!mysqli_stmt_execute($stmt)) {
-        $errors['flash'] = 'An unexpected error occurred. Please try again later.';
+        $_SESSION['signup_failure'] = 'An error occurred while trying to sign up.';
     }
-
-    return $errors;
 }
 
+function signupFeedback(){
+    $formFeedback = '';
+    if(isset($_SESSION['signup_errors'])) {
+        $formFeedback = $_SESSION['signup_errors'];
+        unset($_SESSION['signup_errors']);
+    }
+    return $formFeedback;
+}

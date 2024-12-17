@@ -36,6 +36,14 @@ require 'includes/header.php';
 
 <div class="container">
     <h2>Login</h2>
+
+    <?php if (isset($_SESSION['signup_success'])) : ?>
+        <div class="alert alert-success col-6">
+            <?= $_SESSION['signup_success'] ?>
+        </div>
+        <?php unset($_SESSION['signup_success']) ?>
+    <?php endif; ?>
+
     <?php if (!empty($errors)) : ?>
         <ul>
             <?php foreach ($errors as $error) : ?>
