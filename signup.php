@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(empty($formFeedback)) {
 
         signUp($firstName, $lastName, $email, $username, $password, $conn);
-        $_SESSION['signup_success'] = 'Signed up successfully.';
+        $_SESSION['flash']['signup_success'] = 'Signed up successfully.';
         redirect('/login.php');
 
     };

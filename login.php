@@ -11,23 +11,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
 
-    // Step 1: Validate inputs
-    $errors = validateLogin($username, $password);
+    // Validate inputs
+    validateLogin($username, $password);
 
-    // Step 2: Authenticate user if no validation errors
-    if (empty($errors)) {
-        $result = authenticateUser($username, $password, $conn);
+    // Process login
+    processLogin($username, $password, $conn);
 
-        // Check if authentication was successful
-        if (is_array($result) && isset($result['id'])) {
-            loginUser($result); // Log the user in
-            $_SESSION['permissions'] = getUserPermissions($_SESSION['user_id'], $conn);
-            redirect("/index.php");
-            exit;
-        } else {
-            $errors = $result; // Authentication errors
-        }
-    }
+    $formFeedback = loginFeedback(); // Retrieve and clear feedback
+
+}
+
+$flash_message = '';
+if (isset($_SESSION['flash'])) {
+    $flash_message = $_SESSION['flash'];
+    unset($_SESSION['flash']);
 }
 
 require 'includes/header.php';
@@ -37,31 +34,37 @@ require 'includes/header.php';
 <div class="container">
     <h2>Login</h2>
 
-    <?php if (isset($_SESSION['signup_success'])) : ?>
-        <div class="alert alert-success col-6">
-            <?= $_SESSION['signup_success'] ?>
+    <?php if (isset($flash_message['signup_success'])) : ?>
+        <div class="alert alert-success col-4 text-center">
+            <p class="mb-0"> <?= $flash_message['signup_success'] ?></p>
         </div>
-        <?php unset($_SESSION['signup_success']) ?>
     <?php endif; ?>
 
-    <?php if (!empty($errors)) : ?>
-        <ul>
-            <?php foreach ($errors as $error) : ?>
-                <li><?= $error ?></li>
-            <?php endforeach; ?>
-        </ul>
+    <?php if (isset($flash_message['auth_error'])) : ?>
+        <div class="alert alert-danger col-4 text-center">
+                <p class="mb-0"><?= $flash_message['auth_error'] ?></p>
+        </div>
     <?php endif; ?>
-    <form method="POST">
+
+    <form method="POST" novalidate>
         <div class="form-group mb-2 row">
             <label for="username">Username</label>
             <div class="col-4">
-                <input type="text" class="form-control" id="username" name="username" value="<?= $username ?>" required>
+                <input type="text" class="form-control <?= isset($formFeedback['username_error']) ? 'is-invalid' : '' ?>"
+                       id="username" name="username" value="<?= htmlspecialchars($username) ?>">
+                <?php if (isset($formFeedback['username_error'])) : ?>
+                    <div class="invalid-feedback"><?= $formFeedback['username_error'] ?></div>
+                <?php endif; ?>
             </div>
         </div>
         <div class="form-group mb-2 row">
             <label for="password">Password</label>
             <div class="col-4">
-                <input type="password" class="form-control" id="password" name="password" value="<?= $password ?>" required>
+                <input type="password" class="form-control <?= isset($formFeedback['password_error']) ? 'is-invalid' : '' ?>"
+                       id="password" name="password" value="<?= htmlspecialchars($password) ?>">
+                <?php if (isset($formFeedback['password_error'])) : ?>
+                    <div class="invalid-feedback"><?= $formFeedback['password_error'] ?></div>
+                <?php endif; ?>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
