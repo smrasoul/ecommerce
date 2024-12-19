@@ -3,13 +3,18 @@
 require 'includes/init.php';
 require 'includes/functions.php';
 
+if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
+    $userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
+    var_dump($userPermissions);
+}
+
 // Fetch products from the database
 
 $products = getAllProducts($conn);
 
 require 'includes/header.php'; ?>
 
-<h1 class="my-3">Products</h1>
+<h1 class="my-4">Products</h1>
 
 <div class="container">
     <div class="row">

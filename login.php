@@ -1,7 +1,6 @@
 <?php
 
 require 'includes/init.php';
-require 'includes/url.php';
 require 'includes/login-functions.php';
 
 $username = '';

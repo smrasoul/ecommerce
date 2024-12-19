@@ -40,7 +40,7 @@ function processLogin($username, $password, $conn)
         $result = authenticateUser($username, $password, $conn); // Check if authentication was successful
         if ($result) {
             loginUser($result); // Log the user in
-            redirect("/index.php");
+            redirect("/dashboard.php");
             exit;
         }
     }

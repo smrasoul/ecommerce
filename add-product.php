@@ -2,7 +2,12 @@
 
 require 'includes/init.php';
 
-if (!hasPermission('add_product')) {
+
+$userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
+var_dump($userPermissions);
+
+
+if (!hasPermission('add_product', $userPermissions)) {
     header('HTTP/1.1 403 Forbidden');
     echo "You do not have permission to access this page.";
     exit;
@@ -37,7 +42,7 @@ mysqli_close($conn);
 
 ?>
 
-<?php require dirname(__DIR__) . '/includes/header.php' ?>
+<?php require 'includes/header.php' ?>
 
     <h1>Add Product</h1>
     <?php if (!empty($errors)): ?>
@@ -51,5 +56,5 @@ mysqli_close($conn);
     <?php endif; ?>
     <?php require 'includes/product-form.php'; ?>
 
-<?php require dirname(__DIR__) . '/includes/footer.php' ?>
+<?php require 'includes/footer.php' ?>
 

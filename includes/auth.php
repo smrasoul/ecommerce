@@ -1,9 +1,5 @@
 <?php
 
-function is_admin(): bool {
-    return isset($_SESSION['role_id']) && $_SESSION['role_id'] == 1;
-}
-
 function getUserPermissions($user_id, $conn) {
 
     $query = "
@@ -26,6 +22,7 @@ function getUserPermissions($user_id, $conn) {
     return $permissions;
 }
 
-function hasPermission($permission) {
-    return in_array($permission, $_SESSION['permissions'] ?? []);
+function hasPermission($permission, $userPermissions) {
+
+    return in_array($permission, $userPermissions ?? []);
 }
