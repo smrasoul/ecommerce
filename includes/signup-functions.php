@@ -1,31 +1,31 @@
 <?php
 
 
-function validateSignup($firstName, $lastName, $email, $username, $password) {
+function validateUser($firstName, $lastName, $email, $username, $password) {
 
 
     if ($firstName == '') {
-       $_SESSION['signup_errors']['firstName'] = "First Name is required";
+       $_SESSION['user_errors']['firstName'] = "First Name is required";
     }
 
     if ($lastName == '') {
-        $_SESSION['signup_errors']['lastName'] = "Last Name is required";
+        $_SESSION['user_errors']['lastName'] = "Last Name is required";
     }
 
     if ($email == '') {
 
-        $_SESSION['signup_errors']['email'] = "Email is required";
+        $_SESSION['user_errors']['email'] = "Email is required";
 
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-        $_SESSION['signup_errors']['email'] = "Invalid email format"; }
+        $_SESSION['user_errors']['email'] = "Invalid email format"; }
 
     if ($username == '') {
-        $_SESSION['signup_errors']['username'] = "Username is required";
+        $_SESSION['user_errors']['username'] = "Username is required";
     }
 
     if ($password == '') {
-        $_SESSION['signup_errors']['password'] = "Password is required";
+        $_SESSION['user_errors']['password'] = "Password is required";
     }
 }
 
@@ -40,7 +40,7 @@ function checkEmailAvailability($email, $conn) {
     $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-        $_SESSION['signup_errors']['email'] = "This email is already taken.";
+        $_SESSION['user_errors']['email'] = "This email is already taken.";
     }
 }
 
@@ -54,7 +54,7 @@ function checkUsernameAvailability($username, $conn) {
     $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-        $_SESSION['signup_errors']['username'] = "This username is already taken.";
+        $_SESSION['user_errors']['username'] = "This username is already taken.";
     }
 }
 
@@ -74,11 +74,11 @@ function signUp($firstName, $lastName, $email, $username, $password, $conn) {
     }
 }
 
-function signupFeedback(){
+function userFeedback(){
     $formFeedback = '';
-    if(isset($_SESSION['signup_errors'])) {
-        $formFeedback = $_SESSION['signup_errors'];
-        unset($_SESSION['signup_errors']);
+    if(isset($_SESSION['user_errors'])) {
+        $formFeedback = $_SESSION['user_errors'];
+        unset($_SESSION['user_errors']);
     }
     return $formFeedback;
 }

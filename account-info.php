@@ -4,6 +4,7 @@ session_start();
 
 require 'includes/db.php';
 require 'includes/auth.php';
+require 'includes/user-functions.php';
 
 $conn = getDbConnection();
 
@@ -11,6 +12,12 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
     $userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
     var_dump($userPermissions);
 }
+
+$user_id = $_SESSION['user_id'];
+var_dump($user_id);
+
+$user = getUserinfo($conn, $user_id);
+var_dump($user);
 
 // Ensure the user is an admin
 //if (!hasPermission('view_product', $userPermissions)) {
@@ -63,7 +70,7 @@ mysqli_free_result($result);
                 <label for="firstName" class="col-4 fw-bold">First Name</label>
                 <div class="col-8">
                     <input type="text" class="form-control-plaintext"
-                           id="firstName" name="firstName" readonly value="Example">
+                           id="firstName" name="firstName" readonly value="<?= $user['first_name'] ?>">
                 </div>
             </div>
 
@@ -71,7 +78,7 @@ mysqli_free_result($result);
                 <label for="lastName" class="col-4 fw-bold">Last Name</label>
                 <div class="col-8">
                     <input type="text" class="form-control-plaintext"
-                           id="lastName" name="lastName" readonly value="Example">
+                           id="lastName" name="lastName" readonly value="<?= $user['last_name'] ?>">
                 </div>
             </div>
         </div>
@@ -81,7 +88,7 @@ mysqli_free_result($result);
                 <label for="email" class="col-4 fw-bold">Email</label>
                 <div class="col-8">
                     <input type="email" class="form-control-plaintext"
-                           id="email" name="email" readonly value="example">
+                           id="email" name="email" readonly value="<?= $user['email']  ?>">
                 </div>
             </div>
         </div>
@@ -91,7 +98,7 @@ mysqli_free_result($result);
                 <label for="username" class="col-4 fw-bold">Username</label>
                 <div class="col-8">
                     <input type="text" class="form-control-plaintext"
-                           id="username" name="username" readonly value="Example">
+                           id="username" name="username" readonly value="<?= $user['username'] ?>">
                 </div>
             </div>
 
@@ -100,7 +107,7 @@ mysqli_free_result($result);
                 <div class="col-8">
                     <input type="password"
                            class="form-control-plaintext"
-                           id="password" name="password" readonly value="example">
+                           id="password" name="password" readonly value="password">
                 </div>
             </div>
         </div>
