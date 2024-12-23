@@ -11,6 +11,10 @@ $conn = getDbConnection();
 if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
     $userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
     var_dump($userPermissions);
+} else {
+    header('HTTP/1.1 403 Forbidden');
+    echo "You do not have permission to access this page.";
+    exit;
 }
 
 $user_id = $_SESSION['user_id'];
@@ -19,21 +23,7 @@ var_dump($user_id);
 $user = getUserinfo($conn, $user_id);
 var_dump($user);
 
-// Ensure the user is an admin
-//if (!hasPermission('view_product', $userPermissions)) {
-//    header('HTTP/1.1 403 Forbidden');
-//    echo "You do not have permission to access this page.";
-//    exit;
-//}
 
-
-
-// Fetch all products
-$query = "SELECT * FROM products";
-$result = mysqli_query($conn, $query);
-$products = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-mysqli_free_result($result);
 
 ?>
 
@@ -50,7 +40,7 @@ mysqli_free_result($result);
                 <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="account-info.php">Account information</a>
             </li>
             <li class="list-group-item">
-                <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="orders-history.php">Orders history</a>
+                <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="orders.php">Orders history</a>
             </li>
             <?php if (hasPermission('view_product', $userPermissions)): ?>
                 <li class="list-group-item">
@@ -91,9 +81,6 @@ mysqli_free_result($result);
                            id="email" name="email" readonly value="<?= $user['email']  ?>">
                 </div>
             </div>
-        </div>
-
-        <div class="row mb-4">
             <div class="row col-6">
                 <label for="username" class="col-4 fw-bold">Username</label>
                 <div class="col-8">
@@ -101,21 +88,12 @@ mysqli_free_result($result);
                            id="username" name="username" readonly value="<?= $user['username'] ?>">
                 </div>
             </div>
-
-            <div class="row col-6">
-                <label for="password" class="col-4 fw-bold">Password</label>
-                <div class="col-8">
-                    <input type="password"
-                           class="form-control-plaintext"
-                           id="password" name="password" readonly value="password">
-                </div>
-            </div>
         </div>
 
         <div class="d-flex justify-content-end">
-            <button class="btn btn-warning">
-                <a class="link-dark link-underline-opacity-0" href="edit-account-info.php">Edit information</a>
-            </button>
+
+                <a class="link-dark link-underline-opacity-0 btn btn-warning" href="edit-account-info.php">Edit information</a>
+
         </div>
 
     </div>

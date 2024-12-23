@@ -2,7 +2,7 @@
 
 function getUserinfo ($conn, $user_id) {
 
-    $query = "SELECT * FROM users WHERE id = ?";
+    $query = "SELECT first_name, last_name, email, username FROM users WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 'i', $user_id);
     mysqli_stmt_execute($stmt);
@@ -23,4 +23,83 @@ function updateUserInfo($conn, $user_id, $firstName, $lastName, $email, $usernam
         return false;
     }
 }
+
+function passwordsMatch($password, $retypePassword) {
+    if(!($password === $retypePassword)) {
+        $_SESSION['user_errors']['password'] = "Passwords do not match.";
+        echo 'passwords do not match.';
+    }
+}
+
+function createRole($roleName, $conn) {
+    $query = "INSERT INTO roles (name) VALUES (?)";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 's', $roleName);
+    mysqli_stmt_execute($stmt);
+
+    if (mysqli_affected_rows($conn) > 0) {
+        return mysqli_insert_id($conn); // Return the new role ID
+    }
+
+    return false; // Return false if insertion failed
+}
+
+
+function deleteRolePermissions($roleId, $conn)
+{
+    $query = "DELETE FROM role_permissions WHERE role_id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $roleId);
+    if (mysqli_stmt_execute($stmt)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function assignPermissionsToRole($roleId, $permissionIds, $conn) {
+    $query = "INSERT INTO role_permissions (role_id, permission_id) VALUES (?, ?)";
+
+    foreach ($permissionIds as $permissionId) {
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, 'ii', $roleId, $permissionId);
+        mysqli_stmt_execute($stmt);
+    }
+
+    return true; // Indicate successful assignment
+}
+
+function changeUserRole($userId, $newRoleId, $conn) {
+    $query = "UPDATE users SET role_id = ? WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'ii', $newRoleId, $userId);
+    mysqli_stmt_execute($stmt);
+
+    return mysqli_affected_rows($conn) > 0; // Return true if the update succeeded
+}
+
+function getRoles($conn)
+{
+    $query = "SELECT * FROM roles";
+    return mysqli_query($conn, $query);
+}
+
+function getPermissions ($conn){
+    $query = "SELECT * FROM permissions";
+    return mysqli_query($conn, $query);
+}
+
+function getUsers ($conn) {
+    $query = "SELECT id, username, role_id FROM users";
+    return mysqli_query($conn, $query);
+}
+
+function getUsernameAndEmail ($conn, $user_id){
+    $query = "SELECT username, email FROM users";
+
+}
+
+
+
+
 

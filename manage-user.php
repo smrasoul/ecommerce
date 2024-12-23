@@ -1,40 +1,111 @@
 <?php
 
 session_start();
-
 require 'includes/db.php';
 require 'includes/auth.php';
+require 'includes/user-functions.php';
 
 $conn = getDbConnection();
 
+// Ensure the user is an admin
 if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
     $userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
     var_dump($userPermissions);
+
+    if (!hasPermission('manage_user', $userPermissions)) {
+        header('HTTP/1.1 403 Forbidden');
+        echo "You do not have permission to access this page.";
+        exit;
+    }
+
+} else {
+    header('HTTP/1.1 403 Forbidden');
+    echo "You do not have permission to access this page.";
+    exit;
 }
 
-// Ensure the user is an admin
-//if (!hasPermission('view_product', $userPermissions)) {
-//    header('HTTP/1.1 403 Forbidden');
-//    echo "You do not have permission to access this page.";
-//    exit;
-//}
 
 
 
-// Fetch all products
-$query = "SELECT * FROM products";
-$result = mysqli_query($conn, $query);
-$products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+// Handle form submissions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-mysqli_free_result($result);
+    if (isset($_POST['create_role'])) {
+        $roleName = htmlspecialchars(trim($_POST['role_name']));
+        $newRoleId = createRole($roleName, $conn);
+
+        if ($newRoleId) {
+            $_SESSION['success_message'] = "Role '$roleName' created successfully!";
+        } else {
+            $_SESSION['error_message'] = "Failed to create role.";
+        }
+    }
+
+    if (isset($_POST['assign_permissions'])) {
+        $roleId = $_POST['role_id'];
+        $permissionIds = $_POST['permissions'] ?? [];
+
+        if(deleteRolePermissions($roleId, $conn)){
+            if (assignPermissionsToRole($roleId, $permissionIds, $conn)) {
+                $_SESSION['success_message'] = "Permissions assigned successfully!";
+            } else {
+                $_SESSION['error_message'] = "Failed to assign permissions.";
+            }
+        } else {
+            $_SESSION['error_message'] = "Failed to assign permissions.";
+        }
+
+
+    }
+
+    if (isset($_POST['change_user_role'])) {
+        $userId = $_POST['user_id'];
+        $newRoleId = $_POST['new_role_id'];
+
+        if (changeUserRole($userId, $newRoleId, $conn)) {
+            $_SESSION['success_message'] = "User role updated successfully!";
+        } else {
+            $_SESSION['error_message'] = "Failed to update user role.";
+        }
+    }
+
+    header('Location: /manage-user.php');
+    exit;
+}
+
+// Fetch roles and permissions
+$roles =  getRoles($conn);
+$permissions = getPermissions($conn);
+$users = getUsers ($conn);
+
 
 ?>
 
 <?php require 'includes/header.php' ?>
 
+
+
 <h1 class="my-4">Admin Dashboard</h1>
 
-<div class="rowlink-underline-opacity-0">
+<!-- Success and Error Messages -->
+<?php if (isset($_SESSION['success_message'])): ?>
+    <div class="row">
+        <div class="alert alert-success col-4 d-flex justify-content-center">
+            <?= $_SESSION['success_message'];
+            unset($_SESSION['success_message']); ?>
+        </div>
+    </div>
+<?php endif; ?>
+<?php if (isset($_SESSION['error_message'])): ?>
+    <div class="row">
+
+        <div class="alert alert-danger col-4 d-flex justify-content-center"><?= $_SESSION['error_message'];
+            unset($_SESSION['error_message']); ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<div class="row">
 
     <div class="col-3">
         <ul class="list-group">
@@ -43,7 +114,7 @@ mysqli_free_result($result);
                 <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="account-info.php">Account information</a>
             </li>
             <li class="list-group-item">
-                <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="orders-history.php">Orders history</a>
+                <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="orders.php">Orders history</a>
             </li>
             <?php if (hasPermission('view_product', $userPermissions)): ?>
                 <li class="list-group-item">
@@ -55,7 +126,87 @@ mysqli_free_result($result);
             <?php endif ?>
         </ul>
     </div>
-    <div class="col-9">
+
+    <div class="col-9 border rounded py-3">
+
+        <div class="row">
+
+            <div class="col-6">
+            <!-- Create Role -->
+            <h4>Create New Role</h4>
+            <form method="POST" class="mb-4">
+                <div class="mb-3">
+                    <label for="role_name" class="form-label">Role Name</label>
+                    <input type="text" class="form-control" id="role_name" name="role_name" required>
+                </div>
+                <button type="submit" name="create_role" class="btn btn-primary">Create Role</button>
+            </form>
+            </div>
+
+            <div class="col-6">
+            <h4>Assign Permissions to Role</h4>
+            <form method="POST" class="mb-4">
+                <div class="mb-3">
+                    <label for="role_id" class="form-label">Select Role</label>
+                    <select class="form-select" id="role_id" name="role_id" required>
+                        <?php while ($role = mysqli_fetch_assoc($roles)): ?>
+                            <option
+                                <?php if($role['id'] == 1): ?>
+                                    disabled
+                                <?php endif; ?>
+                                    value="<?= $role['id']; ?>"><?= $role['name']; ?>
+                            </option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Select Permissions</label>
+                    <?php while ($permission = mysqli_fetch_assoc($permissions)): ?>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="permissions[]"
+                                   value="<?= $permission['id']; ?>" id="permission_<?= $permission['id']; ?>">
+                            <label class="form-check-label" for="permission_<?= $permission['id']; ?>">
+                                <?= $permission['name']; ?>
+                            </label>
+                        </div>
+                    <?php endwhile; ?>
+                </div>
+                <button type="submit" name="assign_permissions" class="btn btn-primary">Assign Permissions</button>
+            </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+
+                <!-- Change User Role -->
+                <h3>Change User Role</h3>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="user_id" class="form-label">Select User</label>
+                        <select class="form-select" id="user_id" name="user_id" required>
+                            <?php while ($user = mysqli_fetch_assoc($users)): ?>
+                                <option
+                                    <?php if($user['role_id'] == 1): ?>
+                                        disabled
+                                    <?php endif; ?>
+                                        value="<?= $user['id']; ?>"><?= $user['username']; ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_role_id" class="form-label">Select New Role</label>
+                        <select class="form-select" id="new_role_id" name="new_role_id" required>
+                            <?php mysqli_data_seek($roles, 0); // Reset pointer ?>
+                            <?php while ($role = mysqli_fetch_assoc($roles)): ?>
+                                <option value="<?= $role['id']; ?>"><?= $role['name']; ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    <button type="submit" name="change_user_role" class="btn btn-primary">Change Role</button>
+                </form>
+            </div>
+
+        </div>
 
     </div>
 </div>
