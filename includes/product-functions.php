@@ -2,33 +2,29 @@
 
 function validateProduct($name, $price, $photo, $is_update = false)
 {
-    $errors = array();
-
     // Validate product name
-    if (empty($name)) {
-        $errors[] = "Product name is required.";
+    if ($name == '') {
+        $_SESSION['product_errors']['name'] = "Product name is required.";
     }
 
     // Validate price
-    if (empty($price) || !is_numeric($price) || $price <= 0) {
-        $errors[] = "Invalid price.";
+    if (($price == '') || !is_numeric($price) || $price <= 0) {
+        $_SESSION['product_errors']['price'] = "Invalid price.";
     }
 
     // Validate photo only if it's not an update or if a new photo is uploaded
     if (!$is_update || !empty($photo['name'])) {
         $allowed_types = ['image/jpeg', 'image/png'];
         if (!empty($photo['name']) && !in_array($photo['type'], $allowed_types)) {
-            $errors[] = "Only JPG and PNG files are allowed.";
+            $_SESSION['product_errors']['photo'] = "Only JPG and PNG files are allowed.";
         }
         if (!empty($photo['size']) && $photo['size'] > 2 * 1024 * 1024) {
-            $errors[] = "File size must be less than 2MB.";
+            $_SESSION['product_errors']['photo'] = "File size must be less than 2MB.";
         }
         if (empty($photo['name'])) {
-            $errors[] = "Product photo is required.";
+            $_SESSION['product_errors']['photo'] = "Product photo is required.";
         }
     }
-
-    return $errors;
 }
 
 
@@ -40,12 +36,11 @@ function addProduct($name, $price, $photo_name, $conn)
     mysqli_stmt_bind_param($stmt, 'sds', $name, $price, $photo_name);
 
     if (mysqli_stmt_execute($stmt)) {
-        redirect('/admin/dashboard.php');
+        redirect('/dashboard.php');
         exit;
     } else {
-        $errors[] = "Failed to save product.";
+        $_SESSION['product_errors']['add'] = "Failed to save product.";
     }
-    return $errors;
 }
 
 function getById($conn, $product_id) {
@@ -60,13 +55,10 @@ function getById($conn, $product_id) {
 
 function deleteProduct($product, $conn) {
 
-    $errors = [];
-
     // Delete the photo file if it exists
     if (!empty($product['photo']) && file_exists($product['photo'])) {
         if (!unlink($product['photo'])) {
-            $errors[] = "Failed to delete the product photo.";
-            return $errors;
+            $_SESSION['product_errors']['delete'] = "Failed to delete the product photo.";
         }
     }
 
@@ -76,10 +68,8 @@ function deleteProduct($product, $conn) {
     mysqli_stmt_bind_param($stmt, 'i', $product['id']);
 
     if (!mysqli_stmt_execute($stmt)) {
-        $errors[] = "Failed to delete the product.";
+        $_SESSION['product_errors']['delete'] = "Failed to delete the product.";
     }
-
-    return $errors;
 }
 
 function handlePhoto ($product, $photo)
@@ -89,12 +79,12 @@ function handlePhoto ($product, $photo)
 
     if (!empty($photo['name'])) { // If a new photo is uploaded
         $new_photo_name = time() . '_' . basename($photo['name']);
-        $upload_path = '../assets/images/' . $new_photo_name;
+        $upload_path = 'assets/images/' . $new_photo_name;
 
         if (move_uploaded_file($photo['tmp_name'], $upload_path)) {
             // Delete the old photo if it exists
-            if (!empty($product['photo']) && file_exists('../assets/images/' . $product['photo'])) {
-                unlink('../assets/images/' . $product['photo']);
+            if (!empty($product['photo']) && file_exists('assets/images/' . $product['photo'])) {
+                unlink('assets/images/' . $product['photo']);
             }
             $photo_name = $new_photo_name;
         }
@@ -109,6 +99,15 @@ function updateProduct ($conn, $name, $price, $photo_name, $product_id ){
     mysqli_stmt_bind_param($stmt, 'sdsi', $name, $price, $photo_name, $product_id);
     return mysqli_stmt_execute($stmt);
 
+}
+
+function productFeedback(){
+    $formFeedback = '';
+    if(isset($_SESSION['product_errors'])) {
+        $formFeedback = $_SESSION['product_errors'];
+        unset($_SESSION['product_errors']);
+    }
+    return $formFeedback;
 }
 
 
