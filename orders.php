@@ -8,10 +8,7 @@ require 'includes/order-functions.php';
 
 $conn = getDbConnection();
 
-if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
-    $userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
-    var_dump($userPermissions);
-}
+$userPermissions = checkUserAccess($conn);
 
 $userId = $_SESSION['user_id'];
 $orders = getOrders($userId, $conn);
