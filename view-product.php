@@ -4,6 +4,7 @@ session_start();
 
 require 'includes/db.php';
 require 'includes/auth.php';
+require 'includes/product-functions.php';
 
 $conn = getDbConnection();
 
@@ -24,12 +25,13 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
 }
 
 
-// Fetch all products
-$query = "SELECT * FROM products";
-$result = mysqli_query($conn, $query);
-$products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$products = fetchAllProducts($conn);
 
-mysqli_free_result($result);
+$flash_message = '';
+if (isset($_SESSION['flash'])) {
+    $flash_message = $_SESSION['flash'];
+    unset($_SESSION['flash']);
+}
 
 ?>
 
@@ -64,6 +66,12 @@ mysqli_free_result($result);
     </div>
 
     <div class="col-9 border rounded py-3">
+
+        <?php if (isset($flash_message['product_success'])) : ?>
+            <div class="alert alert-success col-4 text-center">
+                <p class="mb-0"> <?= $flash_message['product_success'] ?></p>
+            </div>
+        <?php endif; ?>
 
         <a href="add-product.php" class="btn btn-success mb-3">Add Product</a>
         <table class="table table-striped">

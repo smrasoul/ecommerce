@@ -47,7 +47,7 @@ require 'includes/header.php';
     <div class="container">
         <h2>Sign Up</h2>
 
-        <?php if (isset($signupFailure)) : ?>
+        <?php if (isset($_SESSION['signup_failure'])) : ?>
             <div class="alert alert-danger">
                 <?= $_SESSION['signup_failure'] ?>
             </div>

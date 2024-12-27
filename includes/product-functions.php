@@ -1,13 +1,20 @@
 <?php
 
+
+function fetchAllProducts($conn){
+    $query = "SELECT * FROM products";
+    $result = mysqli_query($conn, $query);
+    return $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
 function validateProduct($name, $price, $photo, $is_update = false)
 {
-    // Validate product name
+
     if ($name == '') {
         $_SESSION['product_errors']['name'] = "Product name is required.";
     }
 
-    // Validate price
+
     if (($price == '') || !is_numeric($price) || $price <= 0) {
         $_SESSION['product_errors']['price'] = "Invalid price.";
     }
@@ -36,10 +43,11 @@ function addProduct($name, $price, $photo_name, $conn)
     mysqli_stmt_bind_param($stmt, 'sds', $name, $price, $photo_name);
 
     if (mysqli_stmt_execute($stmt)) {
-        redirect('/dashboard.php');
+        $_SESSION['flash']['product_success'] = 'Product added successfully.';
+        redirect('/view-product.php');
         exit;
     } else {
-        $_SESSION['product_errors']['add'] = "Failed to save product.";
+        $_SESSION['product_failure'] = "Failed to save product.";
     }
 }
 
@@ -97,7 +105,13 @@ function updateProduct ($conn, $name, $price, $photo_name, $product_id ){
     $query = "UPDATE products SET name = ?, price = ?, photo = ? WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 'sdsi', $name, $price, $photo_name, $product_id);
-    return mysqli_stmt_execute($stmt);
+    if (mysqli_stmt_execute($stmt)) {
+        $_SESSION['flash']['product_success'] = 'Product updated successfully.';
+        redirect('/view-product.php');
+        exit;
+    } else {
+        $_SESSION['product_failure'] = "Failed to update the product.";
+    }
 
 }
 

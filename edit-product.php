@@ -2,8 +2,17 @@
 
 require 'includes/init.php';
 
-// Ensure the user has permission to edit products
-if (!hasPermission('edit_product')) {
+if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
+    $userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
+    var_dump($userPermissions);
+
+    if (!hasPermission('edit_product', $userPermissions)) {
+        header('HTTP/1.1 403 Forbidden');
+        echo "You do not have permission to access this page.";
+        exit;
+    }
+
+} else {
     header('HTTP/1.1 403 Forbidden');
     echo "You do not have permission to access this page.";
     exit;
@@ -11,21 +20,19 @@ if (!hasPermission('edit_product')) {
 
 $conn = getDbConnection();
 
-// Check if the product ID is provided
+
 if (!isset($_GET['id'])) {
     die("Product ID not provided.");
 }
 
 $product_id = $_GET['id'];
 
-// Fetch product details
+
 $product = getById($conn, $product_id);
 if (!$product) {
     die("Product not found.");
 }
 
-// Initialize errors array
-$errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -34,24 +41,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $photo = $_FILES['photo'];
 
     // Validate input fields
-    $errors = validateProduct($name, $price, $photo, true);
+    validateProduct($name, $price, $photo);
 
-    if (empty($errors)) {
+    if(! $photo_name = handlePhoto($product, $photo)) {
+        $_SESSION['product_errors']['photo'] = "Failed to upload the new photo.";
+    }
 
-            if(! $photo_name = handlePhoto($product, $photo)) {
-                $errors[] = "Failed to upload the new photo.";
-            }
-        // Update the product in the database
-        if (empty($errors)) {
+    $formFeedback = productFeedback();
+    var_dump($formFeedback);
 
-            if(! updateProduct ($conn, $name, $price, $photo_name, $product_id )){
-                $errors[] = "Failed to update the product.";
-            }
+    // Update the product in the database
+    if (empty($formFeedback)) {
+
+        if (!updateProduct($conn, $name, $price, $photo_name, $product_id)) {
+            $_SESSION['product_failure'] = "Failed to update the product.";
         }
     }
 
+
     if(empty($errors)) {
-        redirect('/admin/dashboard.php');
+        redirect('/view-product.php');
     }
 }
 
@@ -59,18 +68,15 @@ mysqli_close($conn);
 
 ?>
 
-<?php require dirname(__DIR__) . '/includes/header.php'; ?>
+<?php require 'includes/header.php'; ?>
 
 <h1>Edit Product</h1>
 
-<?php if (!empty($errors)): ?>
+<?php if (isset($_SESSION['product_failure'])) : ?>
     <div class="alert alert-danger">
-        <ul>
-            <?php foreach ($errors as $error): ?>
-                <li><?= htmlspecialchars($error) ?></li>
-            <?php endforeach; ?>
-        </ul>
+        <?= $_SESSION['product_failure'] ?>
     </div>
+    <?php unset($_SESSION['product_failure']) ?>
 <?php endif; ?>
 
 <!-- Shared product form -->
@@ -78,4 +84,4 @@ mysqli_close($conn);
     <?php require 'includes/product-form.php'; ?>
 </form>
 
-<?php require dirname(__DIR__) . '/includes/footer.php'; ?>
+<?php require 'includes/footer.php'; ?>

@@ -3,11 +3,17 @@
 require 'includes/init.php';
 
 
-$userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
-var_dump($userPermissions);
+if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
+    $userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
+    var_dump($userPermissions);
 
+    if (!hasPermission('view_product', $userPermissions)) {
+        header('HTTP/1.1 403 Forbidden');
+        echo "You do not have permission to access this page.";
+        exit;
+    }
 
-if (!hasPermission('add_product', $userPermissions)) {
+} else {
     header('HTTP/1.1 403 Forbidden');
     echo "You do not have permission to access this page.";
     exit;
@@ -23,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validation
     validateProduct($name, $price, $photo);
-
     $formFeedback = productFeedback();
     var_dump($formFeedback);
 
@@ -49,6 +54,13 @@ mysqli_close($conn);
 <?php require 'includes/header.php' ?>
 
     <h1>Add Product</h1>
+
+<?php if (isset($_SESSION['product_failure'])) : ?>
+    <div class="alert alert-danger">
+        <?= $_SESSION['product_failure'] ?>
+    </div>
+    <?php unset($_SESSION['product_failure']) ?>
+<?php endif; ?>
 
     <?php require 'includes/product-form.php'; ?>
 
