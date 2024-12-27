@@ -81,12 +81,14 @@ function changeUserRole($userId, $newRoleId, $conn) {
 function getRoles($conn)
 {
     $query = "SELECT * FROM roles";
-    return mysqli_query($conn, $query);
+    $result = mysqli_query($conn, $query);
+    return $roles = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
 function getPermissions ($conn){
     $query = "SELECT * FROM permissions";
-    return mysqli_query($conn, $query);
+    $result = mysqli_query($conn, $query);
+    return $permissions = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
 function getUsers ($conn) {
@@ -97,6 +99,17 @@ function getUsers ($conn) {
 function getUsernameAndEmail ($conn, $user_id){
     $query = "SELECT username, email FROM users";
 
+}
+
+function getUserAndRoles($conn)
+{
+    $query = "SELECT roles.name AS role_name, users.username , users.id
+              FROM roles
+              JOIN users
+              ON roles.id = users.role_id;";
+
+    $result = mysqli_query($conn, $query);
+    return $users_roles = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
 

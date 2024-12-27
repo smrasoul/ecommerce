@@ -73,6 +73,19 @@ if (isset($_SESSION['flash'])) {
             </div>
         <?php endif; ?>
 
+        <?php if (isset($flash_message['delete_failure'])) : ?>
+            <div class="alert alert-danger col-4 text-center">
+                <p class="mb-0"> <?= $flash_message['delete_failure'] ?></p>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($flash_message['delete_success'])) : ?>
+            <div class="alert alert-success col-4 text-center">
+                <p class="mb-0"> <?= $flash_message['delete_success'] ?></p>
+            </div>
+        <?php endif; ?>
+
+
         <a href="add-product.php" class="btn btn-success mb-3">Add Product</a>
         <table class="table table-striped">
             <thead>

@@ -2,13 +2,21 @@
 
 require 'includes/init.php';
 
-if (!hasPermission('delete_product')) {
+if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
+    $userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
+    var_dump($userPermissions);
+
+    if (!hasPermission('delete_product', $userPermissions)) {
+        header('HTTP/1.1 403 Forbidden');
+        echo "You do not have permission to access this page.";
+        exit;
+    }
+
+} else {
     header('HTTP/1.1 403 Forbidden');
     echo "You do not have permission to access this page.";
     exit;
 }
-
-$conn = getDbConnection();
 
 if (isset($_GET['id'])) {
 
@@ -27,17 +35,7 @@ if (isset($_GET['id'])) {
     die("id not supplied, Product not found");
 }
 
-$errors = deleteProduct($product, $conn);
-
-if (empty($errors)) {
-    redirect('/admin/dashboard.php'); // Redirect to admin dashboard after successful deletion
-} else {
-    foreach ($errors as $error) {
-        echo "<p>$error</p>"; // Display errors
-    }
-}
-
-mysqli_close($conn);
+deleteProduct($product, $conn);
 
 
 

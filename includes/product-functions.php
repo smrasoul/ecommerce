@@ -76,7 +76,11 @@ function deleteProduct($product, $conn) {
     mysqli_stmt_bind_param($stmt, 'i', $product['id']);
 
     if (!mysqli_stmt_execute($stmt)) {
-        $_SESSION['product_errors']['delete'] = "Failed to delete the product.";
+        $_SESSION['flash']['delete_failure'] = "Failed to delete the product.";
+        redirect('/view-product.php');
+    }else {
+        $_SESSION['flash']['delete_success'] = "Product deleted successfully.";
+        redirect('/view-product.php');
     }
 }
 

@@ -4,6 +4,8 @@ session_start();
 
 require 'includes/db.php';
 require 'includes/auth.php';
+require 'includes/user-functions.php';
+
 
 $conn = getDbConnection();
 
@@ -16,13 +18,19 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
     exit;
 }
 
+$user_id = $_SESSION['user_id'];
+var_dump($user_id);
+
+$user = getUserinfo($conn, $user_id);
+var_dump($user);
+
 ?>
 
 <?php require 'includes/header.php' ?>
 
 <h1 class="my-4">Dashboard</h1>
 
-<div class="rowlink-underline-opacity-0">
+<div class="row">
 
     <div class="col-3">
         <ul class="list-group">
@@ -43,7 +51,39 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
             <?php endif ?>
         </ul>
     </div>
-    <div class="col-9">
+    <div class="col-9 border rounded p-4">
+
+        <h5>Account Information</h5>
+        <div class="row mb-4 border rounded p-4 mb-4">
+
+            <div class="row col-6">
+                <label for="firstName" class="col-4 fw-bold">First Name</label>
+                <div class="col-8">
+                    <input type="text" class="form-control-plaintext"
+                           id="firstName" name="firstName" readonly value="<?= $user['first_name'] ?>">
+                </div>
+            </div>
+
+            <div class="row col-6">
+                <label for="lastName" class="col-4 fw-bold">Last Name</label>
+                <div class="col-8">
+                    <input type="text" class="form-control-plaintext"
+                           id="lastName" name="lastName" readonly value="<?= $user['last_name'] ?>">
+                </div>
+            </div>
+        </div>
+
+        <h5>Latest Order</h5>
+        <div class="row mb-4 border rounded p-4 mb-4">
+            <p class="text-warning"> latest order would be placed here</p>
+        </div>
+
+        <h5>Management</h5>
+        <div class="row mb-4 border rounded p-4 mb-4">
+            <p class="text-warning"> Management tools would be placed here</p>
+        </div>
+
+
 
     </div>
 </div>

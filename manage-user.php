@@ -77,6 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $roles =  getRoles($conn);
 $permissions = getPermissions($conn);
 $users = getUsers ($conn);
+$users_roles= getUserAndRoles($conn);
+var_dump($users_roles);
 
 
 ?>
@@ -149,19 +151,19 @@ $users = getUsers ($conn);
                 <div class="mb-3">
                     <label for="role_id" class="form-label">Select Role</label>
                     <select class="form-select" id="role_id" name="role_id" required>
-                        <?php while ($role = mysqli_fetch_assoc($roles)): ?>
+                        <?php foreach ($roles as $role): ?>
                             <option
                                 <?php if($role['id'] == 1): ?>
                                     disabled
                                 <?php endif; ?>
                                     value="<?= $role['id']; ?>"><?= $role['name']; ?>
                             </option>
-                        <?php endwhile; ?>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Select Permissions</label>
-                    <?php while ($permission = mysqli_fetch_assoc($permissions)): ?>
+                    <?php foreach ($permissions as $permission): ?>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="permissions[]"
                                    value="<?= $permission['id']; ?>" id="permission_<?= $permission['id']; ?>">
@@ -169,7 +171,7 @@ $users = getUsers ($conn);
                                 <?= $permission['name']; ?>
                             </label>
                         </div>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 </div>
                 <button type="submit" name="assign_permissions" class="btn btn-primary">Assign Permissions</button>
             </form>
@@ -182,26 +184,34 @@ $users = getUsers ($conn);
                 <h3>Change User Role</h3>
                 <form method="POST">
                     <div class="mb-3">
-                        <label for="user_id" class="form-label">Select User</label>
+
+
+                        <label for="user_id" class="form-label">Select User: (Current Role)</label>
                         <select class="form-select" id="user_id" name="user_id" required>
-                            <?php while ($user = mysqli_fetch_assoc($users)): ?>
-                                <option
-                                    <?php if($user['role_id'] == 1): ?>
-                                        disabled
-                                    <?php endif; ?>
-                                        value="<?= $user['id']; ?>"><?= $user['username']; ?></option>
-                            <?php endwhile; ?>
+                            <?php foreach ($users_roles as $user_role): ?>
+                                <option value="<?= $user_role['id'] ?>"
+                                <?php if($user_role['username'] == 'admin'): ?>
+                                disabled
+                                <?php endif; ?>
+                                >
+                                    <?= $user_role['username'] . ": (" . $user_role['role_name'] . ")" ?>
+
+                                </option>
+                            <?php endforeach; ?>
                         </select>
+
+
                     </div>
                     <div class="mb-3">
                         <label for="new_role_id" class="form-label">Select New Role</label>
                         <select class="form-select" id="new_role_id" name="new_role_id" required>
-                            <?php mysqli_data_seek($roles, 0); // Reset pointer ?>
-                            <?php while ($role = mysqli_fetch_assoc($roles)): ?>
+
+                            <?php foreach ($roles as $role): ?>
                                 <option value="<?= $role['id']; ?>"><?= $role['name']; ?></option>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         </select>
                     </div>
+
                     <button type="submit" name="change_user_role" class="btn btn-primary">Change Role</button>
                 </form>
             </div>
