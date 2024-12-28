@@ -148,4 +148,17 @@ function productFeedback() {
     return $formFeedback;
 }
 
-?>
+
+function getProductsWithMedia($conn, $products)
+{
+    $productsWithMedia = [];
+    foreach ($products as $product) {
+        $media = fetchMediaByProductId($product['id'], $conn);
+        $product['media'] = !empty($media) ? $media[0]['file_path'] : null;
+        $productsWithMedia[] = $product;
+    }
+    return $productsWithMedia;
+}
+
+
+

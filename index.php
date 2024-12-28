@@ -11,19 +11,21 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
 // Fetch products from the database
 $products = getAllProducts($conn);
 
+// Get products with media
+$productsWithMedia = getProductsWithMedia($conn, $products);
+
 require 'includes/header.php'; ?>
 
 <h1 class="my-4">Products</h1>
 
 <div class="container">
     <div class="row">
-        <?php if ($products): ?>
-            <?php foreach ($products as $product): ?>
-                <?php $media = fetchMediaByProductId($product['id'], $conn); ?>
+        <?php if ($productsWithMedia): ?>
+            <?php foreach ($productsWithMedia as $product): ?>
                 <div class="col-md-2 mb-4"> <!-- 6 items per row -->
                     <div class="card">
-                        <?php if (!empty($media)): ?>
-                            <img src="/assets/media/<?= htmlspecialchars($media[0]['file_path']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>" />
+                        <?php if ($product['media']): ?>
+                            <img src="/assets/media/<?= htmlspecialchars($product['media']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>" />
                         <?php else: ?>
                             <img src="/assets/images/default_product.png" class="card-img-top" alt="No photo" />
                         <?php endif; ?>
