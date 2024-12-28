@@ -2,10 +2,9 @@
 
 require 'includes/init.php';
 
-$userPermissions = checkUserAccess($conn, 'edit_product');
-
 $conn = getDbConnection();
 
+$userPermissions = checkUserAccess($conn, 'edit_product');
 
 if (!isset($_GET['id'])) {
     die("Product ID not provided.");
@@ -13,12 +12,10 @@ if (!isset($_GET['id'])) {
 
 $product_id = $_GET['id'];
 
-
 $product = getById($conn, $product_id);
 if (!$product) {
     die("Product not found.");
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -29,23 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate input fields
     validateProduct($name, $price, $photo, $is_update = true);
 
-    if(! $photo_name = handlePhoto($product, $photo)) {
-        $_SESSION['product_errors']['photo'] = "Failed to upload the new photo.";
-    }
+    // Handle photo upload and update
+    $photo_name = handleMedia($product_id, $photo, $conn);
 
     $formFeedback = productFeedback();
-    var_dump($formFeedback);
 
     // Update the product in the database
     if (empty($formFeedback)) {
-
-        if (!updateProduct($conn, $name, $price, $photo_name, $product_id)) {
-            $_SESSION['product_failure'] = "Failed to update the product.";
-        }
+        updateProduct($conn, $name, $price, $photo_name, $product_id);
     }
 
-
-    if(empty($formFeedback)) {
+    if (empty($formFeedback)) {
         redirect('/view-product.php');
     }
 }
@@ -100,4 +91,6 @@ mysqli_close($conn);
 
     </div>
 
-    <?php require 'includes/footer.php'; ?>
+</div>
+
+<?php require 'includes/footer.php'; ?>

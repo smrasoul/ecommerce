@@ -101,7 +101,7 @@ if (isset($_SESSION['flash'])) {
                     <td class="align-content-center"><?= htmlspecialchars($product['price']) ?></td>
                     <td class="align-content-center">
                         <?php if ($product['photo']): ?>
-                            <img src="/assets/images/<?= htmlspecialchars($product['photo']) ?>"
+                            <img src="/assets/media/<?= htmlspecialchars($product['photo']) ?>"
                                  alt="<?= htmlspecialchars($product['name']) ?>" width="50">
                         <?php else: ?>
                             No photo

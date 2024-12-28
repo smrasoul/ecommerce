@@ -2,6 +2,8 @@
 
 require 'includes/init.php';
 
+$conn = getDbConnection();
+
 $userPermissions = checkUserAccess($conn, 'delete_product');
 
 if (isset($_GET['id'])) {
@@ -10,18 +12,13 @@ if (isset($_GET['id'])) {
     $product = getById($conn, $product_id);
 
     if ($product) {
-
-        $id = $product['id'];
-
+        deleteProduct($product_id, $conn);
     } else {
         die("Product not found");
     }
 
 } else {
-    die("id not supplied, Product not found");
+    die("ID not supplied. Product not found.");
 }
 
-deleteProduct($product, $conn);
-
-
-
+?>

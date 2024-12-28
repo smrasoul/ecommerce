@@ -10,8 +10,6 @@ $conn = getDbConnection();
 
 $userPermissions = checkUserAccess($conn, 'view_product');
 
-
-
 $products = fetchAllProducts($conn);
 
 $flash_message = '';
@@ -87,13 +85,14 @@ if (isset($_SESSION['flash'])) {
             <tbody>
             <?php if ($products): ?>
                 <?php foreach ($products as $product): ?>
+                    <?php $media = fetchMediaByProductId($product['id'], $conn); ?>
                     <tr>
                         <td class="align-content-center"><?= htmlspecialchars($product['id']) ?></td>
                         <td class="align-content-center"><?= htmlspecialchars($product['name']) ?></td>
                         <td class="align-content-center"><?= htmlspecialchars($product['price']) ?></td>
                         <td class="align-content-center">
-                            <?php if ($product['photo']): ?>
-                                <img src="/assets/images/<?= htmlspecialchars($product['photo']) ?>"
+                            <?php if ($media): ?>
+                                <img src="/assets/media/<?= htmlspecialchars($media[0]['file_path']) ?>"
                                      alt="<?= htmlspecialchars($product['name']) ?>" width="50">
                             <?php else: ?>
                                 No photo

@@ -2,9 +2,9 @@
 
 require 'includes/init.php';
 
-$userPermissions = checkUserAccess($conn, 'add_product');
-
 $conn = getDbConnection();
+
+$userPermissions = checkUserAccess($conn, 'add_product');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -15,17 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validation
     validateProduct($name, $price, $photo);
     $formFeedback = productFeedback();
-    var_dump($formFeedback);
-
 
     // If no errors, save the product
     if (empty($formFeedback)) {
-
         $photo_name = time() . '_' . basename($photo['name']);
-        $upload_path = 'assets/images/' . $photo_name;
+        $upload_path = 'assets/media/' . $photo_name;
 
-        if (move_uploaded_file($photo['tmp_name'], $upload_path))
-        {
+        if (move_uploaded_file($photo['tmp_name'], $upload_path)) {
             addProduct($name, $price, $photo_name, $conn);
         } else {
             $_SESSION['product_errors']['photo'] = "Failed to upload photo.";
@@ -38,7 +34,7 @@ mysqli_close($conn);
 
 <?php require 'includes/header.php' ?>
 
-    <h1 class="my-4">Add Product</h1>
+<h1 class="my-4">Add Product</h1>
 
 <div class="row">
 
@@ -68,16 +64,17 @@ mysqli_close($conn);
 
     <div class="col-9 border rounded py-3">
 
-<?php if (isset($_SESSION['product_failure'])) : ?>
-    <div class="alert alert-danger">
-        <?= $_SESSION['product_failure'] ?>
-    </div>
-    <?php unset($_SESSION['product_failure']) ?>
-<?php endif; ?>
+        <?php if (isset($_SESSION['product_failure'])) : ?>
+            <div class="alert alert-danger">
+                <?= $_SESSION['product_failure'] ?>
+            </div>
+            <?php unset($_SESSION['product_failure']) ?>
+        <?php endif; ?>
 
-    <?php require 'includes/product-form.php'; ?>
+        <?php require 'includes/product-form.php'; ?>
 
     </div>
+
+</div>
 
 <?php require 'includes/footer.php' ?>
-

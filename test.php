@@ -19,11 +19,10 @@ require 'includes/header.php'; ?>
     <div class="row">
         <?php if ($products): ?>
             <?php foreach ($products as $product): ?>
-                <?php $media = fetchMediaByProductId($product['id'], $conn); ?>
                 <div class="col-md-2 mb-4"> <!-- 6 items per row -->
                     <div class="card">
-                        <?php if (!empty($media)): ?>
-                            <img src="/assets/media/<?= htmlspecialchars($media[0]['file_path']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>" />
+                        <?php if (!empty($product['photo'])): ?>
+                            <img src="/assets/images/<?= htmlspecialchars($product['photo']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>" />
                         <?php else: ?>
                             <img src="/assets/images/default_product.png" class="card-img-top" alt="No photo" />
                         <?php endif; ?>
