@@ -26,14 +26,14 @@ var_dump($orders);
         <ul class="list-group">
             <li class="list-group-item active" aria-current="true">Dashboard</li>
             <li class="list-group-item">
-                <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="account-info.php">Account information</a>
+                <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="src/Account/account-info.php">Account information</a>
             </li>
             <li class="list-group-item bg-secondary-subtle">
                 <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="orders.php">Orders history</a>
             </li>
             <?php if (hasPermission('view_product', $userPermissions)): ?>
                 <li class="list-group-item">
-                    <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="view-product.php">Product Management</a></li>
+                    <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="src/Product/view-product.php">Product Management</a></li>
             <?php endif; ?>
             <?php if (hasPermission('manage_user', $userPermissions)): ?>
                 <li class="list-group-item">

@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = htmlspecialchars($_POST['password']);
     $retypePassword = htmlspecialchars($_POST['retypePassword']);
 
-    validateUser($user['first_name'], $user['last_name'],  $user['email'], $user['username'], $password);
+    validateUserForm($user['first_name'], $user['last_name'],  $user['email'], $user['username'], $password);
     if (!($originalEmail == $user['email'])) {
         checkEmailAvailability($user['email'], $conn);
     }

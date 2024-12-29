@@ -95,7 +95,7 @@ var_dump($users_roles);
         <ul class="list-group">
             <li class="list-group-item active" aria-current="true">Dashboard</li>
             <li class="list-group-item">
-                <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="account-info.php">Account information</a>
+                <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="src/Account/account-info.php">Account information</a>
             </li>
             <li class="list-group-item">
                 <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="orders.php">Orders history</a>

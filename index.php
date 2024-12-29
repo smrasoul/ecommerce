@@ -1,20 +1,15 @@
 <?php
 
 require 'includes/init.php';
-require 'includes/functions.php';
+require 'src/Product/product-functions.php';
 
-if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
-    $userPermissions = getUserPermissions($_SESSION['user_id'], $conn);
-    var_dump($userPermissions);
-}
 
-// Fetch products from the database
-$products = getAllProducts($conn);
+$products = fetchAllProducts($conn);
 
-// Get products with media
+
 $productsWithMedia = getProductsWithMedia($conn, $products);
 
-require 'includes/header.php'; ?>
+require 'includes/View/header.php'; ?>
 
 <h1 class="my-4">Products</h1>
 
@@ -22,7 +17,7 @@ require 'includes/header.php'; ?>
     <div class="row">
         <?php if ($productsWithMedia): ?>
             <?php foreach ($productsWithMedia as $product): ?>
-                <div class="col-md-2 mb-4"> <!-- 6 items per row -->
+                <div class="col-md-2 mb-4">
                     <div class="card">
                         <?php if ($product['media']): ?>
                             <img src="/assets/media/<?= htmlspecialchars($product['media']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>" />
@@ -42,4 +37,4 @@ require 'includes/header.php'; ?>
     </div>
 </div>
 
-<?php require 'includes/footer.php'; ?>
+<?php require 'includes/View/footer.php'; ?>

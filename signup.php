@@ -1,51 +1,54 @@
 <?php
 
 require 'includes/init.php';
-require 'includes/signup-functions.php';
+require 'src/User/Function/user-function.php';
+require 'src/User/Validation/user-validation.php';
 
-if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
+
+if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
     header('HTTP/1.1 403 Forbidden');
     echo "You are already logged in.";
     exit;
 }
 
-$firstName = '';
-$lastName = '';
-$email = '';
-$username = '';
+$user['first_name'] = '';
+$user['last_name'] = '';
+$user['email'] = '';
+$user['username'] = '';
 $password = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $firstName = htmlspecialchars($_POST['firstName']);
-    $lastName = htmlspecialchars($_POST['lastName']);
-    $email = htmlspecialchars($_POST['email']);
-    $username = htmlspecialchars($_POST['username']);
+    $user['first_name'] = htmlspecialchars($_POST['firstName']);
+    $user['last_name'] = htmlspecialchars($_POST['lastName']);
+    $user['email'] = htmlspecialchars($_POST['email']);
+    $user['username'] = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
+    $retypePassword = htmlspecialchars($_POST['retypePassword']);
 
-    validateUser($firstName, $lastName, $email, $username, $password);
-    checkEmailAvailability($email, $conn);
-    checkUsernameAvailability($username, $conn);
+    validateUserForm($user['first_name'], $user['last_name'], $user['email'], $user['username'], $password);
+    checkEmailAvailability($user['email'], $conn);
+    checkUsernameAvailability($user['username'], $conn);
+    passwordsMatch($password, $retypePassword);
     $formFeedback = userFeedback();
 
-    if(empty($formFeedback)) {
+    if (empty($formFeedback)) {
 
-        signUp($firstName, $lastName, $email, $username, $password, $conn);
+        signUp($user['first_name'], $user['last_name'], $user['email'], $user['username'], $password, $conn);
         $_SESSION['flash']['signup_success'] = 'Signed up successfully.';
         redirect('/login.php');
 
-    };
+    }
 
 }
 
-require 'includes/header.php';
+require 'includes/View/header.php';
 
 ?>
 
+    <h1 class="my-4">Sign Up</h1>
 
-
-    <div class="container">
-        <h2>Sign Up</h2>
+    <div class="container border rounded p-4">
 
         <?php if (isset($_SESSION['signup_failure'])) : ?>
             <div class="alert alert-danger">
@@ -54,65 +57,8 @@ require 'includes/header.php';
             <?php unset($_SESSION['signup_failure']) ?>
         <?php endif; ?>
 
-        <form method="POST" novalidate>
-            <div class="form-group mb-2 row">
-                <label for="firstName">First Name</label>
-                <div class="col-4">
-                    <input type="text" class="form-control <?= isset($formFeedback['firstName']) ? 'is-invalid' : '' ?>"
-                           id="firstName" name="firstName" value="<?= htmlspecialchars($firstName) ?>">
-                    <?php if (isset($formFeedback['firstName'])) : ?>
-                        <div class="invalid-feedback"><?= $formFeedback['firstName'] ?></div>
-                    <?php endif; ?>
-                </div>
-            </div>
+        <?php require 'src/User/View/user-form.php'; ?>
 
-            <div class="form-group mb-2 row">
-                <label for="lastName">Last Name</label>
-                <div class="col-4">
-                    <input type="text" class="form-control <?= isset($formFeedback['lastName']) ? 'is-invalid' : '' ?>"
-                           id="lastName" name="lastName" value="<?= htmlspecialchars($lastName) ?>">
-                    <?php if (isset($formFeedback['lastName'])) : ?>
-                        <div class="invalid-feedback"><?= $formFeedback['lastName'] ?></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <div class="form-group mb-2 row">
-                <label for="email">Email</label>
-                <div class="col-4">
-                    <input type="email" class="form-control <?= isset($formFeedback['email']) ? 'is-invalid' : '' ?>"
-                           id="email" name="email" value="<?= htmlspecialchars($email) ?>">
-                    <?php if (isset($formFeedback['email'])) : ?>
-                        <div class="invalid-feedback"><?= $formFeedback['email'] ?></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <div class="form-group mb-2 row">
-                <label for="username">Username</label>
-                <div class="col-4">
-                    <input type="text" class="form-control <?= isset($formFeedback['username']) ? 'is-invalid' : '' ?>"
-                           id="username" name="username" value="<?= htmlspecialchars($username) ?>">
-                    <?php if (isset($formFeedback['username'])) : ?>
-                        <div class="invalid-feedback"><?= $formFeedback['username'] ?></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <div class="form-group mb-2 row">
-                <label for="password">Password</label>
-                <div class="col-4">
-                    <input type="password" class="form-control <?= isset($formFeedback['password']) ? 'is-invalid' : '' ?>"
-                           id="password" name="password" value="<?= htmlspecialchars($password) ?>">
-                    <?php if (isset($formFeedback['password'])) : ?>
-                        <div class="invalid-feedback"><?= $formFeedback['password'] ?></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Sign Up</button>
-        </form>
     </div>
 
-
-<?php require 'includes/footer.php'; ?>
+<?php require 'includes/View/footer.php'; ?>
