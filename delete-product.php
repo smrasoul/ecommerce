@@ -1,8 +1,7 @@
 <?php
 
 require 'includes/init.php';
-
-$conn = getDbConnection();
+require 'src/Product/Function/product-Function.php';
 
 $userPermissions = checkUserAccess($conn, 'delete_product');
 
@@ -20,5 +19,3 @@ if (isset($_GET['id'])) {
 } else {
     die("ID not supplied. Product not found.");
 }
-
-?>

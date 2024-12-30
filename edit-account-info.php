@@ -36,14 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $formFeedback = userFeedback();
 
     if (empty($formFeedback)) {
-        $updateSuccess = updateUserInfo($conn, $user['first_name'], $user['last_name'], $user['email'], $user['username'], $user_id);
-        if ($updateSuccess) {
-            $_SESSION['success_message'] = 'User information updated successfully.';
-            header('Location: /account-info.php');
-            exit;
-        } else {
-            $_SESSION['error_message'] = 'An error occurred while updating your account information.';
-        }
+        updateUserInfo($conn, $user['first_name'], $user['last_name'], $user['email'], $user['username'], $user_id);
     }
 
 }
@@ -55,12 +48,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <h1 class="my-4">Dashboard</h1>
 
 <div class="row">
+
     <div class="col-3">
         <?php require 'includes/View/sidebar.php' ?>
     </div>
 
     <div class="col-9 border rounded p-4">
-        <?php require 'src/User/View/user-form.php' ?>
+
+        <?php if (isset($_SESSION['edit_user_failed'])) : ?>
+            <div class="alert alert-danger">
+                <?= $_SESSION['edit_user_failed'] ?>
+            </div>
+            <?php unset($_SESSION['edit_user_failed']) ?>
+        <?php endif; ?>
+
+        <?php require 'src/User/View/user-form.php'; ?>
+
     </div>
+
+</div>
 
     <?php require 'includes/View/footer.php'; ?>

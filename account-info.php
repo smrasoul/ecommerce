@@ -13,6 +13,12 @@ $user = getUserinfo($conn, $user_id);
 
 $activePage = 'account-info';
 
+$flash_message = '';
+if (isset($_SESSION['flash'])) {
+    $flash_message = $_SESSION['flash'];
+    unset($_SESSION['flash']);
+}
+
 
 
 ?>
@@ -28,6 +34,12 @@ $activePage = 'account-info';
     </div>
 
     <div class="col-9 border rounded p-4">
+
+        <?php if (isset($flash_message['edit_user_success'])) : ?>
+            <div class="alert alert-success col-4 text-center">
+                <p class="mb-0"> <?= $flash_message['edit_user_success'] ?></p>
+            </div>
+        <?php endif; ?>
 
         <?php require 'src/Account-info/View/account-form.php' ?>
 

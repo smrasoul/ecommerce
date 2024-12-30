@@ -6,30 +6,6 @@ function fetchAllProducts($conn) {
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-function validateProduct($name, $price, $photo, $is_update = false) {
-    if ($name == '') {
-        $_SESSION['product_errors']['name'] = "Product name is required.";
-    }
-
-    if (($price == '') || !is_numeric($price) || $price <= 0) {
-        $_SESSION['product_errors']['price'] = "Invalid price.";
-    }
-
-    // Validate photo only if it's not an update or if a new photo is uploaded
-    if (!$is_update || !empty($photo['name'])) {
-        $allowed_types = ['image/jpeg', 'image/png'];
-        if (!empty($photo['name']) && !in_array($photo['type'], $allowed_types)) {
-            $_SESSION['product_errors']['photo'] = "Only JPG and PNG files are allowed.";
-        }
-        if (!empty($photo['size']) && $photo['size'] > 2 * 1024 * 1024) {
-            $_SESSION['product_errors']['photo'] = "File size must be less than 2MB.";
-        }
-        if (empty($photo['name'])) {
-            $_SESSION['product_errors']['photo'] = "Product photo is required.";
-        }
-    }
-}
-
 function addProduct($name, $price, $photo_name, $conn) {
     $query = "INSERT INTO products (name, price) VALUES (?, ?)";
     $stmt = mysqli_prepare($conn, $query);
@@ -39,7 +15,7 @@ function addProduct($name, $price, $photo_name, $conn) {
         $product_id = mysqli_insert_id($conn);
         addMedia($product_id, $photo_name, $conn);
         $_SESSION['flash']['product_success'] = 'Product added successfully.';
-        redirect('/view-product.php');
+        redirect('/View-product.php');
         exit;
     } else {
         $_SESSION['product_failure'] = "Failed to save product.";
@@ -66,10 +42,10 @@ function deleteProduct($product_id, $conn) {
 
     if (mysqli_stmt_execute($stmt)) {
         $_SESSION['flash']['delete_success'] = "Product deleted successfully.";
-        redirect('/view-product.php');
+        redirect('/View-product.php');
     } else {
         $_SESSION['flash']['delete_failure'] = "Failed to delete the product.";
-        redirect('/view-product.php');
+        redirect('/View-product.php');
     }
 }
 
@@ -132,7 +108,7 @@ function updateProduct($conn, $name, $price, $photo_name, $product_id) {
             handleMedia($product_id, ['name' => $photo_name], $conn); // Pass the updated media name
         }
         $_SESSION['flash']['product_success'] = 'Product updated successfully.';
-        redirect('/view-product.php');
+        redirect('/View-product.php');
         exit;
     } else {
         $_SESSION['product_failure'] = "Failed to update the product.";

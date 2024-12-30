@@ -1,7 +1,7 @@
 <?php
 
 require 'includes/init.php';
-require 'src/Product/product-functions.php';
+require 'src/Product/Function/product-function.php';
 
 
 $products = fetchAllProducts($conn);

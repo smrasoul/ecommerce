@@ -31,8 +31,8 @@
                 <div class="invalid-feedback"><?= $formFeedback['photo'] ?></div>
             <?php endif; ?>
         </div>
-        <?php if (!empty($product['photo'])): ?>
-            <p>Current Photo: <img src="assets/images/<?= htmlspecialchars($product['photo']) ?>" alt="Product Photo" width="50"></p>
+        <?php if (!empty($productPhoto)): ?>
+            <p>Current Photo: <img src="assets/media/<?= htmlspecialchars($productPhoto[0]['file_path']) ?>" alt="Product Photo" width="50"></p>
         <?php endif; ?>
     </div>
     <button type="submit" class="btn btn-success"><?= isset($product) ? 'Update Product' : 'Add Product' ?></button>

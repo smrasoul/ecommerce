@@ -1,8 +1,8 @@
 <?php
 
 require 'includes/init.php';
-
-$conn = getDbConnection();
+require 'src/Product/Function/product-Function.php';
+require 'src/Product/Validation/product-Validation.php';
 
 $userPermissions = checkUserAccess($conn, 'edit_product');
 
@@ -13,6 +13,10 @@ if (!isset($_GET['id'])) {
 $product_id = $_GET['id'];
 
 $product = getById($conn, $product_id);
+$productPhoto = fetchMediaByProductId($product_id, $conn);
+
+var_dump($productPhoto);
+
 if (!$product) {
     die("Product not found.");
 }
@@ -35,44 +39,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($formFeedback)) {
         updateProduct($conn, $name, $price, $photo_name, $product_id);
     }
-
-    if (empty($formFeedback)) {
-        redirect('/view-product.php');
-    }
 }
 
-mysqli_close($conn);
+$activePage = 'view-product';
 
 ?>
 
-<?php require 'includes/header.php'; ?>
+<?php require 'includes/View/header.php'; ?>
 
 <h1 class="my-4">Edit Product</h1>
 
 <div class="row">
 
     <div class="col-3">
-        <ul class="list-group">
-            <li class="list-group-item active" aria-current="true">Dashboard</li>
-            <li class="list-group-item">
-                <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover"
-                   href="account-info.php">Account information</a>
-            </li>
-            <li class="list-group-item">
-                <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover"
-                   href="orders.php">Orders history</a>
-            </li>
-            <?php if (hasPermission('view_product', $userPermissions)): ?>
-                <li class="list-group-item bg-secondary-subtle">
-                    <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover"
-                       href="view-product.php">Product Management</a></li>
-            <?php endif; ?>
-            <?php if (hasPermission('manage_user', $userPermissions)): ?>
-                <li class="list-group-item">
-                    <a class="link-dark link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover"
-                       href="manage-user.php">User Management</a></li>
-            <?php endif ?>
-        </ul>
+       <?php require 'includes/View/sidebar.php'; ?>
     </div>
 
     <div class="col-9 border rounded py-3">
@@ -84,13 +64,11 @@ mysqli_close($conn);
             <?php unset($_SESSION['product_failure']) ?>
         <?php endif; ?>
 
-        <!-- Shared product form -->
-        <form method="POST" enctype="multipart/form-data">
-            <?php require 'includes/product-form.php'; ?>
-        </form>
+
+        <?php require 'src/Product/View/product-form.php'; ?>
 
     </div>
 
 </div>
 
-<?php require 'includes/footer.php'; ?>
+<?php require 'includes/View/footer.php'; ?>

@@ -18,10 +18,12 @@ function updateUserInfo($conn, $firstName, $lastName, $email, $username, $user_i
     mysqli_stmt_bind_param($stmt, 'ssssi', $firstName, $lastName, $email, $username, $user_id);
 
     if (mysqli_stmt_execute($stmt)) {
-        return true;
-    } else {
-        return false;
+        $_SESSION['flash']['edit_user_success'] = 'Your account has been updated.';
+        redirect('/account-info.php');
+    }else {
+        $_SESSION['edit_user_failed'] = 'Your account was not updated.';
     }
+
 }
 
 function passwordsMatch($password, $retypePassword) {
