@@ -46,6 +46,18 @@ function createRole($roleName, $conn) {
     return false; // Return false if insertion failed
 }
 
+function processNewRole($conn, $roleName)
+{
+//    validateRole($roleName);
+    $newRoleId = createRole($roleName, $conn);
+
+    if ($newRoleId) {
+        $_SESSION['success_message'] = "Role '$roleName' created successfully!";
+    } else {
+        $_SESSION['error_message'] = "Failed to create role.";
+    }
+}
+
 
 function deleteRolePermissions($roleId, $conn)
 {
@@ -69,6 +81,19 @@ function assignPermissionsToRole($roleId, $permissionIds, $conn) {
     }
 
     return true; // Indicate successful assignment
+}
+
+function processNewRolePermissions($roleId, $permissionIds, $conn)
+{
+    if(deleteRolePermissions($roleId, $conn)){
+        if (assignPermissionsToRole($roleId, $permissionIds, $conn)) {
+            $_SESSION['success_message'] = "Permissions assigned successfully!";
+        } else {
+            $_SESSION['error_message'] = "Failed to assign permissions.";
+        }
+    } else {
+        $_SESSION['error_message'] = "Failed to assign permissions.";
+    }
 }
 
 function changeUserRole($userId, $newRoleId, $conn) {

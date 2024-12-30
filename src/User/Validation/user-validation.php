@@ -69,3 +69,19 @@ function userFeedback(){
     }
     return $formFeedback;
 }
+
+function validateRole($roleName)
+{
+    if($roleName == '') {
+        $_SESSION['user_errors']['role'] = "Role is required";
+    } else {
+        $query = "SELECT * FROM roles where role = ?";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, 's', $roleName);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        if (mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            $_SESSION['user_errors']['role'] = "This role is already taken.";
+        }
+    }
+}
