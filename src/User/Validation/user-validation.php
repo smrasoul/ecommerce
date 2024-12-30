@@ -1,7 +1,7 @@
 <?php
 
 
-function validateUserForm($firstName, $lastName, $email, $username, $password) {
+function validateUserForm($firstName, $lastName, $email, $username, $password = false) {
 
 
     if ($firstName == '') {
@@ -18,14 +18,17 @@ function validateUserForm($firstName, $lastName, $email, $username, $password) {
 
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-        $_SESSION['user_errors']['email'] = "Invalid email format"; }
+        $_SESSION['user_errors']['email'] = "Invalid email format";
+    }
 
     if ($username == '') {
         $_SESSION['user_errors']['username'] = "Username is required";
     }
 
-    if ($password == '') {
-        $_SESSION['user_errors']['password'] = "Password is required";
+    if ($password !== false) {
+        if ($password == '') {
+            $_SESSION['user_errors']['password'] = "Password is required";
+        }
     }
 }
 

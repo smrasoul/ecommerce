@@ -1,15 +1,5 @@
 <?php
 
-function validateLogin($username, $password)
-{
-    if ($username == '') {
-        $_SESSION['login_errors']['username_error'] = "Username is required.";
-    }
-    if ($password == '') {
-        $_SESSION['login_errors']['password_error'] = "Password is required.";
-    }
-}
-
 function authenticateUser($username, $password, $conn) {
     // Fetch user record
     $query = "SELECT * FROM users WHERE username = ?";
@@ -34,23 +24,25 @@ function loginUser($user) {
     $_SESSION['is_logged_in'] = true;
 }
 
+
 function processLogin($username, $password, $conn)
 {
     if (empty($_SESSION['login_errors'])) {
-        $result = authenticateUser($username, $password, $conn); // Check if authentication was successful
-        if ($result) {
-            loginUser($result); // Log the user in
+        $user = authenticateUser($username, $password, $conn); // Check if authentication was successful
+        if ($user) {
+            loginUser($user); // Log the user in
             redirect("/dashboard.php");
             exit;
         }
     }
+}
 
-        function loginFeedback(){
-            $formFeedback = '';
-            if(isset($_SESSION['login_errors'])) {
-                $formFeedback = $_SESSION['login_errors'];
-                unset($_SESSION['login_errors']);
-            }
-            return $formFeedback;
-        }
+function loginFeedback()
+{
+    $formFeedback = '';
+    if (isset($_SESSION['login_errors'])) {
+        $formFeedback = $_SESSION['login_errors'];
+        unset($_SESSION['login_errors']);
     }
+    return $formFeedback;
+}

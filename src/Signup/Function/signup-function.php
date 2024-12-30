@@ -15,10 +15,3 @@ function signUp($firstName, $lastName, $email, $username, $password, $conn) {
     }
 }
 
-function passwordsMatch($password, $retypePassword) {
-    if(!($password === $retypePassword)) {
-        $_SESSION['user_errors']['password'] = "Passwords do not match.";
-        echo 'passwords do not match.';
-    }
-}
-

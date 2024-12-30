@@ -1,7 +1,7 @@
 <?php
 
 require 'includes/init.php';
-require 'src/User/Function/user-function.php';
+require 'src/Signup/Function/signup-function.php';
 require 'src/User/Validation/user-validation.php';
 
 
@@ -11,6 +11,7 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
     exit;
 }
 
+$activeForm = 'Signup';
 $user['first_name'] = '';
 $user['last_name'] = '';
 $user['email'] = '';
@@ -48,7 +49,7 @@ require 'includes/View/header.php';
 
     <h1 class="my-4">Sign Up</h1>
 
-    <div class="container border rounded p-4">
+    <div class="border rounded p-4">
 
         <?php if (isset($_SESSION['signup_failure'])) : ?>
             <div class="alert alert-danger">

@@ -1,4 +1,5 @@
 <form method="POST">
+
     <div class="row mb-4">
         <div class="row col-6">
             <label for="firstName" class="col-4 fw-bold">First Name</label>
@@ -11,7 +12,6 @@
                 <?php endif; ?>
             </div>
         </div>
-
         <div class="row col-6">
             <label for="lastName" class="col-4 fw-bold">Last Name</label>
             <div class="col-8">
@@ -50,32 +50,34 @@
         </div>
     </div>
 
-    <div class="row mb-4">
-        <div class="row col-6">
-            <label for="password" class="col-4 fw-bold">Password</label>
-            <div class="col-8">
-                <input type="password"
-                       class="form-control <?= isset($formFeedback['password']) ? 'is-invalid' : '' ?>"
-                       id="password" name="password">
-                <?php if (isset($formFeedback['password'])) : ?>
-                    <div class="invalid-feedback"><?= $formFeedback['password'] ?></div>
-                <?php endif; ?>
+    <?php if ($activeForm == 'Signup'): ?>
+        <div class="row mb-4">
+            <div class="row col-6">
+                <label for="password" class="col-4 fw-bold">Password</label>
+                <div class="col-8">
+                    <input type="password"
+                           class="form-control <?= isset($formFeedback['password']) ? 'is-invalid' : '' ?>"
+                           id="password" name="password">
+                    <?php if (isset($formFeedback['password'])) : ?>
+                        <div class="invalid-feedback"><?= $formFeedback['password'] ?></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="row col-6">
+                <label for="retypePassword" class="col-4 fw-bold">Retype Password</label>
+                <div class="col-8">
+                    <input type="password"
+                           class="form-control <?= isset($formFeedback['password']) ? 'is-invalid' : '' ?>"
+                           id="retypePassword" name="retypePassword">
+                    <?php if (isset($formFeedback['password'])) : ?>
+                        <div class="invalid-feedback"><?= $formFeedback['password'] ?></div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
-        <div class="row col-6">
-            <label for="retypePassword" class="col-4 fw-bold">Retype Password</label>
-            <div class="col-8">
-                <input type="password"
-                       class="form-control <?= isset($formFeedback['password']) ? 'is-invalid' : '' ?>"
-                       id="retypePassword" name="retypePassword">
-                <?php if (isset($formFeedback['password'])) : ?>
-                    <div class="invalid-feedback"><?= $formFeedback['password'] ?></div>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
-    <div class="d-flex justify-content-start">
+    <?php endif ?>
 
+    <div class="d-flex justify-content-end">
         <?php if(isset($_SESSION['is_logged_in'])): ?>
         <a class="link-dark link-underline-opacity-0 btn btn-outline-danger" href="account-info.php">Cancel</a>
         <?php endif; ?>

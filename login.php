@@ -1,7 +1,8 @@
 <?php
 
 require 'includes/init.php';
-require 'includes/login-functions.php';
+require 'src/Login/Function/login-functions.php';
+require 'src/Login/Validation/login-validation.php';
 
 if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
     header('HTTP/1.1 403 Forbidden');
@@ -16,13 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
 
-    // Validate inputs
+
     validateLogin($username, $password);
 
-    // Process login
+
     processLogin($username, $password, $conn);
 
-    $formFeedback = loginFeedback(); // Retrieve and clear feedback
+    $formFeedback = loginFeedback();
 
 }
 
@@ -32,12 +33,13 @@ if (isset($_SESSION['flash'])) {
     unset($_SESSION['flash']);
 }
 
-require 'includes/header.php';
+require 'includes/View/header.php';
 
 ?>
 
-<div class="container">
-    <h2>Login</h2>
+
+    <h1 class="my-4">Login</h1>
+    <div class="">
 
     <?php if (isset($flash_message['signup_success'])) : ?>
         <div class="alert alert-success col-4 text-center">
@@ -51,29 +53,10 @@ require 'includes/header.php';
         </div>
     <?php endif; ?>
 
-    <form method="POST" novalidate>
-        <div class="form-group mb-2 row">
-            <label for="username">Username</label>
-            <div class="col-4">
-                <input type="text" class="form-control <?= isset($formFeedback['username_error']) ? 'is-invalid' : '' ?>"
-                       id="username" name="username" value="<?= htmlspecialchars($username) ?>">
-                <?php if (isset($formFeedback['username_error'])) : ?>
-                    <div class="invalid-feedback"><?= $formFeedback['username_error'] ?></div>
-                <?php endif; ?>
-            </div>
-        </div>
-        <div class="form-group mb-2 row">
-            <label for="password">Password</label>
-            <div class="col-4">
-                <input type="password" class="form-control <?= isset($formFeedback['password_error']) ? 'is-invalid' : '' ?>"
-                       id="password" name="password" value="<?= htmlspecialchars($password) ?>">
-                <?php if (isset($formFeedback['password_error'])) : ?>
-                    <div class="invalid-feedback"><?= $formFeedback['password_error'] ?></div>
-                <?php endif; ?>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
-</div>
+    <?php require 'src/Login/View/login-form.php'; ?>
 
-<?php require 'includes/footer.php'; ?>
+    </div>
+
+
+
+<?php require 'includes/View/footer.php'; ?>

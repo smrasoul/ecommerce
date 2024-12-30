@@ -1,9 +1,9 @@
 <?php
 
 require 'includes/init.php';
-require 'src/User/Function/user-function.php';
-require 'src/User/Validation/user-validation.php';
-require 'src/User/View/user-form.php';
+require 'src/Signup/Function/signup-function.php';
+require 'src/User/Validations/user-validation.php';
+require 'src/Signup/Views/user-form.php';
 
 
 if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'])  {
