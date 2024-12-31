@@ -1,10 +1,37 @@
 <?php
 
-function fetchAllProducts($conn) {
-    $query = "SELECT * FROM products";
+function fetchAllProductsDetails($conn) {
+    $query = "SELECT 
+                products.id, 
+                products.name, 
+                products.price, 
+                categories.name AS category,
+                media.file_path AS main_image
+              FROM products
+              JOIN product_categories ON products.id = product_categories.product_id
+              JOIN categories ON product_categories.category_id = categories.id
+              LEFT JOIN media ON products.id = media.product_id AND media.media_type = 'main_image';";
+
     $result = mysqli_query($conn, $query);
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $productsArray = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    $products = [];
+    foreach ($productsArray as $row) {
+        $product_id = $row['id'];
+
+        // If product is not already in the array, add it
+        if (!isset($products[$product_id])) {
+            $products[$product_id] = $row;
+            $products[$product_id]['categories'] = [];
+        }
+
+        // Add the category to the product's categories array
+        $products[$product_id]['categories'][] = $row['category'];
+    }
+
+    return $products;
 }
+
 
 function addProduct($name, $price, $photo_name, $conn) {
     $query = "INSERT INTO products (name, price) VALUES (?, ?)";
@@ -14,11 +41,10 @@ function addProduct($name, $price, $photo_name, $conn) {
     if (mysqli_stmt_execute($stmt)) {
         $product_id = mysqli_insert_id($conn);
         addMedia($product_id, $photo_name, $conn);
-        $_SESSION['flash']['product_success'] = 'Product added successfully.';
-        redirect('/View-product.php');
-        exit;
+        return $product_id;  // Make sure to return the product ID here
     } else {
         $_SESSION['product_failure'] = "Failed to save product.";
+        return false;
     }
 }
 
@@ -66,7 +92,7 @@ function handleMedia($product_id, $photo, $conn) {
 }
 
 function addMedia($product_id, $media_name, $conn) {
-    $query = "INSERT INTO media (product_id, media_type, file_path) VALUES (?, 'image', ?)";
+    $query = "INSERT INTO media (product_id, media_type, file_path) VALUES (?, 'main_image', ?)";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 'is', $product_id, $media_name);
     mysqli_stmt_execute($stmt);
@@ -88,15 +114,6 @@ function deleteMedia($product_id, $conn) {
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 'i', $product_id);
     mysqli_stmt_execute($stmt);
-}
-
-function fetchMediaByProductId($product_id, $conn) {
-    $query = "SELECT * FROM media WHERE product_id = ?";
-    $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 'i', $product_id);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
 function updateProduct($conn, $name, $price, $photo_name, $product_id) {
@@ -124,17 +141,44 @@ function productFeedback() {
     return $formFeedback;
 }
 
-
-function getProductsWithMedia($conn, $products)
-{
-    $productsWithMedia = [];
-    foreach ($products as $product) {
-        $media = fetchMediaByProductId($product['id'], $conn);
-        $product['media'] = !empty($media) ? $media[0]['file_path'] : null;
-        $productsWithMedia[] = $product;
-    }
-    return $productsWithMedia;
+function getAllCategories($conn) {
+    $query = "SELECT * FROM categories";
+    $result = mysqli_query($conn, $query);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
+function deleteProductCategories($product_id, $conn)
+{
+    $query = "DELETE FROM product_categories WHERE product_id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $product_id);
+    if(mysqli_stmt_execute($stmt)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
+function addProductCategories($product_id, $categoryIds, $conn){
+    $query = "INSERT INTO product_categories (product_id, category_id) VALUES (?, ?)";
 
+    foreach ($categoryIds as $categoryId) {
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, 'ii', $product_id, $categoryId);
+        mysqli_stmt_execute($stmt);
+    }
+    return true;
+}
+
+function processProductCategories($product_id, $categoryIds, $conn){
+    if(deleteProductCategories($product_id, $conn)){
+        if(addProductCategories($product_id, $categoryIds, $conn)){
+            $_SESSION['flash']['product_success'] = 'Product added successfully.';
+            redirect('/view-product.php');
+        } else {
+            $_SESSION['product_failure'] = "Failed to update the product.";
+        }
+    } else {
+        $_SESSION['product_failure'] = "Failed to update the product.";
+    }
+}

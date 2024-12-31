@@ -8,7 +8,8 @@ $activePage= 'view-product';
 
 $userPermissions = checkUserAccess($conn, 'view_product');
 
-$products = fetchAllProducts($conn);
+$products = fetchAllProductsDetails($conn);
+var_dump($products);
 
 $flash_message = '';
 if (isset($_SESSION['flash'])) {

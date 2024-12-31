@@ -6,23 +6,30 @@ require 'src/Product/Function/product-function.php';
 
 $userPermissions = checkUserAccess($conn, 'add_product');
 
+$categories = getAllCategories($conn);
+var_dump($categories);
+
+$categoryIds = [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $name = htmlspecialchars($_POST['name']);
     $price = htmlspecialchars($_POST['price']);
     $photo = $_FILES['photo'];
+    $categoryIds = $_POST['category'] ?? [];
+
 
 
     validateProduct($name, $price, $photo);
     $formFeedback = productFeedback();
-
 
     if (empty($formFeedback)) {
         $photo_name = time() . '_' . basename($photo['name']);
         $upload_path = 'assets/media/' . $photo_name;
 
         if (move_uploaded_file($photo['tmp_name'], $upload_path)) {
-            addProduct($name, $price, $photo_name, $conn);
+            $product_id = addProduct($name, $price, $photo_name, $conn);
+            processProductCategories($product_id, $categoryIds, $conn);
         } else {
             $_SESSION['product_errors']['photo'] = "Failed to upload photo.";
         }

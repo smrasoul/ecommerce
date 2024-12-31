@@ -1,1 +1,7 @@
 @import url('bootstrap.min.css');
+
+.no-bullets {
+    list-style-type: none;
+    padding-left: 0; /* Optional: Removes padding */
+}
+

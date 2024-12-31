@@ -35,5 +35,15 @@
             <p>Current Photo: <img src="assets/media/<?= htmlspecialchars($productPhoto[0]['file_path']) ?>" alt="Product Photo" width="50"></p>
         <?php endif; ?>
     </div>
+    <fieldset class="mb-3">
+        <legend>Categories</legend>
+
+        <?php foreach ($categories as $category) : ?>
+            <div class="form-check">
+                <input type="checkbox" name="category[]" value="<?= $category['id'] ?>" id="category<?= $category['id'] ?>" class="form-check-input"
+                <label for="category<?= $category['id'] ?>" class="form-check-label"><?= htmlspecialchars($category['name']) ?></label>
+            </div>
+        <?php endforeach; ?>
+    </fieldset>
     <button type="submit" class="btn btn-success"><?= isset($product) ? 'Update Product' : 'Add Product' ?></button>
 </form>

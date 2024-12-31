@@ -11,17 +11,25 @@
     <tbody>
     <?php if ($products): ?>
         <?php foreach ($products as $product): ?>
-            <?php $media = fetchMediaByProductId($product['id'], $conn); ?>
             <tr>
                 <td class="align-content-center"><?= htmlspecialchars($product['id']) ?></td>
                 <td class="align-content-center"><?= htmlspecialchars($product['name']) ?></td>
                 <td class="align-content-center"><?= htmlspecialchars($product['price']) ?></td>
                 <td class="align-content-center">
-                    <?php if ($media): ?>
-                        <img src="/assets/media/<?= htmlspecialchars($media[0]['file_path']) ?>"
+                    <ul class="card-text no-bullets">
+                        <?php foreach ($product['categories'] as $category): ?>
+                        <li>
+                            <?= htmlspecialchars($category) ?>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </td>
+                <td class="align-content-center">
+                    <?php if ($product['main_image']): ?>
+                    <img src="/assets/media/<?= htmlspecialchars($product['main_image']) ?>"
                              alt="<?= htmlspecialchars($product['name']) ?>" width="50">
                     <?php else: ?>
-                        No photo
+                    <img src="/assets/images/default_product.png" class="card-img-top" alt="No photo" />
                     <?php endif; ?>
                 </td>
                 <td class="align-content-center">
