@@ -4,8 +4,9 @@
         <th>ID</th>
         <th>Name</th>
         <th>Price</th>
+        <th>category</th>
         <th>Photo</th>
-        <th>Actions</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>

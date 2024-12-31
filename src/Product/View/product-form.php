@@ -31,8 +31,8 @@
                 <div class="invalid-feedback"><?= $formFeedback['photo'] ?></div>
             <?php endif; ?>
         </div>
-        <?php if (!empty($productPhoto)): ?>
-            <p>Current Photo: <img src="assets/media/<?= htmlspecialchars($productPhoto[0]['file_path']) ?>" alt="Product Photo" width="50"></p>
+        <?php if (!empty($product['main_image'])): ?>
+            <p>Current Photo: <img src="assets/media/<?= $product['main_image'] ?>" alt="Product Photo" width="50"></p>
         <?php endif; ?>
     </div>
     <fieldset class="mb-3">
@@ -41,9 +41,15 @@
         <?php foreach ($categories as $category) : ?>
             <div class="form-check">
                 <input type="checkbox" name="category[]" value="<?= $category['id'] ?>" id="category<?= $category['id'] ?>" class="form-check-input"
+                    <?php if(isset($product) && in_array($category['name'], $product["categories"])):?>
+                        checked
+                    <?php endif; ?>
+                >
                 <label for="category<?= $category['id'] ?>" class="form-check-label"><?= htmlspecialchars($category['name']) ?></label>
             </div>
         <?php endforeach; ?>
+
+
     </fieldset>
     <button type="submit" class="btn btn-success"><?= isset($product) ? 'Update Product' : 'Add Product' ?></button>
 </form>

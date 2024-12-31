@@ -4,8 +4,8 @@ require 'includes/init.php';
 require 'src/Product/Function/product-function.php';
 
 
-$products = fetchAllProductsDetails($conn);
-var_dump($products);
+$products = fetchAllProductDetails($conn);
+//var_dump($products);
 
 require 'includes/View/header.php'; ?>
 

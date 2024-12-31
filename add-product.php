@@ -7,7 +7,9 @@ require 'src/Product/Function/product-function.php';
 $userPermissions = checkUserAccess($conn, 'add_product');
 
 $categories = getAllCategories($conn);
-var_dump($categories);
+//var_dump($categories);
+
+$activePage= 'view-product';
 
 $categoryIds = [];
 
@@ -28,8 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $upload_path = 'assets/media/' . $photo_name;
 
         if (move_uploaded_file($photo['tmp_name'], $upload_path)) {
+
             $product_id = addProduct($name, $price, $photo_name, $conn);
-            processProductCategories($product_id, $categoryIds, $conn);
+
+            if(addProductCategories($product_id, $categoryIds, $conn)){
+                $_SESSION['flash']['product_success'] = 'Product added successfully.';
+                redirect('/view-product.php');
+            }else {
+                $_SESSION['product_failure'] = "Failed to add the product.";
+            }
         } else {
             $_SESSION['product_errors']['photo'] = "Failed to upload photo.";
         }

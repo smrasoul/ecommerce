@@ -11,9 +11,14 @@ if (isset($_GET['id'])) {
     $product = getById($conn, $product_id);
 
     if ($product) {
-        deleteProduct($product_id, $conn);
-    } else {
-        die("Product not found");
+        if (!deleteProductCategories($product_id, $conn)) {
+            $_SESSION['flash']['product_failure'] = 'Failed to delete the product.';
+        } elseif (!deleteProduct($product_id, $conn)) {
+            $_SESSION['flash']['product_failure'] = 'Failed to delete the product.';
+        } else {
+            $_SESSION['flash']['product_success'] = 'The product was successfully deleted.';
+            redirect('/view-product.php');
+        }
     }
 
 } else {

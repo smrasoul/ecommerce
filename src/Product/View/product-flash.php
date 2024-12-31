@@ -4,14 +4,8 @@
     </div>
 <?php endif; ?>
 
-<?php if (isset($flash_message['delete_failure'])) : ?>
+<?php if (isset($flash_message['product_failure'])) : ?>
     <div class="alert alert-danger col-4 text-center">
-        <p class="mb-0"> <?= $flash_message['delete_failure'] ?></p>
-    </div>
-<?php endif; ?>
-
-<?php if (isset($flash_message['delete_success'])) : ?>
-    <div class="alert alert-success col-4 text-center">
-        <p class="mb-0"> <?= $flash_message['delete_success'] ?></p>
+        <p class="mb-0"> <?= $flash_message['product_failure'] ?></p>
     </div>
 <?php endif; ?>
