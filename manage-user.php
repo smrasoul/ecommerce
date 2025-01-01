@@ -7,6 +7,18 @@ require 'src/User/Validation/user-validation.php';
 $userPermissions = checkUserAccess($conn, 'manage_user');
 
 
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+    if (isset($_GET['role_id']) && is_numeric($_GET['role_id'])) {
+
+        if($getRoleCheck = checkRole($conn, $_GET['role_id'])) {
+            $getRoleID = $_GET['role_id'];
+            $rolePermissions = getRolePermissions($conn, $getRoleID);
+        }
+    }
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['create_role'])) {
@@ -14,19 +26,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $roleName = htmlspecialchars(trim($_POST['role_name']));
         processNewRole($conn, $roleName);
 
+
     }
 
     if (isset($_POST['assign_permissions'])) {
 
-        $roleId = $_POST['role_id'];
-        $permissionIds = $_POST['permissions'] ?? [];
+        $roleId = $_GET['role_id'];
+        $permissionIds = $_POST['permission'] ?? [];
         processNewRolePermissions($roleId, $permissionIds, $conn);
 
     }
 
     if (isset($_POST['change_user_role'])) {
 
-        $userId = $_POST['user_id'];
+        if (isset($_GET['role_id']) && is_numeric($_GET['role_id'])) {
+
+            if($getRoleCheck = checkRole($conn, $_GET['role_id'])) {
+                $getRoleID = $_GET['role_id'];
+            }
+        }
+
+        $userId = $getRoleID;
         $newRoleId = $_POST['new_role_id'];
 
         if (changeUserRole($userId, $newRoleId, $conn)) {
@@ -36,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    header('Location: /manage-user.php');
+    redirect('/manage-user.php');
     exit;
 }
 
@@ -47,9 +67,6 @@ $users = getUsers ($conn);
 $users_roles= getUserAndRoles($conn);
 //var_dump($users_roles);
 $activePage = 'manage-user';
-
-$rolePermissions = getRolePermissions($conn);
-var_dump($rolePermissions);
 
 
 

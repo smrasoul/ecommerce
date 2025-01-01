@@ -75,7 +75,7 @@ function assignPermissionsToRole($roleId, $permissionIds, $conn) {
         mysqli_stmt_execute($stmt);
     }
 
-    return true; // Indicate successful assignment
+    return true;
 }
 
 function processNewRolePermissions($roleId, $permissionIds, $conn)
@@ -84,10 +84,10 @@ function processNewRolePermissions($roleId, $permissionIds, $conn)
         if (assignPermissionsToRole($roleId, $permissionIds, $conn)) {
             $_SESSION['success_message'] = "Permissions assigned successfully!";
         } else {
-            $_SESSION['error_message'] = "Failed to assign permissions.";
+            $_SESSION['error_message'] = "Failed to assign permissions on assign.";
         }
     } else {
-        $_SESSION['error_message'] = "Failed to assign permissions.";
+        $_SESSION['error_message'] = "Failed to assign permissions on delete.";
     }
 }
 
@@ -131,23 +131,6 @@ function getUserAndRoles($conn)
     return $users_roles = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-function getRolePermissions($conn) {
-    $query = "SELECT role_permissions.role_id, GROUP_CONCAT(role_permissions.permission_id SEPARATOR ', ') AS permission_id
-              FROM role_permissions
-              GROUP BY role_permissions.role_id;";
-
-    $result = mysqli_query($conn, $query);
-    $output = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-    $rolePermissions = [];
-    // Convert permissions to array
-    foreach ($output as $rolePermission) {
-        $rolePermission['permission_id'] = explode(', ', $rolePermission['permission_id']);
-        $rolePermissions[] = $rolePermission;
-    }
-
-    return $rolePermissions;
-}
 
 function updatePassword($conn, $newPassword, $userId ){
 
@@ -164,10 +147,42 @@ function updatePassword($conn, $newPassword, $userId ){
         $_SESSION['password_failure'] = "Failed to update password.";
     }
 
-
-
 }
 
+function getRolePermissions($conn, $role) {
+    $query = "SELECT * from role_permissions WHERE role_id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $role);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $output = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    $rolePermissions = [];
+    foreach ($output as $row) {
+        $role_id = $row['role_id'];
+        if (!isset($rolePermissions[$role_id])) {
+            $rolePermissions[$role_id] = [];
+        }
+        $rolePermissions[$role_id][] = $row['permission_id'];
+    }
+    return $rolePermissions;
+}
+
+
+
+function checkRole($conn, $getRoleId) {
+    $query = "SELECT * FROM roles WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $getRoleId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        return true;
+    } else {
+        $_SESSION['error_message'] = 'No such role exists.';
+    }
+}
 
 
 
