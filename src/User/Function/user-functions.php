@@ -26,12 +26,7 @@ function updateUserInfo($conn, $firstName, $lastName, $email, $username, $user_i
 
 }
 
-function passwordsMatch($password, $retypePassword) {
-    if(!($password === $retypePassword)) {
-        $_SESSION['user_errors']['password'] = "Passwords do not match.";
-        echo 'passwords do not match.';
-    }
-}
+
 
 function createRole($roleName, $conn) {
     $query = "INSERT INTO roles (name) VALUES (?)";
@@ -123,10 +118,7 @@ function getUsers ($conn) {
     return mysqli_query($conn, $query);
 }
 
-function getUsernameAndEmail ($conn, $user_id){
-    $query = "SELECT username, email FROM users";
 
-}
 
 function getUserAndRoles($conn)
 {
@@ -138,6 +130,44 @@ function getUserAndRoles($conn)
     $result = mysqli_query($conn, $query);
     return $users_roles = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+function getRolePermissions($conn) {
+    $query = "SELECT role_permissions.role_id, GROUP_CONCAT(role_permissions.permission_id SEPARATOR ', ') AS permission_id
+              FROM role_permissions
+              GROUP BY role_permissions.role_id;";
+
+    $result = mysqli_query($conn, $query);
+    $output = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    $rolePermissions = [];
+    // Convert permissions to array
+    foreach ($output as $rolePermission) {
+        $rolePermission['permission_id'] = explode(', ', $rolePermission['permission_id']);
+        $rolePermissions[] = $rolePermission;
+    }
+
+    return $rolePermissions;
+}
+
+function updatePassword($conn, $newPassword, $userId ){
+
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    $query = "UPDATE users SET password = ? WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'si', $hashedPassword, $userId);
+
+    if(mysqli_stmt_execute($stmt)){
+        $_SESSION['flash']['edit_user_success'] = "Your password has been updated.";
+        redirect('/account-info');
+    }else{
+        $_SESSION['password_failure'] = "Failed to update password.";
+    }
+
+
+
+}
+
 
 
 

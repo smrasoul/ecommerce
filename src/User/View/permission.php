@@ -16,15 +16,15 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Select Permissions</label>
-            <?php foreach ($permissions as $permission): ?>
+            <?php foreach ($permissions as $permission) : ?>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="permissions[]"
-                           value="<?= $permission['id']; ?>" id="permission_<?= $permission['id']; ?>">
-                    <label class="form-check-label" for="permission_<?= $permission['id']; ?>">
-                        <?= $permission['name']; ?>
-                    </label>
+                    <input type="checkbox" name="permission[]" value="<?= $permission['id'] ?>" id="permission<?= $permission['id'] ?>" class="form-check-input"
+
+                    >
+                    <label for="permission<?= $permission['id'] ?>" class="form-check-label"><?= htmlspecialchars($permission['name']) ?></label>
                 </div>
             <?php endforeach; ?>
+
         </div>
         <button type="submit" name="assign_permissions" class="btn btn-primary">Assign Permissions</button>
     </form>

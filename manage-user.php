@@ -46,7 +46,11 @@ $permissions = getPermissions($conn);
 $users = getUsers ($conn);
 $users_roles= getUserAndRoles($conn);
 //var_dump($users_roles);
-$activePage = 'manage-user'
+$activePage = 'manage-user';
+
+$rolePermissions = getRolePermissions($conn);
+var_dump($rolePermissions);
+
 
 
 ?>

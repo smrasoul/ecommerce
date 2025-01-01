@@ -85,3 +85,40 @@ function validateRole($roleName)
         }
     }
 }
+
+function passwordsMatch($password, $retypePassword) {
+    if(!($password === $retypePassword)) {
+        $_SESSION['user_errors']['password'] = "Passwords do not match.";
+        echo 'passwords do not match.';
+    }
+}
+
+
+function validatePasswordForm ($currentPassword, $newPassword) {
+    if($currentPassword == '') {
+        $_SESSION['user_errors']['current_password'] = "Current Password is required";
+    }
+    if($newPassword == '') {
+        $_SESSION['user_errors']['password'] = "New Password is required";
+    }
+}
+
+function validatePasswords($currentPassword, $newPassword, $user_id, $conn)
+{
+
+    $query = "SELECT password FROM users WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $pass = mysqli_fetch_assoc($result);
+
+    if ($currentPassword !=='' && !password_verify($currentPassword, $pass['password'])) {
+        $_SESSION['user_errors']['current_password'] = "Current password is incorrect";
+    }
+
+    if (password_verify($newPassword, $pass['password'])) {
+        $_SESSION['user_errors']['password'] = "You're already using this password.";
+    }
+}
+

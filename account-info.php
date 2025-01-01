@@ -13,6 +13,7 @@ $user = getUserinfo($conn, $user_id);
 
 $activePage = 'account-info';
 
+
 $flash_message = '';
 if (isset($_SESSION['flash'])) {
     $flash_message = $_SESSION['flash'];
