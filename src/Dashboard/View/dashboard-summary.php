@@ -53,15 +53,21 @@
 </div>
 
 
-<?php if (hasPermission('manage_user', $userPermissions)): ?>
-<div class="border rounded p-4 mb-4 row">
-    <div class="row mb-3">
-        <h5 class="col-2 border-bottom">Management</h5>
+<?php if (hasPermission('manage_user', $userPermissions) || hasPermission('view_product', $userPermissions)): ?>
+    <div class="border rounded p-4 mb-4 row">
+        <div class="row mb-3">
+            <h5 class="col-2 border-bottom">Management</h5>
+        </div>
+        <div class="col-2"></div>
+        <?php if (hasPermission('manage_user', $userPermissions)): ?>
+        <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="manage-user.php">User
+            Management</a>
+        <?php endif; ?>
+        <div class="col-2"></div>
+        <?php if (hasPermission('view_product', $userPermissions)): ?>
+        <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="view-product.php">Product
+            Management</a>
+        <?php endif; ?>
+        <div class="col-2"></div>
     </div>
-    <div class="col-2"></div>
-    <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="manage-user.php">User Management</a>
-    <div class="col-2"></div>
-    <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="view-product.php">Product Management</a>
-    <div class="col-2"></div>
-</div>
 <?php endif; ?>
