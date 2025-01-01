@@ -35,6 +35,7 @@
         </tr>
         </thead>
         <tbody>
+        <?php if ($latestOrder): ?>
         <tr>
             <td class="align-content-center"><?= htmlspecialchars($latestOrder['order_number']) ?></td>
             <td class="align-content-center"><?= htmlspecialchars($latestOrder['date']) ?></td>
@@ -42,17 +43,25 @@
             <td class="align-content-center"><?= htmlspecialchars($latestOrder['status']) ?></td>
             <td class="align-content-center"><a href="#" class="btn btn-warning btn-sm">Details</a></td>
         </tr>
+        <?php else: ?>
+            <tr>
+                <td  colspan="5">No Orders found.</td>
+            </tr>
+        <?php endif; ?>
         </tbody>
     </table>
 </div>
 
+
+<?php if (hasPermission('manage_user', $userPermissions)): ?>
 <div class="border rounded p-4 mb-4 row">
     <div class="row mb-3">
         <h5 class="col-2 border-bottom">Management</h5>
     </div>
     <div class="col-2"></div>
-    <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-primary fw-bold" href="manage-user.php">User Management</a>
+    <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="manage-user.php">User Management</a>
     <div class="col-2"></div>
-    <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-primary fw-bold" href="view-product.php">Product Management</a>
+    <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="view-product.php">Product Management</a>
     <div class="col-2"></div>
 </div>
+<?php endif; ?>

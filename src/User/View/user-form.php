@@ -79,8 +79,8 @@
 
     <div class="d-flex justify-content-end">
         <?php if(isset($_SESSION['is_logged_in'])): ?>
-        <a class="link-dark link-underline-opacity-0 btn btn-outline-danger" href="account-info.php">Cancel</a>
+        <a class="link-light link-underline-opacity-0 btn btn-danger" href="account-info.php">Cancel</a>
         <?php endif; ?>
-        <button type="submit" class="btn btn-success ms-4"><?= isset($_SESSION['is_logged_in']) ? 'Save' : 'Sign Up' ?></button>
+        <button type="submit" class="btn btn-primary ms-4"><?= isset($_SESSION['is_logged_in']) ? 'Save' : 'Sign Up' ?></button>
     </div>
 </form>
