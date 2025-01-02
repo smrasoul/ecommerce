@@ -1,6 +1,6 @@
 <div class="row mb-4 border rounded p-4">
     <div class="row mb-3">
-        <h5 class="col-3 border-bottom">Account Information</h5>
+        <h5 class="col-4 border-bottom">Account Information</h5>
     </div>
     <div class="row col-6">
         <label for="firstName" class="col-4 fw-bold">First Name</label>
@@ -22,7 +22,7 @@
 
 <div class="row mb-4 border rounded p-4">
     <div class="row mb-3">
-        <h5 class="col-2 border-bottom">Latest Order</h5>
+        <h5 class="col-3 border-bottom">Latest Order</h5>
     </div>
     <table class="table table-striped">
         <thead>
@@ -56,7 +56,7 @@
 <?php if (hasPermission('manage_user', $userPermissions) || hasPermission('view_product', $userPermissions)): ?>
     <div class="border rounded p-4 mb-4 row">
         <div class="row mb-3">
-            <h5 class="col-2 border-bottom">Management</h5>
+            <h5 class="col-3 border-bottom">Management</h5>
         </div>
         <div class="col-2"></div>
         <?php if (hasPermission('manage_user', $userPermissions)): ?>
