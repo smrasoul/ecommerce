@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-require 'includes/View/header.php';
+require 'includes/View/Layers/header.php';
 
 ?>
 
@@ -62,4 +62,4 @@ require 'includes/View/header.php';
 
     </div>
 
-<?php require 'includes/View/footer.php'; ?>
+<?php require 'includes/View/Layers/footer.php'; ?>

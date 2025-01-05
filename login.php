@@ -33,7 +33,7 @@ if (isset($_SESSION['flash'])) {
     unset($_SESSION['flash']);
 }
 
-require 'includes/View/header.php';
+require 'includes/View/Layers/header.php';
 
 ?>
 
@@ -59,4 +59,4 @@ require 'includes/View/header.php';
 
 
 
-<?php require 'includes/View/footer.php'; ?>
+<?php require 'includes/View/Layers/footer.php'; ?>

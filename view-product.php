@@ -19,14 +19,14 @@ if (isset($_SESSION['flash'])) {
 
 ?>
 
-<?php require 'includes/View/header.php' ?>
+<?php require 'includes/View/Layers/header.php' ?>
 
 <h1 class="my-4">Admin Dashboard</h1>
 
 <div class="row">
 
     <div class="col-3">
-        <?php require 'includes/View/sidebar.php' ?>
+        <?php require 'includes/View/Layers/sidebar.php' ?>
     </div>
 
     <div class="col-9 border rounded py-3">
@@ -40,4 +40,4 @@ if (isset($_SESSION['flash'])) {
     </div>
 </div>
 
-<?php require 'includes/View/footer.php' ?>
+<?php require 'includes/View/Layers/footer.php' ?>

@@ -72,7 +72,7 @@ $activePage = 'manage-user';
 
 ?>
 
-<?php require 'includes/View/header.php' ?>
+<?php require 'includes/View/Layers/header.php' ?>
 
 
 
@@ -83,7 +83,7 @@ $activePage = 'manage-user';
 <div class="row">
 
     <div class="col-3">
-        <?php require 'includes/View/sidebar.php' ?>
+        <?php require 'includes/View/Layers/sidebar.php' ?>
     </div>
 
     <div class="col-9 border rounded py-3">
@@ -98,4 +98,4 @@ $activePage = 'manage-user';
 
 </div>
 
-<?php require 'includes/View/footer.php' ?>
+<?php require 'includes/View/Layers/footer.php' ?>

@@ -7,7 +7,7 @@ require 'src/Product/Function/product-function.php';
 $products = fetchAllProductDetails($conn);
 //var_dump($products);
 
-require 'includes/View/header.php'; ?>
+require 'includes/View/Layers/header.php'; ?>
 
 <h1 class="my-4">Products</h1>
 
@@ -42,4 +42,4 @@ require 'includes/View/header.php'; ?>
     </div>
 </div>
 
-<?php require 'includes/View/footer.php'; ?>
+<?php require 'includes/View/Layers/footer.php'; ?>
