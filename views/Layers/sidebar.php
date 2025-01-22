@@ -11,17 +11,16 @@
         <a class="<?= ($activePage == 'orders') ? 'text-light link-light' : 'text-dark link-dark' ?>
         link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="orders.php">Orders history</a>
     </li>
-    <?php if (hasPermission('view_product', $userPermissions)): ?>
+    <?php if ($canViewProduct): ?>
         <li class="list-group-item <?= ($activePage == 'view-product') ? 'active' : '' ?>">
             <a class="<?= ($activePage == 'view-product') ? 'text-light link-light' : 'text-dark link-dark' ?>
             link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="view-product.php">Product Management</a>
         </li>
     <?php endif; ?>
-    <?php if (hasPermission('manage_user', $userPermissions)): ?>
+    <?php if ($canManageUser): ?>
         <li class="list-group-item <?= ($activePage == 'manage-user') ? 'active' : '' ?>">
             <a class="<?= ($activePage == 'manage-user') ? 'text-light link-light' : 'text-dark link-dark' ?>
             link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="manage-user.php">User Management</a>
         </li>
     <?php endif ?>
 </ul>
-

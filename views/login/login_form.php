@@ -1,3 +1,8 @@
+<?php
+// Ensure $username is defined
+$username = $username ?? '';
+?>
+
 <form method="POST" novalidate>
         <div class="form-group mb-2 row">
             <label for="username">Username</label>
@@ -13,7 +18,8 @@
             <label for="password">Password</label>
             <div class="col-4">
                 <input type="password" class="form-control <?= isset($formFeedback['password_error']) ? 'is-invalid' : '' ?>"
-                       id="password" name="password" value="<?= htmlspecialchars($password) ?>">
+                       id="password" name="password"
+                >
                 <?php if (isset($formFeedback['password_error'])) : ?>
                     <div class="invalid-feedback"><?= $formFeedback['password_error'] ?></div>
                 <?php endif; ?>

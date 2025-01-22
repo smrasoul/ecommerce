@@ -1,6 +1,6 @@
 <?php
 
-require 'config.php';
+require 'config/config.php';
 
 
 function getDbConnection()

@@ -1,6 +1,6 @@
 <?php
 
-require 'includes/init.php';
+require 'init.php';
 require 'controllers/ProductController.php';
 
 require 'views/Layers/header.php';
