@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php unset($_SESSION['edit_user_failed']) ?>
         <?php endif; ?>
 
-        <?php require 'src/User/View/user-form.php'; ?>
+        <?php require 'src/User/View/user_form.php'; ?>
 
     </div>
 

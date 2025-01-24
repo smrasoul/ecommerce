@@ -1,5 +1,5 @@
 <?php
-function renderLoginPage($flash_message, $username) {
+function renderLoginPage($flash_message, $username, $formFeedback) {
     require 'Views/Layers/header.php';
     ?>
 

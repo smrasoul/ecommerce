@@ -1,15 +1,7 @@
 <?php
 require_once 'models/LoginModel.php';
 require_once 'views/login/login_view.php';
-
-function validateLogin($username, $password) {
-    if ($username == '') {
-        $_SESSION['login_errors']['username_error'] = "Username is required.";
-    }
-    if ($password == '') {
-        $_SESSION['login_errors']['password_error'] = "Password is required.";
-    }
-}
+require_once 'services/UserValidationService.php';
 
 function processLogin($username, $password, $conn) {
     if (empty($_SESSION['login_errors'])) {
@@ -30,6 +22,7 @@ function showLoginPage($conn) {
     }
 
     $username = '';
+    $formFeedback = '';
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $username = htmlspecialchars($_POST['username']);
@@ -37,6 +30,7 @@ function showLoginPage($conn) {
 
         validateLogin($username, $password);
         processLogin($username, $password, $conn);
+        $formFeedback = loginFeedback();
     }
 
     $flash_message = '';
@@ -46,5 +40,5 @@ function showLoginPage($conn) {
     }
 
     // Pass $username to the View
-    renderLoginPage($flash_message, $username);
+    renderLoginPage($flash_message, $username, $formFeedback);
 }
