@@ -18,10 +18,10 @@ function updateUserInfo($conn, $firstName, $lastName, $email, $username, $user_i
     mysqli_stmt_bind_param($stmt, 'ssssi', $firstName, $lastName, $email, $username, $user_id);
 
     if (mysqli_stmt_execute($stmt)) {
-        $_SESSION['flash']['edit_user_success'] = 'Your account has been updated.';
-        redirect('/account-info.php');
+        $_SESSION['flash']['edit_user_success'] = 'Your account_info has been updated.';
+        redirect('/account_info-info.php');
     }else {
-        $_SESSION['edit_user_failed'] = 'Your account was not updated.';
+        $_SESSION['edit_user_failed'] = 'Your account_info was not updated.';
     }
 
 }
@@ -142,7 +142,7 @@ function updatePassword($conn, $newPassword, $userId ){
 
     if(mysqli_stmt_execute($stmt)){
         $_SESSION['flash']['edit_user_success'] = "Your password has been updated.";
-        redirect('/account-info');
+        redirect('/account_info-info');
     }else{
         $_SESSION['password_failure'] = "Failed to update password.";
     }

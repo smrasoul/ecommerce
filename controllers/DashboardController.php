@@ -8,6 +8,10 @@ function showDashboard($conn) {
     // Check user permissions
     $userPermissions = checkUserAccess($conn);
 
+    // Check permissions for sidebar links
+    $canViewProduct = hasPermission('view_product', $userPermissions);
+    $canManageUser = hasPermission('manage_user', $userPermissions);
+
     // Fetch user info
     $user_id = $_SESSION['user_id'];
     $user = getUserInfo($conn, $user_id);
@@ -18,11 +22,7 @@ function showDashboard($conn) {
     // Determine the active page
     $activePage = 'dashboard'; // This can be dynamic based on the current page
 
-    // Check permissions for sidebar links
-    $canViewProduct = hasPermission('view_product', $userPermissions);
-    $canManageUser = hasPermission('manage_user', $userPermissions);
-
     // Render the dashboard view
-    renderDashboard($user, $latestOrder, $userPermissions, $activePage, $canViewProduct, $canManageUser);
+    renderDashboard($user, $latestOrder, $activePage, $canViewProduct, $canManageUser);
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-function renderProducts($products)
+function renderProductListPage($products)
 {
 ?>
 

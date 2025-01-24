@@ -15,8 +15,8 @@ $user = getUserinfo($conn, $user_id);
 $originalUsername = $user['username'];
 $originalEmail = $user['email'];
 
-$activePage = 'account-info';
-$activeForm = 'edit-account-info';
+$activePage = 'account_info-info';
+$activeForm = 'edit-account_info-info';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 

@@ -1,6 +1,6 @@
 <?php
 
-function renderDashboard($user, $latestOrder, $userPermissions, $activePage, $canViewProduct, $canManageUser) {
+function renderDashboard($user, $latestOrder, $activePage, $canViewProduct, $canManageUser) {
     require 'views/Layers/header.php';
     ?>
     <h1 class="my-4">Dashboard</h1>

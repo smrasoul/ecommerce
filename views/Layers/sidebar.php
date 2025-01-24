@@ -4,7 +4,7 @@
         link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="dashboard.php">Dashboard</a>
     </li>
     <li class="list-group-item <?= ($activePage == 'account-info') ? 'active' : '' ?>">
-        <a class="<?= ($activePage == 'account-info') ? 'text-light link-light' : 'text-dark link-dark' ?>
+        <a class="<?= ($activePage == 'account_info-info') ? 'text-light link-light' : 'text-dark link-dark' ?>
         link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="account-info.php">Account information</a>
     </li>
     <li class="list-group-item <?= ($activePage == 'orders') ? 'active' : '' ?>">

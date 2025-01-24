@@ -1,5 +1,6 @@
 <?php
 
+require_once 'models/UserModel.php';
 require_once 'models/signupModel.php';
 require_once 'views/signup_view.php';
 require_once 'services/UserValidationService.php';

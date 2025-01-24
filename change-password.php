@@ -9,7 +9,7 @@ $userPermissions = checkUserAccess($conn);
 $user_id = $_SESSION['user_id'];
 //var_dump($user_id);
 
-$activePage = 'account-info';
+$activePage = 'account_info-info';
 
 $currentPassword = '';
 $newPassword = '';

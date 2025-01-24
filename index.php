@@ -5,6 +5,6 @@ require 'controllers/ProductController.php';
 
 require 'views/Layers/header.php';
 
-showProducts($conn);
+showProductListPage($conn);
 
 require 'views/Layers/footer.php'; ?>
