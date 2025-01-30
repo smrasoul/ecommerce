@@ -1,7 +1,23 @@
 <?php
+
 require_once 'models/LoginModel.php';
-require_once 'views/login/login_view.php';
 require_once 'services/UserValidationService.php';
+
+$formFeedback ='';
+$flash_message = '';
+$username ='';
+
+function showLoginPage($flash_message, $username, $formFeedback)
+{
+    renderView('login/login_view', [
+        'flash_message' => $flash_message,
+        'username' => $username,
+        'formFeedback' => $formFeedback
+    ]);
+}
+
+// ------------------------------------------------------------------------------------------------------------
+
 
 function processLogin($username, $password, $conn) {
     if (empty($_SESSION['login_errors'])) {
@@ -14,13 +30,9 @@ function processLogin($username, $password, $conn) {
     }
 }
 
-function showLoginPage($conn) {
-    if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
-        header('HTTP/1.1 403 Forbidden');
-        echo "You are already logged in.";
-        exit;
-    }
+function showLoginPageeeee($conn) {
 
+    checkLoginStatus();
     $username = '';
     $formFeedback = '';
 
@@ -42,3 +54,4 @@ function showLoginPage($conn) {
     // Pass $username to the View
     renderLoginPage($flash_message, $username, $formFeedback);
 }
+

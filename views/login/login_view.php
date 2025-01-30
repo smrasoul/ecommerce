@@ -1,7 +1,9 @@
 <?php
-function renderLoginPage($flash_message, $username, $formFeedback) {
-    require 'Views/Layers/header.php';
-    ?>
+
+$username = '';
+$formFeedback = '';
+
+?>
 
     <h1 class="my-4">Login</h1>
     <div class="">
@@ -19,7 +21,5 @@ function renderLoginPage($flash_message, $username, $formFeedback) {
 
         <?php require 'login_form.php'; ?>
     </div>
-    <?php
-    require 'Views/Layers/footer.php';
-}
-?>
+<?php
+

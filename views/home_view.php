@@ -1,9 +1,3 @@
-<?php
-
-function renderProductListPage($products)
-{
-?>
-
     <h1 class="my-4">Products</h1>
 
     <div class="container">
@@ -36,7 +30,3 @@ function renderProductListPage($products)
             <?php endif; ?>
         </div>
     </div>
-
-<?php
-}
-?>
