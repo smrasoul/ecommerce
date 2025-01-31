@@ -1,6 +1,9 @@
 <?php
-function authenticateUser($username, $password, $conn) {
+function authenticateUser($username, $password) {
     // Fetch user record
+
+    global $conn;
+
     $query = "SELECT * FROM users WHERE username = ?";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 's', $username);
@@ -22,4 +25,14 @@ function loginUser($user) {
     session_regenerate_id(true);
     $_SESSION['is_logged_in'] = true;
 }
-?>
+
+function processLogin($username, $password) {
+    if (empty($_SESSION['login_errors'])) {
+        $user = authenticateUser($username, $password); // Check if authentication was successful
+        if ($user) {
+            loginUser($user); // Log the user in
+            redirect("/dashboard.php");
+            exit;
+        }
+    }
+}

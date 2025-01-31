@@ -2,9 +2,11 @@
 
 require 'config/config.php';
 
+global $conn; // Declare the global variable
 
 function getDbConnection()
 {
+    global $conn; // Access the global variable within the function
 
     $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
@@ -17,4 +19,8 @@ function getDbConnection()
 
     return $conn;
 }
+
+// Call the function to initialize the connection
+getDbConnection();
+
 

@@ -1,8 +1,3 @@
-<?php
-// Ensure $username is defined
-$username = $username ?? '';
-?>
-
 <form method="POST" novalidate>
         <div class="form-group mb-2 row">
             <label for="username">Username</label>

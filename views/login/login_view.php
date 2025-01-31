@@ -1,7 +1,6 @@
 <?php
 
-$username = '';
-$formFeedback = '';
+$username = $username ?? '';
 
 ?>
 

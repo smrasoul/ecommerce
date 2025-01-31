@@ -4,10 +4,10 @@
 $routes = [];
 
 // Function to define a route
-function add_route($method, $route, $callback)
+function add_route($method, $route, $callback, $middlewares = [])
 {
     global $routes;
-    $routes[] = ['method' => $method, 'route' => $route, 'callback' => $callback];
+    $routes[] = ['method' => $method, 'route' => $route, 'callback' => $callback, 'middlewares' => $middlewares];
 }
 
 // Function to handle the request
@@ -23,6 +23,10 @@ function handle_request()
     foreach ($routes as $route) {
         // If the method and the route match
         if ($route['method'] === $requestMethod && preg_match("#^{$route['route']}$#", $requestUri, $matches)) {
+            // Execute middleware functions
+            foreach ($route['middlewares'] as $middleware) {
+                call_user_func($middleware);
+            }
             // Call the route handler with any matched parameters
             array_shift($matches); // Remove the full match (first element)
             call_user_func_array($route['callback'], $matches);

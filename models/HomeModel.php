@@ -1,9 +1,13 @@
 <?php
 
 // Declare the variable that will hold the fetched product data
-$products = [];
 
-$query = "SELECT 
+function fetchAllProducts()
+{
+
+    global $conn;
+
+    $query = "SELECT 
             products.id, 
             products.name, 
             products.price, 
@@ -14,19 +18,22 @@ $query = "SELECT
           JOIN categories ON product_categories.category_id = categories.id
           LEFT JOIN media ON products.id = media.product_id AND media.media_type = 'main_image'";
 
-$stmt = mysqli_prepare($conn, $query);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-$productsArray = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $productsArray = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // Process the products to group categories for each product
-foreach ($productsArray as $row) {
-    $prod_id = $row['id'];
+    foreach ($productsArray as $row) {
+        $prod_id = $row['id'];
 
-    if (!isset($products[$prod_id])) {
-        $products[$prod_id] = $row;
-        $products[$prod_id]['categories'] = [];
+        if (!isset($products[$prod_id])) {
+            $products[$prod_id] = $row;
+            $products[$prod_id]['categories'] = [];
+        }
+
+        $products[$prod_id]['categories'][] = $row['category'];
+
+        return $products;
     }
-
-    $products[$prod_id]['categories'][] = $row['category'];
 }

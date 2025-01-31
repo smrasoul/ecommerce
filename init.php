@@ -6,6 +6,6 @@ $conn = getDbConnection();
 require 'services/ViewService.php';
 require 'services/AuthService.php';
 require 'services/UrlService.php';
+require 'services/FlashMessageService.php';
 require 'inc/routing/routing.php';  // Load routing system
 require 'inc/routing/web.php';  // Load defined routes
-require 'services/LoginService.php';

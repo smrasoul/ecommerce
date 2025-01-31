@@ -1,19 +1,10 @@
 <?php
 
-
 require 'controllers/HomeController.php';
 require 'controllers/LoginController.php';
+require 'middlewares/LoginMiddleware.php'; // Include your middleware
 
-add_route('GET', '/', function() use ($products) {
-    showHomePage($products);
-});
+add_route('GET', '/', 'showHomePage');
+add_route('GET', '/login', 'showLoginPage', ['checkLoginStatusMW']);
+add_route('POST', '/login', 'submitLoginForm', ['checkLoginStatusMW', 'validateLoginMW']);
 
-add_route('GET', '/login', function() use ($flash_message, $username, $formFeedback) {
-    checkLoginStatus();
-    showLoginPage($flash_message, $username, $formFeedback);
-});
-
-add_route('POST', '/login', function() {
-    checkLoginStatus();
-
-});

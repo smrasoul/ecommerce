@@ -67,15 +67,6 @@ function validatePasswordForm ($currentPassword, $newPassword) {
 
 // Login Validations:
 
-function validateLogin($username, $password) {
-    if ($username == '') {
-        $_SESSION['login_errors']['username_error'] = "Username is required.";
-    }
-    if ($password == '') {
-        $_SESSION['login_errors']['password_error'] = "Password is required.";
-    }
-}
-
 function loginFeedback()
 {
     $formFeedback = '';
@@ -84,5 +75,14 @@ function loginFeedback()
         unset($_SESSION['login_errors']);
     }
     return $formFeedback;
+}
+
+function validateLogin($username, $password) {
+    if ($username == '') {
+        $_SESSION['login_errors']['username_error'] = "Username is required.";
+    }
+    if ($password == '') {
+        $_SESSION['login_errors']['password_error'] = "Password is required.";
+    }
 }
 
