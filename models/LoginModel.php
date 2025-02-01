@@ -27,12 +27,12 @@ function loginUser($user) {
 }
 
 function processLogin($username, $password) {
-    if (empty($_SESSION['login_errors'])) {
+
         $user = authenticateUser($username, $password); // Check if authentication was successful
         if ($user) {
             loginUser($user); // Log the user in
             redirect("/dashboard.php");
             exit;
         }
-    }
+
 }

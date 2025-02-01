@@ -1,7 +1,6 @@
 <?php
 
 require_once 'models/LoginModel.php';
-require_once 'services/UserValidationService.php';
 
 function showLoginPage()
 {
@@ -10,29 +9,11 @@ function showLoginPage()
 
 // ------------------------------------------------------------------------------------------------------------
 
-function submitLoginForm()
-{
-
-    $username = '';
-    $formFeedback = '';
-    $flash_message = '';
+function submitLoginForm() {
 
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
-
-//    validateLogin($username, $password);
-//    $formFeedback = loginFeedback();
     processLogin($username, $password);
 
-    if (isset($_SESSION['flash'])) {
-        $flash_message = $_SESSION['flash'];
-        unset($_SESSION['flash']);
-    }
-
-    renderView('login/login_view', [
-        'username' => $username,
-        'formFeedback' => $formFeedback,
-        'flash_message' => $flash_message
-    ]);
 }
 
