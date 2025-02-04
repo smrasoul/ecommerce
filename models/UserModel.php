@@ -132,3 +132,74 @@ function updateUserInfo($firstName, $lastName, $email, $username, $user_id) {
 }
 
 
+function getUsers (){
+
+    global $conn;
+
+    $query = "SELECT id, username, role_id FROM users";
+    return mysqli_query($conn, $query);
+}
+
+
+function getRoles()
+{
+
+    global $conn;
+
+    $query = "SELECT * FROM roles";
+    $result = mysqli_query($conn, $query);
+    return $roles = mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+function getPermissions (){
+
+    global $conn;
+
+    $query = "SELECT * FROM permissions";
+    $result = mysqli_query($conn, $query);
+    return $permissions = mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+
+
+function getUserAndRoles() {
+    global $conn;
+
+    $query = "SELECT id, role_id FROM users";
+    $result = mysqli_query($conn, $query);
+    $userRoles = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    return $userRoles;
+}
+
+
+
+function getRolePermissions($roleId) {
+    global $conn;
+
+    $query = "SELECT permission_id FROM role_permissions WHERE role_id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $roleId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $rolePermissions = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $rolePermissions[] = $row['permission_id'];
+    }
+    return $rolePermissions;
+}
+
+function getAllRolePermissions($roles) {
+    $rolePermissions = [];
+    foreach ($roles as $role) {
+        $rolePermissions[$role['id']] = getRolePermissions($role['id']);
+    }
+    return $rolePermissions;
+}
+
+
+
+
+
+

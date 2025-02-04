@@ -78,7 +78,7 @@ $activePage = 'manage-user';
 
 <h1 class="my-4">Admin Dashboard</h1>
 
-<?php require 'src/User/View/manage-flash.php'; ?>
+<?php require 'src/User/View/manage_flash.php'; ?>
 
 <div class="row">
 
@@ -88,11 +88,11 @@ $activePage = 'manage-user';
 
     <div class="col-9 border rounded py-3">
         <div class="row">
-            <?php require 'src/User/View/create-role.php' ?>
+            <?php require 'src/User/View/create_role.php' ?>
             <?php require 'src/User/View/permission.php' ?>
         </div>
         <div class="row">
-            <?php require 'src/User/View/change-role.php' ?>
+            <?php require 'src/User/View/change_role.php' ?>
         </div>
     </div>
 

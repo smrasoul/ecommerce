@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php unset($_SESSION['password_failure']) ?>
         <?php endif; ?>
 
-        <?php require 'src/User/View/password-form.php'; ?>
+        <?php require 'src/User/View/password_form.php'; ?>
 
     </div>
 

@@ -18,9 +18,9 @@
         </li>
     <?php endif; ?>
     <?php if ($GLOBALS['canManageUser']): ?>
-        <li class="list-group-item <?= ($activePage == 'manage-user') ? 'active' : '' ?>">
-            <a class="<?= ($activePage == 'manage-user') ? 'text-light link-light' : 'text-dark link-dark' ?>
-            link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="manage-user.php">User Management</a>
+        <li class="list-group-item <?= ($activePage == 'user-management') ? 'active' : '' ?>">
+            <a class="<?= ($activePage == 'user-management') ? 'text-light link-light' : 'text-dark link-dark' ?>
+            link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="user-management">User Management</a>
         </li>
     <?php endif ?>
 </ul>

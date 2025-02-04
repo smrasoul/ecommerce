@@ -26,6 +26,8 @@ require 'controllers/ProductManagementController.php';
 require 'controllers/AddProductController.php';
 require 'middlewares/ProductMiddleware.php';
 
+require 'controllers/UserManagementController.php';
+
 
 
 
@@ -52,3 +54,5 @@ add_route('GET', '/product-management', 'showProductManagementPage', ['verifyUse
 
 add_route('GET', '/add-product', 'showAddProductPage', ['verifyUserMW', 'checkPermissionsMW']);
 add_route('POST', '/add-product', 'submitAddProductForm', ['verifyUserMW','checkPermissionsMW', 'validateProductMW']);
+
+add_route('GET', '/user-management', 'showUserManagementPage', ['verifyUserMW', 'checkPermissionsMW']);

@@ -86,36 +86,7 @@ function changeUserRole($userId, $newRoleId, $conn) {
     return mysqli_affected_rows($conn) > 0; // Return true if the update succeeded
 }
 
-function getRoles($conn)
-{
-    $query = "SELECT * FROM roles";
-    $result = mysqli_query($conn, $query);
-    return $roles = mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
 
-function getPermissions ($conn){
-    $query = "SELECT * FROM permissions";
-    $result = mysqli_query($conn, $query);
-    return $permissions = mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
-
-function getUsers ($conn) {
-    $query = "SELECT id, username, role_id FROM users";
-    return mysqli_query($conn, $query);
-}
-
-
-
-function getUserAndRoles($conn)
-{
-    $query = "SELECT roles.name AS role_name, users.username , users.id
-              FROM roles
-              JOIN users
-              ON roles.id = users.role_id;";
-
-    $result = mysqli_query($conn, $query);
-    return $users_roles = mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
 
 
 function updatePassword($conn, $newPassword, $userId ){
