@@ -14,13 +14,6 @@
                             <div class="card-body">
                                 <h5 class="card-title"><?= htmlspecialchars($product['name']) ?></h5>
                                 <p class="card-text">$<?= htmlspecialchars($product['price']) ?></p>
-                                <ul class="card-text no-bullets">
-                                    <?php foreach ($product['categories'] as $category): ?>
-                                        <li>
-                                            <?= htmlspecialchars($category) ?>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,6 @@
 
 require 'controllers/HomeController.php';
 
-
 require 'controllers/LoginController.php';
 require 'middlewares/LoginMiddleware.php';
 
@@ -21,6 +20,13 @@ require 'controllers/OrdersHistoryController.php';
 
 require 'controllers/EditAccountController.php';
 require 'middlewares/EditAccountMiddleware.php';
+
+require 'controllers/ProductManagementController.php';
+
+require 'controllers/AddProductController.php';
+require 'middlewares/ProductMiddleware.php';
+
+
 
 
 add_route('GET', '/', 'showHomePage');
@@ -41,3 +47,8 @@ add_route('GET', '/orders-history', 'showOrdersHistoryPage', ['verifyUserMW', 'c
 
 add_route('GET', '/edit-account', 'showEditAccountPage', ['verifyUserMW', 'checkPermissionsMW']);
 add_route('POST', '/edit-account', 'submitEditAccountForm', ['checkPermissionsMW', 'validateEditAccountMW']);
+
+add_route('GET', '/product-management', 'showProductManagementPage', ['verifyUserMW', 'checkPermissionsMW']);
+
+add_route('GET', '/add-product', 'showAddProductPage', ['verifyUserMW', 'checkPermissionsMW']);
+add_route('POST', '/add-product', 'submitAddProductForm', ['verifyUserMW','checkPermissionsMW', 'validateProductMW']);

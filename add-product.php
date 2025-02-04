@@ -6,7 +6,7 @@ require 'src/Product/Function/product-function.php';
 
 $userPermissions = checkUserAccess($conn, 'add_product');
 
-$categories = getAllCategories($conn);
+$categories = getAllCategories();
 //var_dump($categories);
 
 $activePage= 'view-product';
@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formFeedback = productFeedback();
 
     if (empty($formFeedback)) {
+
         $photo_name = time() . '_' . basename($photo['name']);
         $upload_path = 'assets/media/' . $photo_name;
 
