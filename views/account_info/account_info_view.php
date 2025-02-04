@@ -1,8 +1,3 @@
-<?php
-
-function renderAccountInfoPage($user, $activePage, $canViewProduct, $canManageUser)
-{
-    require 'views/Layers/header.php' ?>
 
 <h1 class="my-4">Dashboard</h1>
 
@@ -24,7 +19,3 @@ function renderAccountInfoPage($user, $activePage, $canViewProduct, $canManageUs
 
     </div>
 </div>
-
-<?php require 'views/Layers/footer.php';
-}
-?>

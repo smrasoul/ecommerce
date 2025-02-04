@@ -75,3 +75,16 @@ function verifyUserMW()
     }
 }
 
+function checkPermissionsMW()
+{
+
+        $user_id = $_SESSION['user_id'];
+        $userPermissions = getUserPermissions($user_id);
+
+        // Set global variables for use in controllers and views
+        $GLOBALS['canViewProduct'] = hasPermission('view_product', $userPermissions);
+        $GLOBALS['canManageUser'] = hasPermission('manage_user', $userPermissions);
+}
+
+
+

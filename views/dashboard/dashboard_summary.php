@@ -53,20 +53,20 @@
 </div>
 
 
-<?php if ($canManageUser || $canViewProduct): ?>
+<?php if ($GLOBALS['canManageUser'] || $GLOBALS['canViewProduct']): ?>
     <div class="border rounded p-4 mb-4 row">
         <div class="row mb-3">
             <h5 class="col-3 border-bottom">Management</h5>
         </div>
         <div class="col-2"></div>
-        <?php if ($canManageUser): ?>
-        <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="manage-user">User
-            Management</a>
+        <?php if ($GLOBALS['canManageUser']): ?>
+            <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="manage-user">User
+                Management</a>
         <?php endif; ?>
         <div class="col-2"></div>
-        <?php if ($canViewProduct): ?>
-        <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="view-product">Product
-            Management</a>
+        <?php if ($GLOBALS['canViewProduct']): ?>
+            <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="view-product">Product
+                Management</a>
         <?php endif; ?>
         <div class="col-2"></div>
     </div>
