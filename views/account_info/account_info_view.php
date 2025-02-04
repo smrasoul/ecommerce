@@ -9,10 +9,11 @@
 
     <div class="col-9 border rounded p-4">
 
-        <?php if (isset($flash_message['edit_user_success'])) : ?>
-            <div class="alert alert-success col-4 text-center">
-                <p class="mb-0"> <?= $flash_message['edit_user_success'] ?></p>
+        <?php if (isset($_SESSION['edit_user_success'])) : ?>
+            <div class="alert alert-success col-4">
+                <?= $_SESSION['edit_user_success'] ?>
             </div>
+            <?php unset($_SESSION['edit_user_success']) ?>
         <?php endif; ?>
 
         <?php require 'views/account_info/account_form.php' ?>

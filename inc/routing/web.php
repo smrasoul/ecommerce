@@ -19,6 +19,9 @@ require 'controllers/AccountInfoController.php';
 
 require 'controllers/OrdersHistoryController.php';
 
+require 'controllers/EditAccountController.php';
+require 'middlewares/EditAccountMiddleware.php';
+
 
 add_route('GET', '/', 'showHomePage');
 
@@ -35,3 +38,6 @@ add_route('GET', '/dashboard', 'showDashboardPage', ['verifyUserMW', 'checkPermi
 add_route('GET', '/account-info','showAccountInfoPage', ['verifyUserMW', 'checkPermissionsMW']);
 
 add_route('GET', '/orders-history', 'showOrdersHistoryPage', ['verifyUserMW', 'checkPermissionsMW']);
+
+add_route('GET', '/edit-account', 'showEditAccountPage', ['verifyUserMW', 'checkPermissionsMW']);
+add_route('POST', '/edit-account', 'submitEditAccountForm', ['checkPermissionsMW', 'validateEditAccountMW']);

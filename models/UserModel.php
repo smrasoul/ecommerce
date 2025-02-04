@@ -114,4 +114,21 @@ function getUserPermissions($user_id)
     return $permissions;
 }
 
+function updateUserInfo($firstName, $lastName, $email, $username, $user_id) {
+
+    global $conn;
+
+    $query = "UPDATE users SET first_name = ?, last_name = ?, email = ?, username = ? WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'ssssi', $firstName, $lastName, $email, $username, $user_id);
+
+    if (mysqli_stmt_execute($stmt)) {
+        $_SESSION['edit_user_success'] = 'Your account info has been updated.';
+        redirect('/account-info');
+    }else {
+        $_SESSION['edit_user_failed'] = 'Your account info was not updated.';
+    }
+
+}
+
 

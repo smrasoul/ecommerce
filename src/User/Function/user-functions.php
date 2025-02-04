@@ -10,21 +10,7 @@ function getUserinfo ($conn, $user_id) {
     return $user = mysqli_fetch_assoc($result);
 }
 
-function updateUserInfo($conn, $firstName, $lastName, $email, $username, $user_id) {
 
-
-    $query = "UPDATE users SET first_name = ?, last_name = ?, email = ?, username = ? WHERE id = ?";
-    $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 'ssssi', $firstName, $lastName, $email, $username, $user_id);
-
-    if (mysqli_stmt_execute($stmt)) {
-        $_SESSION['flash']['edit_user_success'] = 'Your account_info has been updated.';
-        redirect('/account_info-info.php');
-    }else {
-        $_SESSION['edit_user_failed'] = 'Your account_info was not updated.';
-    }
-
-}
 
 
 

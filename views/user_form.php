@@ -89,7 +89,7 @@ $user['username'] = $user['username'] ?? '';
 
     <div class="d-flex justify-content-end">
         <?php if(isset($_SESSION['is_logged_in'])): ?>
-        <a class="link-light link-underline-opacity-0 btn btn-danger" href="account-info.php">Cancel</a>
+        <a class="link-light link-underline-opacity-0 btn btn-danger" href="account-info">Cancel</a>
         <?php endif; ?>
         <button type="submit" class="btn btn-primary ms-4"><?= isset($_SESSION['is_logged_in']) ? 'Save' : 'Sign Up' ?></button>
     </div>
