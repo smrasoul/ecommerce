@@ -14,77 +14,12 @@ function getUserinfo ($conn, $user_id) {
 
 
 
-function createRole($roleName, $conn) {
-    $query = "INSERT INTO roles (name) VALUES (?)";
-    $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 's', $roleName);
-    mysqli_stmt_execute($stmt);
-
-    if (mysqli_affected_rows($conn) > 0) {
-        return mysqli_insert_id($conn); // Return the new role ID
-    }
-
-    return false; // Return false if insertion failed
-}
-
-function processNewRole($conn, $roleName)
-{
-//    validateRole($roleName);
-    $newRoleId = createRole($roleName, $conn);
-
-    if ($newRoleId) {
-        $_SESSION['success_message'] = "Role '$roleName' created successfully!";
-    } else {
-        $_SESSION['error_message'] = "Failed to create role.";
-    }
-}
 
 
-function deleteRolePermissions($roleId, $conn)
-{
-    $query = "DELETE FROM role_permissions WHERE role_id = ?";
-    $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 'i', $roleId);
-    if (mysqli_stmt_execute($stmt)) {
-        return true;
-    } else {
-        return false;
-    }
-}
 
-function assignPermissionsToRole($roleId, $permissionIds, $conn) {
-    $query = "INSERT INTO role_permissions (role_id, permission_id) VALUES (?, ?)";
 
-    foreach ($permissionIds as $permissionId) {
-        $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, 'ii', $roleId, $permissionId);
-        mysqli_stmt_execute($stmt);
-    }
 
-    return true;
-}
 
-function processNewRolePermissions($roleId, $permissionIds, $conn)
-{
-    if(deleteRolePermissions($roleId, $conn)){
-        if (assignPermissionsToRole($roleId, $permissionIds, $conn)) {
-            $_SESSION['success_message'] = "Permissions assigned successfully!";
-        } else {
-            $_SESSION['error_message'] = "Failed to assign permissions on assign.";
-        }
-    } else {
-        $_SESSION['error_message'] = "Failed to assign permissions on delete.";
-    }
-}
-
-function changeUserRole($userId, $newRoleId, $conn) {
-    $query = "UPDATE users SET role_id = ? WHERE id = ?";
-    $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 'ii', $newRoleId, $userId);
-    mysqli_stmt_execute($stmt);
-
-    return mysqli_affected_rows($conn) > 0; // Return true if the update succeeded
-}
 
 
 

@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['create_role'])) {
 
         $roleName = htmlspecialchars(trim($_POST['role_name']));
-        processNewRole($conn, $roleName);
+        processNewRole($roleName);
 
 
     }

@@ -56,3 +56,4 @@ add_route('GET', '/add-product', 'showAddProductPage', ['verifyUserMW', 'checkPe
 add_route('POST', '/add-product', 'submitAddProductForm', ['verifyUserMW','checkPermissionsMW', 'validateProductMW']);
 
 add_route('GET', '/user-management', 'showUserManagementPage', ['verifyUserMW', 'checkPermissionsMW']);
+add_route('POST', '/user-management', 'submitUserManagementForm', ['verifyUserMW', 'checkPermissionsMW']);

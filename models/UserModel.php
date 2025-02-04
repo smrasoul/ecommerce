@@ -198,6 +198,102 @@ function getAllRolePermissions($roles) {
     return $rolePermissions;
 }
 
+function createRole($roleName) {
+
+    global $conn;
+
+    $query = "INSERT INTO roles (name) VALUES (?)";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 's', $roleName);
+    mysqli_stmt_execute($stmt);
+
+    if (mysqli_affected_rows($conn) > 0) {
+        return mysqli_insert_id($conn); // Return the new role ID
+    }
+
+    return false; // Return false if insertion failed
+}
+
+function processNewRole($roleName)
+{
+
+    global $conn;
+
+//    validateRole($roleName);
+    $newRoleId = createRole($roleName, $conn);
+
+    if ($newRoleId) {
+        $_SESSION['success_message'] = "Role '$roleName' created successfully!";
+    } else {
+        $_SESSION['error_message'] = "Failed to create role.";
+    }
+    redirect('/user-management');
+}
+
+function deleteRolePermissions($roleId)
+{
+
+    global $conn;
+
+    $query = "DELETE FROM role_permissions WHERE role_id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $roleId);
+    if (mysqli_stmt_execute($stmt)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function assignPermissionsToRole($roleId, $permissionIds) {
+
+    global $conn;
+
+    $query = "INSERT INTO role_permissions (role_id, permission_id) VALUES (?, ?)";
+
+    foreach ($permissionIds as $permissionId) {
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, 'ii', $roleId, $permissionId);
+        mysqli_stmt_execute($stmt);
+    }
+
+    return true;
+}
+
+function processNewRolePermissions($roleId, $permissionIds)
+{
+
+    global $conn;
+
+    if(deleteRolePermissions($roleId)){
+        if (assignPermissionsToRole($roleId, $permissionIds)) {
+            $_SESSION['success_message'] = "Permissions assigned successfully!";
+        } else {
+            $_SESSION['error_message'] = "Failed to assign permissions on assign.";
+        }
+    } else {
+        $_SESSION['error_message'] = "Failed to assign permissions on delete.";
+    }
+    redirect('/user-management');
+}
+
+function changeUserRole($userId, $newRoleId) {
+
+    global $conn;
+
+    $query = "UPDATE users SET role_id = ? WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'ii', $newRoleId, $userId);
+    mysqli_stmt_execute($stmt);
+
+    if (mysqli_affected_rows($conn) > 0) {
+        $_SESSION['success_message'] = "Signup role updated successfully!";
+    } else {
+        $_SESSION['error_message'] = "Failed to update user role.";
+    }
+    redirect('/user-management');
+}
+
 
 
 

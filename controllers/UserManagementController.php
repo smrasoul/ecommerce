@@ -22,4 +22,30 @@ function showUserManagementPage(){
     ]);
 }
 
+function submitUserManagementForm(){
+
+    if (isset($_POST['create_role'])) {
+
+        $roleName = htmlspecialchars(trim($_POST['role_name']));
+        processNewRole($roleName);
+
+    }
+
+    if (isset($_POST['assign_permissions'])) {
+
+        $roleId = $_POST['role_id'];
+        $permissionIds = $_POST['permission'] ?? [];
+        processNewRolePermissions($roleId, $permissionIds);
+
+    }
+
+    if(isset($_POST['assign_role'])) {
+
+        $userId = $_POST['user_id'];
+        $newRoleId = $_POST['role_id'];
+        changeUserRole($userId, $newRoleId);
+
+    }
+}
+
 
