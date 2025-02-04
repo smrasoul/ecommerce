@@ -17,6 +17,8 @@ require 'middlewares/UserMiddleware.php';
 
 require 'controllers/AccountInfoController.php';
 
+require 'controllers/OrdersHistoryController.php';
+
 
 add_route('GET', '/', 'showHomePage');
 
@@ -31,3 +33,5 @@ add_route('POST', '/signup', 'submitSignupForm', ['checkLoginStatusMW', 'validat
 add_route('GET', '/dashboard', 'showDashboardPage', ['verifyUserMW', 'checkPermissionsMW']);
 
 add_route('GET', '/account-info','showAccountInfoPage', ['verifyUserMW', 'checkPermissionsMW']);
+
+add_route('GET', '/orders-history', 'showOrdersHistoryPage', ['verifyUserMW', 'checkPermissionsMW']);
