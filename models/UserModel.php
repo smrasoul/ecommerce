@@ -1,6 +1,8 @@
 <?php
 
-function getUserinfo ($conn, $user_id) {
+function getUserinfo ($user_id) {
+
+    global $conn;
 
     $query = "SELECT first_name, last_name, email, username FROM users WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
@@ -10,7 +12,9 @@ function getUserinfo ($conn, $user_id) {
     return $user = mysqli_fetch_assoc($result);
 }
 
-function checkEmailAvailability($email, $conn) {
+function checkEmailAvailability($email) {
+
+    global $conn;
 
 
     $query = "SELECT * FROM users WHERE email = ?";
@@ -25,7 +29,9 @@ function checkEmailAvailability($email, $conn) {
 }
 
 
-function checkUsernameAvailability($username, $conn) {
+function checkUsernameAvailability($username) {
+
+    global $conn;
 
     $query = "SELECT * FROM users WHERE username = ?";
     $stmt = mysqli_prepare($conn, $query);
@@ -72,4 +78,40 @@ function validateRole($roleName)
         }
     }
 }
+
+function checkUserExistence($user_Id){
+
+    global $conn;
+
+    $query = "SELECT * FROM users WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $user_Id);
+    mysqli_stmt_execute($stmt);
+    return $result = mysqli_stmt_get_result($stmt);
+}
+
+function getUserPermissions($user_id)
+{
+    global $conn;
+
+    $query = "
+        SELECT p.name AS permission_name
+        FROM permissions p
+        INNER JOIN role_permissions rp ON p.id = rp.permission_id
+        INNER JOIN roles r ON rp.role_id = r.id
+        INNER JOIN users u ON u.role_id = r.id
+        WHERE u.id = ?";
+
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $permissions = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $permissions[] = $row['permission_name'];
+    }
+    return $permissions;
+}
+
 

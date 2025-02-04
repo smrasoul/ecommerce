@@ -1,6 +1,8 @@
 <?php
 
-function signUp($firstName, $lastName, $email, $username, $password, $conn) {
+function signUp($firstName, $lastName, $email, $username, $password) {
+
+    global $conn;
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $role_id = 2;

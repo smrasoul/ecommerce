@@ -1,6 +1,9 @@
 <?php
 
-function getLatestOrder($conn, $userId) {
+function getLatestOrder($userId) {
+
+    global $conn;
+
     $query = "SELECT * FROM `orders` WHERE `user_id` = ? ORDER BY `id` LIMIT 1";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "i", $userId);

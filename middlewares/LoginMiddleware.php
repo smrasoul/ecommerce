@@ -1,5 +1,6 @@
 <?php
 
+
 function loginFeedback()
 {
     $formFeedback = '';
@@ -22,9 +23,17 @@ function validateLogin($username, $password) {
 function checkLoginStatusMW()
 {
     if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
-        header('HTTP/1.1 403 Forbidden');
-        echo "You are already logged in.";
-        exit;
+
+        $user_Id = $_SESSION['user_id'];
+
+        $result = checkUserExistence($user_Id);
+
+        if (mysqli_num_rows($result) > 0) {
+
+            header('HTTP/1.1 403 Forbidden');
+            echo "You are already logged in.";
+            exit;
+        }
     }
 }
 
@@ -57,8 +66,6 @@ function validateLoginMW()
         renderView('login/login_view', ['flash_message' => $flash_message, 'username' => $username]);
         exit;
     }
-
-
 
 }
 

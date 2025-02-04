@@ -2,27 +2,22 @@
 
 require_once 'models/UserModel.php';
 require_once 'models/OrderModel.php';
-require_once 'views/dashboard/dashboard_view.php';
 
-function showDashboard($conn) {
-    // Check user permissions
-    $userPermissions = checkUserAccess($conn);
+function showDashboardPage(){
 
-    // Check permissions for sidebar links
+    $activePage = 'dashboard';
+    $user_id = $_SESSION['user_id'];
+
+    $userPermissions = getUserPermissions($user_id);
     $canViewProduct = hasPermission('view_product', $userPermissions);
     $canManageUser = hasPermission('manage_user', $userPermissions);
+    $user = getUserInfo($user_id);
+    $latestOrder = getLatestOrder($user_id);
 
-    // Fetch user info
-    $user_id = $_SESSION['user_id'];
-    $user = getUserInfo($conn, $user_id);
+    renderView('dashboard/dashboard_view', ['activePage' => $activePage,
+        'canViewProduct' => $canViewProduct,
+        'canManageUser' => $canManageUser,
+        'user' => $user,
+        'latestOrder' => $latestOrder]);
 
-    // Fetch latest order
-    $latestOrder = getLatestOrder($conn, $user_id);
-
-    // Determine the active page
-    $activePage = 'dashboard'; // This can be dynamic based on the current page
-
-    // Render the dashboard view
-    renderDashboard($user, $latestOrder, $activePage, $canViewProduct, $canManageUser);
 }
-?>

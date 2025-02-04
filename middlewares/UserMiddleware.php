@@ -33,7 +33,6 @@ function validateUserForm($firstName, $lastName, $email, $username, $password = 
 
 
 
-
 function userFeedback(){
     $formFeedback = '';
     if(isset($_SESSION['user_errors'])) {
@@ -48,7 +47,6 @@ function userFeedback(){
 function passwordsMatch($password, $retypePassword) {
     if(!($password === $retypePassword)) {
         $_SESSION['user_errors']['password'] = "Passwords do not match.";
-        echo 'passwords do not match.';
     }
 }
 
@@ -62,10 +60,18 @@ function validatePasswordForm ($currentPassword, $newPassword) {
     }
 }
 
+function verifyUserMW()
+{
+    if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
 
+        $user_Id = $_SESSION['user_id'];
+        $result = checkUserExistence($user_Id);
 
+        if (mysqli_num_rows($result) === 0) {
 
-// Login Validations:
-
-
+            header('HTTP/1.1 403 Forbidden');
+            echo "You do not have permission to access this page.";
+        }
+    }
+}
 

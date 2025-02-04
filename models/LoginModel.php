@@ -31,7 +31,7 @@ function processLogin($username, $password) {
         $user = authenticateUser($username, $password); // Check if authentication was successful
         if ($user) {
             loginUser($user); // Log the user in
-            redirect("/dashboard.php");
+            redirect("/dashboard");
             exit;
         }
 
