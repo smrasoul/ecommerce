@@ -50,5 +50,7 @@ function validateProductMW(){
            'price'=>$price,
            'categories'=>$categories,
            'activePage'=>$activePage]);
+        exit;
     }
+
 }

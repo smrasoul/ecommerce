@@ -4,19 +4,21 @@
 
 function fetchAllProducts()
 {
-
     global $conn;
 
+    // Query to fetch products along with their associated media (main image)
     $query = "SELECT 
-            products.id, 
-            products.name, 
-            products.price, 
-            media.file_path AS main_image
-          FROM products
-          LEFT JOIN media ON products.id = media.product_id AND media.media_type = 'main_image'";
+                p.id, 
+                p.name, 
+                p.price, 
+                m.file_path AS main_image
+              FROM products p
+              LEFT JOIN media m ON p.id = m.mediable_id AND m.mediable_type = 'products' AND m.media_type = 'image'";
 
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    return $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    // Fetch all products as associative array
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }

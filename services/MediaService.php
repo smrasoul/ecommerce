@@ -6,6 +6,6 @@ function uploadProductPhoto($photo){
     if(move_uploaded_file($photo['tmp_name'], $upload_path)){
         return $photo_name;
     }else {
-        $_SESSION['product_errors']['photo'] = "Failed to upload photo.";
+        $_SESSION['product_errors']['photo'] = "Failed to upload photo....";
     }
 }
