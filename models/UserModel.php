@@ -44,8 +44,10 @@ function checkUsernameAvailability($username) {
     }
 }
 
-function validatePasswords($currentPassword, $newPassword, $user_id, $conn)
+function validatePasswords($currentPassword, $newPassword, $user_id)
 {
+
+    global $conn;
 
     $query = "SELECT password FROM users WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
@@ -295,7 +297,24 @@ function changeUserRole($userId, $newRoleId) {
 }
 
 
+function updatePassword($newPassword, $userId ){
 
+    global $conn;
+
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    $query = "UPDATE users SET password = ? WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'si', $hashedPassword, $userId);
+
+    if(mysqli_stmt_execute($stmt)){
+        $_SESSION['flash']['edit_user_success'] = "Your password has been updated.";
+        redirect('/account-info');
+    }else{
+        $_SESSION['password_failure'] = "Failed to update password.";
+    }
+
+}
 
 
 

@@ -60,12 +60,12 @@
         </div>
         <div class="col-2"></div>
         <?php if ($GLOBALS['canManageUser']): ?>
-            <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="manage-user">User
+            <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="user-management">User
                 Management</a>
         <?php endif; ?>
         <div class="col-2"></div>
         <?php if ($GLOBALS['canViewProduct']): ?>
-            <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="view-product">Product
+            <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="product-management">Product
                 Management</a>
         <?php endif; ?>
         <div class="col-2"></div>
