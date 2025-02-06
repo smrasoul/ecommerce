@@ -34,8 +34,8 @@
                     <?php endif; ?>
                 </td>
                 <td class="align-content-center">
-                    <a href="edit-product.php?id=<?= $product['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="delete-product.php?id=<?= $product['id']; ?>"
+                    <a href="edit-product/<?= $product['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="delete-product/<?= $product['id']; ?>"
                        class="btn btn-danger btn-sm"
                        onclick="return confirm('Are you sure you want to delete this product?');">
                         Delete

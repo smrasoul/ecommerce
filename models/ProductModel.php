@@ -124,9 +124,103 @@ function addProductCategories($product_id, $categoryIds){
 
     if ($success) {
         $_SESSION['flash']['product_success'] = 'Product added successfully.';
-        redirect('/product-management');
     } else {
         $_SESSION['flash']['product_failure'] = "Failed to add the product.";
     }
+    return $success;
 }
+
+function fetchProductImageById($product_id)
+{
+    global $conn;
+    $query = "SELECT * FROM media WHERE mediable_id = ? AND mediable_type = 'products' AND media_type = 'image'";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $product_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    // Return the first image associated with the product
+    return mysqli_fetch_assoc($result);
+}
+
+function deleteProductImage($product_id) {
+
+    global $conn;
+    // Fetch media associated with the product (image specifically)
+    $item = fetchProductImageById($product_id);
+
+    // Check if the product has an image
+    if ($item) {
+        // Delete the media file
+        if (file_exists('assets/media/' . $item['file_path'])) {
+            unlink('assets/media/' . $item['file_path']);
+        }
+
+        // Delete the media record from the database for the product image
+        $query = "DELETE FROM media WHERE mediable_id = ? AND mediable_type = 'products' AND media_type = 'image'";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, 'i', $product_id);
+        mysqli_stmt_execute($stmt);
+    }
+}
+
+
+function editProductImage($product_id, $photo)
+{
+
+    if (!empty($photo['name'])) { // If new photo is uploaded
+        $new_photo_name = time() . '_' . basename($photo['name']);
+        $upload_path = 'assets/media/' . $new_photo_name;
+
+        move_uploaded_file($photo['tmp_name'], $upload_path);
+        // Add or update media record
+        deleteProductImage($product_id); // Delete previous media if it exists
+        addProductImage($product_id, $new_photo_name);
+    }
+}
+
+function deleteProductCategories($product_id)
+{
+
+    global $conn;
+    $query = "DELETE FROM product_categories WHERE product_id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $product_id);
+    return (mysqli_stmt_execute($stmt));
+}
+
+
+function processProductCategories($product_id, $categoryIds){
+    if(deleteProductCategories($product_id)){
+        if(addProductCategories($product_id, $categoryIds)){
+            $_SESSION['flash']['product_success'] = "product updated successfully.";
+            redirect('/product-management');
+        } else {
+            $_SESSION['product_failure'] = "Failed to update the product.";
+            return false;
+        }
+    } else {
+        $_SESSION['product_failure'] = "Failed to update the product.";
+        return false;
+    }
+}
+
+function updateProduct($name, $price, $photo, $product_id, $categoryIds)
+{
+
+    global $conn;
+
+    $query = "UPDATE products SET name = ?, price = ? WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'sdi', $name, $price, $product_id);
+    if (mysqli_stmt_execute($stmt)) {
+        editProductImage($product_id, $photo);
+        processProductCategories($product_id, $categoryIds);
+    } else {
+        $_SESSION['product_failure'] = "Failed to update the product.";
+        exit;
+    }
+}
+
+
 

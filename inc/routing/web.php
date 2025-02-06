@@ -18,6 +18,7 @@ require 'middlewares/ProductMiddleware.php';
 require 'controllers/UserManagementController.php';
 require 'middlewares/ChangePasswordMiddleware.php';
 require 'controllers/ChangePasswordController.php';
+require 'controllers/EditProductController.php';
 
 
 
@@ -40,3 +41,5 @@ add_route('GET', '/user-management', 'showUserManagementPage', ['verifyUserMW', 
 add_route('POST', '/user-management', 'submitUserManagementForm', ['verifyUserMW', 'checkPermissionsMW']);
 add_route('GET', '/change-password', 'showChangePasswordPage', ['verifyUserMW', 'checkPermissionsMW']);
 add_route('POST', '/change-password', 'submitChangePasswordPage', ['verifyUserMW', 'checkPermissionsMW', 'validateChangePasswordMW']);
+add_route('GET', '/edit-product/(\d+)','showEditProductPage' ,['verifyUserMW', 'checkPermissionsMW', 'editProductMW']);
+add_route('POST', '/edit-product/(\d+)', 'submitEditProductForm', ['verifyUserMW', 'checkPermissionsMW', 'validateEditProductMW', 'editProductMW']);

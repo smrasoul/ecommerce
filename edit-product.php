@@ -1,6 +1,6 @@
 <?php
 
-require 'includes/init.php';
+require 'init.php';
 require 'src/Product/Function/product-Function.php';
 require 'src/Product/Validation/product-Validation.php';
 
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
 
-        <?php require 'src/Product/View/product-form.php'; ?>
+        <?php require 'views/product/product-form.php'; ?>
 
     </div>
 

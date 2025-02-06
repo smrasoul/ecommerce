@@ -1,3 +1,5 @@
+
+
 <form method="POST" enctype="multipart/form-data">
     <div class="form-group mb-2">
         <label for="name">Product Name</label>
@@ -31,8 +33,9 @@
                 <div class="invalid-feedback"><?= $formFeedback['photo'] ?></div>
             <?php endif; ?>
         </div>
-        <?php if (!empty($product['main_image'])): ?>
-            <p>Current Photo: <img src="assets/media/<?= $product['main_image'] ?>" alt="Product Photo" width="50"></p>
+        <?php if (isset($product) && $product['main_image']): ?>
+            <img src="/assets/media/<?= htmlspecialchars($product['main_image']) ?>"
+                 alt="<?= htmlspecialchars($product['name']) ?>" width="50">
         <?php endif; ?>
     </div>
     <fieldset class="mb-3">

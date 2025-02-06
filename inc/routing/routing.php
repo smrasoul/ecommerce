@@ -11,6 +11,7 @@ function add_route($method, $route, $callback, $middlewares = [])
 }
 
 // Function to handle the request
+// Function to handle the request
 function handle_request()
 {
     global $routes;
@@ -22,15 +23,24 @@ function handle_request()
     // Iterate over the routes and find a match
     foreach ($routes as $route) {
         // If the method and the route match
-        if ($route['method'] === $requestMethod && preg_match("#^{$route['route']}$#", $requestUri, $matches)) {
-            // Execute middleware functions
-            foreach ($route['middlewares'] as $middleware) {
-                call_user_func($middleware);
+        if ($route['method'] === $requestMethod) {
+            // Prepare regular expression to capture parameters from the route
+            $routePattern = "#^{$route['route']}$#";
+
+            // Match the URI against the route pattern
+            if (preg_match($routePattern, $requestUri, $matches)) {
+                // Execute middleware functions
+                foreach ($route['middlewares'] as $middleware) {
+                    call_user_func($middleware);
+                }
+
+                // Remove the full match (first element) and pass parameters to the callback
+                array_shift($matches);  // Shift the full match from the array
+
+                // Call the route handler with any matched parameters
+                call_user_func_array($route['callback'], $matches);
+                return;
             }
-            // Call the route handler with any matched parameters
-            array_shift($matches); // Remove the full match (first element)
-            call_user_func_array($route['callback'], $matches);
-            return;
         }
     }
 
@@ -38,3 +48,4 @@ function handle_request()
     http_response_code(404);
     echo "404 Not Found";
 }
+

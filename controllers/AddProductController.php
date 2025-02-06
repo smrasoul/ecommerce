@@ -18,7 +18,8 @@ function submitAddProductForm(){
 
     $photo_name = uploadProductPhoto($photo);
     $product_id = addProduct($name, $price, $photo_name);
-    addProductCategories($product_id, $categoryIds);
-
-
+    $success = addProductCategories($product_id, $categoryIds);
+    if($success){
+        redirect('/product-management');
+    }
 }

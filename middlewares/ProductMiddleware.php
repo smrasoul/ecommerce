@@ -54,3 +54,66 @@ function validateProductMW(){
     }
 
 }
+
+function getProductIdFromUrl() {
+    // Access the current URL
+    $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+    // Use regular expression to capture the product ID from the URL path (e.g., /edit-product/12)
+    preg_match('/^\/edit-product\/(\d+)$/', $requestUri, $matches);
+
+    // Check if product ID is captured and return it
+    if (isset($matches[1])) {
+        return $matches[1];
+    }
+
+    // Return null if product ID is not found
+    return null;
+}
+
+
+function editProductMW()
+{
+
+    // Extract product_id from the URL
+    $product_id = getProductIdFromUrl();
+
+
+    // Fetch the product details using the extracted product_id
+    $product = fetchAllProductDetails($product_id);
+
+    if (!$product) {
+        die("Product not found.");
+    }
+}
+
+function validateEditProductMW(){
+
+
+    // Extract product_id from the URL
+    $product_id = getProductIdFromUrl();
+
+
+    $product = fetchAllProductDetails($product_id);
+    $categories = getAllCategories();
+    $activePage = 'product-management';
+
+    $name = htmlspecialchars($_POST['name']);
+    $price = htmlspecialchars($_POST['price']);
+    $photo = $_FILES['photo'];
+    $categoryIds = $_POST['category'] ?? [];
+
+    validateProduct($name, $price, $photo, $is_update = true);
+
+    $formFeedback = productFeedback();
+
+    if(!empty($formFeedback)){
+        renderView('product/edit_product_view', ['formFeedback' => $formFeedback,
+            'categories'=>$categories,
+            'product'=>$product,
+            'activePage'=>$activePage]);
+        exit;
+    }
+
+
+}
