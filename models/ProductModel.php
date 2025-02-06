@@ -161,8 +161,16 @@ function deleteProductImage($product_id) {
         $stmt = mysqli_prepare($conn, $query);
         mysqli_stmt_bind_param($stmt, 'i', $product_id);
         mysqli_stmt_execute($stmt);
+
+        // Check if the delete operation was successful
+        if (mysqli_stmt_affected_rows($stmt) > 0) {
+            return true;  // Success
+        }
     }
+
+    return false;  // Failure
 }
+
 
 
 function editProductImage($product_id, $photo)
@@ -220,6 +228,30 @@ function updateProduct($name, $price, $photo, $product_id, $categoryIds)
         $_SESSION['product_failure'] = "Failed to update the product.";
         exit;
     }
+}
+
+function getProductById($product_id) {
+
+    global $conn;
+    $query = "SELECT * FROM products WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $product_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    return mysqli_fetch_assoc($result);
+}
+
+function deleteProductById($product_id)
+{
+
+    global $conn;
+    // Step 2: Delete the product record from the database
+    $query = "DELETE FROM products WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $product_id);
+
+    return (mysqli_stmt_execute($stmt));
+
 }
 
 

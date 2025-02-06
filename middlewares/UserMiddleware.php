@@ -75,6 +75,14 @@ function verifyUserMW()
     }
 }
 
+
+function hasPermission($permission, $userPermissions)
+{
+
+    return in_array($permission, $userPermissions ?? []);
+}
+
+
 function checkPermissionsMW()
 {
 
