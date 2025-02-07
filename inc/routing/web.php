@@ -1,27 +1,27 @@
 <?php
 
-require 'controllers/HomeController.php';
-require 'controllers/ProductController.php';
-require 'controllers/LoginController.php';
-require 'middlewares/LoginMiddleware.php';
-require 'controllers/LogoutController.php';
-require 'controllers/SignupController.php';
-require 'middlewares/SignupMiddleware.php';
-require 'controllers/DashboardController.php';
-require 'middlewares/UserMiddleware.php';
-require 'controllers/AccountInfoController.php';
-require 'controllers/OrdersHistoryController.php';
-require 'controllers/EditAccountController.php';
-require 'middlewares/EditAccountMiddleware.php';
-require 'controllers/ProductManagementController.php';
-require 'controllers/AddProductController.php';
-require 'middlewares/ProductMiddleware.php';
-require 'controllers/UserManagementController.php';
-require 'middlewares/ChangePasswordMiddleware.php';
-require 'controllers/ChangePasswordController.php';
-require 'controllers/EditProductController.php';
-require 'controllers/DeleteProductController.php';
-require 'controllers/TestController.php';
+require_once 'controllers/HomeController.php';
+require_once 'controllers/ProductController.php';
+require_once 'controllers/LoginController.php';
+require_once 'middlewares/LoginMiddleware.php';
+require_once 'controllers/LogoutController.php';
+require_once 'controllers/SignupController.php';
+require_once 'middlewares/SignupMiddleware.php';
+require_once 'controllers/DashboardController.php';
+require_once 'middlewares/UserMiddleware.php';
+require_once 'controllers/AccountInfoController.php';
+require_once 'controllers/OrdersHistoryController.php';
+require_once 'controllers/EditAccountController.php';
+require_once 'middlewares/EditAccountMiddleware.php';
+require_once 'controllers/ProductManagementController.php';
+require_once 'controllers/AddProductController.php';
+require_once 'middlewares/ProductMiddleware.php';
+require_once 'controllers/UserManagementController.php';
+require_once 'middlewares/ChangePasswordMiddleware.php';
+require_once 'controllers/ChangePasswordController.php';
+require_once 'controllers/EditProductController.php';
+require_once 'controllers/DeleteProductController.php';
+require_once 'controllers/TestController.php';
 
 
 

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-light">
+<nav class="px-2 navbar navbar-expand-lg bg-secondary-subtle rounded">
     <a class="navbar-brand" href="/">My Shop</a>
     <ul class="navbar-nav ml-auto">
         <?php if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) : ?>

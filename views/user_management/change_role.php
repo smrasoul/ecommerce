@@ -6,7 +6,12 @@
             <label for="user_id" class="form-label">Select a User:</label>
             <select class="form-select mb-3" id="user_id" name="user_id" required>
                 <?php while ($user = mysqli_fetch_assoc($users)): ?>
-                    <option value="<?= $user['id']; ?>" data-role-id="<?= $user['role_id']; ?>"><?= htmlspecialchars($user['username']); ?></option>
+                    <option value="<?= $user['id']; ?>" data-role-id="<?= $user['role_id']; ?>"
+                        <?php if ($user['role_id'] == 1): ?>
+                            disabled
+                        <?php endif; ?>
+                    ><?= htmlspecialchars($user['username']); ?>
+                    </option>
                 <?php endwhile; ?>
             </select>
         </div>
