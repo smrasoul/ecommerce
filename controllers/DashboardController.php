@@ -11,7 +11,7 @@ function showDashboardPage(){
     $latestOrder = getLatestOrder($user_id);
 
     renderView('dashboard/dashboard_view', ['activePage' => $activePage,
-        'canViewProduct' => $GLOBALS['canViewProduct'],
+        'canManageProduct' => $GLOBALS['canManageProduct'],
         'canManageUser' => $GLOBALS['canManageUser'],
         'user' => $user,
         'latestOrder' => $latestOrder]);

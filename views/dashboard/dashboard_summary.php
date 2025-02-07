@@ -53,7 +53,7 @@
 </div>
 
 
-<?php if ($GLOBALS['canManageUser'] || $GLOBALS['canViewProduct']): ?>
+<?php if ($GLOBALS['canManageUser'] || $GLOBALS['canManageProduct']): ?>
     <div class="border rounded p-4 mb-4 row">
         <div class="row mb-3">
             <h5 class="col-3 border-bottom">Management</h5>
@@ -64,7 +64,7 @@
                 Management</a>
         <?php endif; ?>
         <div class="col-2"></div>
-        <?php if ($GLOBALS['canViewProduct']): ?>
+        <?php if ($GLOBALS['canManageProduct']): ?>
             <a class="col-3 link-dark link-underline-opacity-0 text-light btn btn-success fw-bold" href="product-management">Product
                 Management</a>
         <?php endif; ?>

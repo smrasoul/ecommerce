@@ -55,5 +55,5 @@
 
 
     </fieldset>
-    <button type="submit" class="btn btn-primary"><?= isset($activeForm) ?  'Update Product' : 'Add Product' ?></button>
+    <button type="submit" class="btn btn-primary"><?= ($activeForm = 'update-product') ? 'Update Product' : 'Add Product'?></button>
 </form>

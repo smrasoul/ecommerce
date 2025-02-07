@@ -36,20 +36,22 @@ function productFeedback() {
 function validateProductMW(){
 
     $categories = getAllCategories();
-    $activePage= 'product-management';
+    $activePage = 'product-management';
 
-    $name = htmlspecialchars($_POST['name']);
-    $price = htmlspecialchars($_POST['price']);
+    $product['name'] = htmlspecialchars($_POST['name']);
+    $product['price'] = htmlspecialchars($_POST['price']);
     $photo = $_FILES['photo'];
+    $checkedCategories = $_POST['category'] ?? [];
 
-    validateProduct($name, $price, $photo);
+
+    validateProduct($product['name'], $product['price'], $photo);
     $formFeedback = productFeedback();
-    if(!empty($formFeedback)){
-       renderView('product/add_product_view', ['formFeedback' => $formFeedback,
-           'name'=>$name,
-           'price'=>$price,
-           'categories'=>$categories,
-           'activePage'=>$activePage]);
+    if (!empty($formFeedback)) {
+        renderView('product/add_product_view',['categories'=>$categories,
+            'activePage'=>$activePage,
+            'product'=>$product,
+            'formFeedback'=>$formFeedback,
+            'checkedCategories'=>$checkedCategories]);
         exit;
     }
 

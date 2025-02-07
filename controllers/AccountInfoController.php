@@ -10,7 +10,7 @@ function showAccountInfoPage() {
     $user = getUserInfo($user_id);
 
     renderView('account_info/account_info_view', ['activePage' => $activePage,
-        'canViewProduct' => $GLOBALS['canViewProduct'],
+        'canManageProduct' => $GLOBALS['canManageProduct'],
         'canManageUser' => $GLOBALS['canManageUser'],
         'user' => $user]);
 

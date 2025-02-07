@@ -11,7 +11,7 @@
         <a class="<?= ($activePage == 'orders-history') ? 'text-light link-light' : 'text-dark link-dark' ?>
         link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="../orders-history">Orders history</a>
     </li>
-    <?php if ($GLOBALS['canViewProduct']): ?>
+    <?php if ($GLOBALS['canManageProduct']): ?>
         <li class="list-group-item <?= ($activePage == 'product-management') ? 'active' : '' ?>">
             <a class="<?= ($activePage == 'product-management') ? 'text-light link-light' : 'text-dark link-dark' ?>
             link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" href="../product-management">Product Management</a>

@@ -71,7 +71,12 @@ function verifyUserMW()
 
             header('HTTP/1.1 403 Forbidden');
             echo "You do not have permission to access this page.";
+            exit;
         }
+    }else {
+        header('HTTP/1.1 403 Forbidden');
+        echo "You do not have permission to access this page.";
+        exit;
     }
 }
 
@@ -90,8 +95,27 @@ function checkPermissionsMW()
         $userPermissions = getUserPermissions($user_id);
 
         // Set global variables for use in controllers and views
-        $GLOBALS['canViewProduct'] = hasPermission('view_product', $userPermissions);
+        $GLOBALS['canManageProduct'] = hasPermission('view_product', $userPermissions);
         $GLOBALS['canManageUser'] = hasPermission('manage_user', $userPermissions);
+}
+
+function checkPMPermissionsMW(){
+
+    verifyUserMW();
+    if(!$GLOBALS['canManageProduct']){
+        header('HTTP/1.1 403 Forbidden');
+        echo "You do not have permission to access this page.";
+        exit;
+    }
+}
+
+function checkUMPermissionMW(){
+    verifyUserMW();
+    if(!$GLOBALS['canManageUser']){
+        header('HTTP/1.1 403 Forbidden');
+        echo "You do not have permission to access this page.";
+        exit;
+    }
 }
 
 

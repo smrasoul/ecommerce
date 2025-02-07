@@ -20,6 +20,7 @@ require 'middlewares/ChangePasswordMiddleware.php';
 require 'controllers/ChangePasswordController.php';
 require 'controllers/EditProductController.php';
 require 'controllers/DeleteProductController.php';
+require 'controllers/TestController.php';
 
 
 
@@ -34,14 +35,16 @@ add_route('GET', '/dashboard', 'showDashboardPage', ['verifyUserMW', 'checkPermi
 add_route('GET', '/account-info','showAccountInfoPage', ['verifyUserMW', 'checkPermissionsMW']);
 add_route('GET', '/orders-history', 'showOrdersHistoryPage', ['verifyUserMW', 'checkPermissionsMW']);
 add_route('GET', '/edit-account', 'showEditAccountPage', ['verifyUserMW', 'checkPermissionsMW']);
-add_route('POST', '/edit-account', 'submitEditAccountForm', ['checkPermissionsMW','checkPermissionsMW', 'validateEditAccountMW']);
-add_route('GET', '/product-management', 'showProductManagementPage', ['verifyUserMW', 'checkPermissionsMW']);
-add_route('GET', '/add-product', 'showAddProductPage', ['verifyUserMW', 'checkPermissionsMW']);
-add_route('POST', '/add-product', 'submitAddProductForm', ['verifyUserMW','checkPermissionsMW', 'validateProductMW']);
-add_route('GET', '/user-management', 'showUserManagementPage', ['verifyUserMW', 'checkPermissionsMW']);
-add_route('POST', '/user-management', 'submitUserManagementForm', ['verifyUserMW', 'checkPermissionsMW']);
+add_route('POST', '/edit-account', 'submitEditAccountForm', ['verifyUserMW','checkPermissionsMW', 'validateEditAccountMW']);
+add_route('GET', '/product-management', 'showProductManagementPage', ['checkPermissionsMW', 'checkPMPermissionsMW']);
+add_route('GET', '/add-product', 'showAddProductPage', ['checkPermissionsMW', 'checkPMPermissionsMW']);
+add_route('POST', '/add-product', 'submitAddProductForm', ['checkPermissionsMW', 'checkPMPermissionsMW', 'validateProductMW']);
+add_route('GET', '/user-management', 'showUserManagementPage', ['checkPermissionsMW', 'checkUMPermissionMW']);
+add_route('POST', '/user-management', 'submitUserManagementForm', ['checkPermissionsMW', 'checkUMPermissionMW']);
 add_route('GET', '/change-password', 'showChangePasswordPage', ['verifyUserMW', 'checkPermissionsMW']);
 add_route('POST', '/change-password', 'submitChangePasswordPage', ['verifyUserMW', 'checkPermissionsMW', 'validateChangePasswordMW']);
-add_route('GET', '/edit-product/(\d+)','showEditProductPage' ,['verifyUserMW', 'checkPermissionsMW', 'editProductMW']);
-add_route('POST', '/edit-product/(\d+)', 'submitEditProductForm', ['verifyUserMW', 'checkPermissionsMW', 'validateEditProductMW', 'editProductMW']);
-add_route('GET', '/delete-product/(\d+)', 'deleteProduct' , ['verifyUserMW', 'checkPermissionsMW', 'deleteProductMW']);
+add_route('GET', '/edit-product/(\d+)','showEditProductPage' ,['checkPermissionsMW', 'checkPMPermissionsMW', 'editProductMW']);
+add_route('POST', '/edit-product/(\d+)', 'submitEditProductForm', ['checkPermissionsMW', 'checkPMPermissionsMW', 'validateEditProductMW', 'editProductMW']);
+add_route('GET', '/delete-product/(\d+)', 'deleteProduct' , ['checkPermissionsMW', 'checkPMPermissionsMW', 'deleteProductMW']);
+add_route('GET', '/test', 'showTestPage', ['checkPermissionsMW', 'checkPMPermissionsMW']);
+add_route('POST', '/test', 'submitTestForm', ['checkPermissionsMW', 'checkPMPermissionsMW', 'validateTestMW']);
