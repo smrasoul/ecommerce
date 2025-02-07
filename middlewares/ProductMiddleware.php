@@ -75,7 +75,7 @@ function getProductIdFromUrl() {
 
 
 
-function editProductMW()
+function verifyProductMW()
 {
 
     // Extract product_id from the URL

@@ -1,6 +1,7 @@
 <?php
 
 require 'controllers/HomeController.php';
+require 'controllers/ProductController.php';
 require 'controllers/LoginController.php';
 require 'middlewares/LoginMiddleware.php';
 require 'controllers/LogoutController.php';
@@ -26,6 +27,7 @@ require 'controllers/TestController.php';
 
 
 add_route('GET', '/', 'showHomePage');
+add_route('GET', '/product/(\d+)', 'showProductPage',['verifyProductMW'] );
 add_route('GET', '/login', 'showLoginPage', ['checkLoginStatusMW']);
 add_route('POST', '/login', 'submitLoginForm', ['checkLoginStatusMW', 'validateLoginMW']);
 add_route('GET', '/logout', 'logout');
@@ -43,8 +45,9 @@ add_route('GET', '/user-management', 'showUserManagementPage', ['checkPermission
 add_route('POST', '/user-management', 'submitUserManagementForm', ['checkPermissionsMW', 'checkUMPermissionMW']);
 add_route('GET', '/change-password', 'showChangePasswordPage', ['verifyUserMW', 'checkPermissionsMW']);
 add_route('POST', '/change-password', 'submitChangePasswordPage', ['verifyUserMW', 'checkPermissionsMW', 'validateChangePasswordMW']);
-add_route('GET', '/edit-product/(\d+)','showEditProductPage' ,['checkPermissionsMW', 'checkPMPermissionsMW', 'editProductMW']);
-add_route('POST', '/edit-product/(\d+)', 'submitEditProductForm', ['checkPermissionsMW', 'checkPMPermissionsMW', 'validateEditProductMW', 'editProductMW']);
+add_route('GET', '/edit-product/(\d+)','showEditProductPage' ,['checkPermissionsMW', 'checkPMPermissionsMW', 'verifyProductMW']);
+add_route('POST', '/edit-product/(\d+)', 'submitEditProductForm', ['checkPermissionsMW', 'checkPMPermissionsMW', 'validateEditProductMW', 'verifyProductMW']);
 add_route('GET', '/delete-product/(\d+)', 'deleteProduct' , ['checkPermissionsMW', 'checkPMPermissionsMW', 'deleteProductMW']);
 add_route('GET', '/test', 'showTestPage', ['checkPermissionsMW', 'checkPMPermissionsMW']);
 add_route('POST', '/test', 'submitTestForm', ['checkPermissionsMW', 'checkPMPermissionsMW', 'validateTestMW']);
+

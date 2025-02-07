@@ -15,6 +15,8 @@
                                 <h5 class="card-title"><?= htmlspecialchars($product['name']) ?></h5>
                                 <p class="card-text">$<?= htmlspecialchars($product['price']) ?></p>
                             </div>
+                            <a class="my-2 mx-5 btn btn-primary" href="../product/<?= $product['id'] ?>">View</a>
+
                         </div>
                     </div>
                 <?php endforeach; ?>
