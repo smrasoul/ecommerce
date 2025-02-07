@@ -111,16 +111,16 @@ function validateEditProductMW(){
     $product_id = getProductIdFromUrl();
 
 
-    $product = fetchAllProductDetails($product_id);
     $categories = getAllCategories();
     $activePage = 'product-management';
+    $activeForm = 'post-edit-product';
 
-    $name = htmlspecialchars($_POST['name']);
-    $price = htmlspecialchars($_POST['price']);
+    $product['name'] = htmlspecialchars($_POST['name']);
+    $product['price'] = htmlspecialchars($_POST['price']);
     $photo = $_FILES['photo'];
-    $categoryIds = $_POST['category'] ?? [];
+    $checkedCategories = $_POST['category'] ?? [];
 
-    validateProduct($name, $price, $photo, $is_update = true);
+    validateProduct($product['name'], $product['price'], $photo, $is_update = true);
 
     $formFeedback = productFeedback();
 
@@ -128,7 +128,9 @@ function validateEditProductMW(){
         renderView('product/edit_product_view', ['formFeedback' => $formFeedback,
             'categories'=>$categories,
             'product'=>$product,
-            'activePage'=>$activePage]);
+            'activePage'=>$activePage,
+            'activeForm'=>$activeForm,
+            'checkedCategories'=>$checkedCategories]);
         exit;
     }
 

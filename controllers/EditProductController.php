@@ -5,24 +5,23 @@ function showEditProductPage($product_id){
     $product = fetchAllProductDetails($product_id);
     $categories = getAllCategories();
     $activePage = 'product-management';
+    $activeForm = 'get-edit-product';
 
     renderView('product/edit_product_view',['product'=>$product,
         'categories'=>$categories,
-        'activePage'=>$activePage]);
+        'activePage'=>$activePage,
+        'activeForm'=>$activeForm]);
 
 }
 
 function submitEditProductForm($product_id)
 {
 
-    $categories = getAllCategories();
-    $activePage = 'product-management';
-
-    $name = htmlspecialchars($_POST['name']);
-    $price = htmlspecialchars($_POST['price']);
+    $product['name'] = htmlspecialchars($_POST['name']);
+    $product['price'] = htmlspecialchars($_POST['price']);
     $photo = $_FILES['photo'];
-    $categoryIds = $_POST['category'] ?? [];
+    $checkedCategories = $_POST['category'] ?? [];
 
-    updateProduct($name, $price, $photo, $product_id, $categoryIds);
+    updateProduct($product['name'], $product['price'], $photo, $product_id, $checkedCategories);
 
 }

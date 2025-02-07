@@ -45,9 +45,7 @@
         <?php foreach ($categories as $category) : ?>
             <div class="form-check">
                 <input type="checkbox" name="category[]" value="<?= $category['id'] ?>" id="category<?= $category['id'] ?>" class="form-check-input"
-                    <?php if(isset($checkedCategories) && in_array($category['id'], $checkedCategories)):?>
-                        checked
-                    <?php endif; ?>
+                       <?php require 'product_category_checks.php' ?>
                 >
                 <label for="category<?= $category['id'] ?>" class="form-check-label"><?= htmlspecialchars($category['name']) ?></label>
             </div>
@@ -56,4 +54,5 @@
 
     </fieldset>
     <button type="submit" class="btn btn-primary"><?= isset($activeForm) ?  'Update Product' : 'Add Product' ?></button>
+    <a class="link-light link-underline-opacity-0 btn btn-danger" href="../product-management">Cancel</a>
 </form>
