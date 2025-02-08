@@ -69,13 +69,13 @@ function verifyUserMW()
 
         if (mysqli_num_rows($result) === 0) {
 
-            header('HTTP/1.1 403 Forbidden');
-            echo "You do not have permission to access this page.";
+            $error_message = "You do not have permission to access this page.";
+            renderView('error_view', ['error_message'=>$error_message,]);
             exit;
         }
     }else {
-        header('HTTP/1.1 403 Forbidden');
-        echo "You do not have permission to access this page.";
+        $error_message = "You do not have permission to access this page.";
+        renderView('error_view', ['error_message'=>$error_message,]);
         exit;
     }
 }
@@ -103,8 +103,8 @@ function checkPMPermissionsMW(){
 
     verifyUserMW();
     if(!$GLOBALS['canManageProduct']){
-        header('HTTP/1.1 403 Forbidden');
-        echo "You do not have permission to access this page.";
+        $error_message = "You do not have permission to access this page.";
+        renderView('error_view', ['error_message'=>$error_message,]);
         exit;
     }
 }
@@ -112,8 +112,8 @@ function checkPMPermissionsMW(){
 function checkUMPermissionMW(){
     verifyUserMW();
     if(!$GLOBALS['canManageUser']){
-        header('HTTP/1.1 403 Forbidden');
-        echo "You do not have permission to access this page.";
+        $error_message = "You do not have permission to access this page.";
+        renderView('error_view', ['error_message'=>$error_message,]);
         exit;
     }
 }

@@ -62,7 +62,7 @@ function getProductIdFromUrl() {
     $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
     // Use regular expression to capture the product ID from the URL path (e.g., /edit-product/12 or /delete-product/12)
-    preg_match('/^\/(edit-product|delete-product)\/(\d+)$/', $requestUri, $matches);
+    preg_match('/^\/(edit-product|delete-product|product)\/(\d+)$/', $requestUri, $matches);
 
     // Check if product ID is captured and return it
     if (isset($matches[2])) {
@@ -85,8 +85,11 @@ function verifyProductMW()
     // Fetch the product details using the extracted product_id
     $product = fetchAllProductDetails($product_id);
 
+
     if (!$product) {
-        die("Product not found.");
+        $error_message = "Product not found.";
+        renderView('error_view', ['error_message'=>$error_message,]);
+        exit;
     }
 }
 
@@ -100,15 +103,12 @@ function deleteProductMW()
     $product = getProductById($product_id);
 
     if (!$product) {
-        die("Product not found.");
-    }
+        $error_message = "Product not found.";
+        renderView('error_view', ['error_message'=>$error_message,]);
+        exit;    }
 }
 
 function validateEditProductMW(){
-
-
-    // Extract product_id from the URL
-    $product_id = getProductIdFromUrl();
 
 
     $categories = getAllCategories();
