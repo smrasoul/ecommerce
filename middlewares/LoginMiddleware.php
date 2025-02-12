@@ -29,7 +29,6 @@ function checkLoginStatusMW()
         $result = checkUserExistence($user_Id);
 
         if (mysqli_num_rows($result) > 0) {
-
             $error_message = "You are already logged in.";
             renderView('error_view', ['error_message'=>$error_message,]);
             exit;

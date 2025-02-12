@@ -71,10 +71,12 @@ function verifyUserMW()
 
             $error_message = "You do not have permission to access this page.";
             renderView('error_view', ['error_message'=>$error_message,]);
+            exit;
         }
     }else {
         $error_message = "You do not have permission to access this page.";
         renderView('error_view', ['error_message'=>$error_message,]);
+        exit;
     }
 }
 
@@ -103,6 +105,7 @@ function checkPMPermissionsMW(){
     if(!$GLOBALS['canManageProduct']){
         $error_message = "You do not have permission to access this page.";
         renderView('error_view', ['error_message'=>$error_message,]);
+        exit;
     }
 }
 
@@ -111,6 +114,7 @@ function checkUMPermissionMW(){
     if(!$GLOBALS['canManageUser']){
         $error_message = "You do not have permission to access this page.";
         renderView('error_view', ['error_message'=>$error_message,]);
+        exit;
     }
 }
 
