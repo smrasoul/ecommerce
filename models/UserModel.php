@@ -116,7 +116,7 @@ function getUserPermissions($user_id)
     return $permissions;
 }
 
-function updateUserInfo($firstName, $lastName, $email, $username, $user_id) {
+function updateUser($firstName, $lastName, $email, $username, $user_id) {
 
     global $conn;
 
@@ -124,12 +124,7 @@ function updateUserInfo($firstName, $lastName, $email, $username, $user_id) {
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 'ssssi', $firstName, $lastName, $email, $username, $user_id);
 
-    if (mysqli_stmt_execute($stmt)) {
-        $_SESSION['edit_user_success'] = 'Your account info has been updated.';
-        redirect('/account-info');
-    }else {
-        $_SESSION['edit_user_failed'] = 'Your account info was not updated.';
-    }
+    return mysqli_stmt_execute($stmt);
 
 }
 
@@ -297,22 +292,15 @@ function changeUserRole($userId, $newRoleId) {
 }
 
 
-function updatePassword($newPassword, $userId ){
+function updatePassword($password, $userId ){
 
     global $conn;
 
-    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-
     $query = "UPDATE users SET password = ? WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 'si', $hashedPassword, $userId);
+    mysqli_stmt_bind_param($stmt, 'si', $password, $userId);
 
-    if(mysqli_stmt_execute($stmt)){
-        $_SESSION['flash']['edit_user_success'] = "Your password has been updated.";
-        redirect('/account-info');
-    }else{
-        $_SESSION['password_failure'] = "Failed to update password.";
-    }
+    return mysqli_stmt_execute($stmt);
 
 }
 

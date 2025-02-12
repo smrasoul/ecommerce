@@ -8,12 +8,7 @@
 
     <div class="col-9 border rounded py-3">
 
-        <?php if (isset($_SESSION['product_failure'])) : ?>
-            <div class="alert alert-danger">
-                <?= $_SESSION['product_failure'] ?>
-            </div>
-            <?php unset($_SESSION['product_failure']) ?>
-        <?php endif; ?>
+        <?php require 'views/layers/flash_message.php' ?>
 
         <?php require 'views/product/product-form.php'; ?>
 

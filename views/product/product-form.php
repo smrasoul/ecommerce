@@ -53,6 +53,6 @@
 
 
     </fieldset>
-    <button type="submit" class="btn btn-primary"><?= isset($activeForm) ?  'Update Product' : 'Add Product' ?></button>
-    <a class="link-light link-underline-opacity-0 btn btn-danger" href="../product-management">Cancel</a>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a class="link-light link-underline-opacity-0 btn btn-danger" href="/admin/product">Cancel</a>
 </form>

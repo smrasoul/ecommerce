@@ -35,10 +35,10 @@
 
 <div class="d-flex justify-content-end">
 
-    <a class="link-dark link-underline-opacity-0 btn btn-warning" href="edit-account">Edit information</a>
+    <a class="link-dark link-underline-opacity-0 btn btn-warning" href="/user/account/edit">Edit information</a>
 
 
-    <a class="link-dark link-underline-opacity-0 btn btn-warning ms-3" href="change-password">Change Password</a>
+    <a class="link-dark link-underline-opacity-0 btn btn-warning ms-3" href="/user/account/password">Change Password</a>
 
 
 </div>

@@ -8,9 +8,9 @@
 
     <div class="col-9 border rounded py-3">
 
-        <?php require 'views/product/product-flash.php' ?>
+        <?php require 'views/Layers/flash_message.php' ?>
 
-        <a href="add-product" class="btn btn-success mb-3">Add Product</a>
+        <a href="product/add" class="btn btn-success mb-3">Add Product</a>
 
         <?php require 'views/product/product-table.php' ?>
 

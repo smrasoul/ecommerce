@@ -1,6 +1,6 @@
 <?php
 
-function showOrdersHistoryPage(){
+function showOrdersHistory(){
 
     $user_Id = $_SESSION['user_id'];
     $orders = getOrders($user_Id);

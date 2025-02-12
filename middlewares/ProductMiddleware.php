@@ -9,7 +9,8 @@ function validateProduct($name, $price, $photo, $is_update = false) {
         $_SESSION['product_errors']['price'] = "Invalid price.";
     }
 
-    // Validate photo only if it's not an update or if a new photo is uploaded
+    // Validate photo only if it's not an update or if a new photo is uploaded.
+
     if (!$is_update || !empty($photo['name'])) {
         $allowed_types = ['image/jpeg', 'image/png'];
         if (!empty($photo['name']) && !in_array($photo['type'], $allowed_types)) {
@@ -36,7 +37,7 @@ function productFeedback() {
 function validateProductMW(){
 
     $categories = getAllCategories();
-    $activePage = 'product-management';
+    $activePage = 'product';
 
     $product['name'] = htmlspecialchars($_POST['name']);
     $product['price'] = htmlspecialchars($_POST['price']);
@@ -62,7 +63,7 @@ function getProductIdFromUrl() {
     $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
     // Use regular expression to capture the product ID from the URL path (e.g., /edit-product/12 or /delete-product/12)
-    preg_match('/^\/(edit-product|delete-product)\/(\d+)$/', $requestUri, $matches);
+    preg_match('/^\/product\/(edit|delete)\/(\d+)$/', $requestUri, $matches);
 
     // Check if product ID is captured and return it
     if (isset($matches[2])) {
@@ -83,11 +84,12 @@ function verifyProductMW()
 
 
     // Fetch the product details using the extracted product_id
-    $product = fetchAllProductDetails($product_id);
+    $product = showProduct($product_id);
 
     if (!$product) {
-        die("Product not found.");
-    }
+        $error_message = "Product not found.";
+        renderView('error_view', ['error_message'=>$error_message,]);
+        exit;    }
 }
 
 function deleteProductMW()
@@ -100,8 +102,9 @@ function deleteProductMW()
     $product = getProductById($product_id);
 
     if (!$product) {
-        die("Product not found.");
-    }
+        $error_message = "Product not found.";
+        renderView('error_view', ['error_message'=>$error_message,]);
+        exit;    }
 }
 
 function validateEditProductMW(){
@@ -112,8 +115,7 @@ function validateEditProductMW(){
 
 
     $categories = getAllCategories();
-    $activePage = 'product-management';
-    $activeForm = 'post-edit-product';
+    $activePage = 'product';
 
     $product['name'] = htmlspecialchars($_POST['name']);
     $product['price'] = htmlspecialchars($_POST['price']);
@@ -129,7 +131,6 @@ function validateEditProductMW(){
             'categories'=>$categories,
             'product'=>$product,
             'activePage'=>$activePage,
-            'activeForm'=>$activeForm,
             'checkedCategories'=>$checkedCategories]);
         exit;
     }

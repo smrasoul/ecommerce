@@ -8,13 +8,6 @@
 
     <div class="col-9 border rounded p-4">
 
-        <?php if (isset($_SESSION['edit_user_failed'])) : ?>
-            <div class="alert alert-danger">
-                <?= $_SESSION['edit_user_failed'] ?>
-            </div>
-            <?php unset($_SESSION['edit_user_failed']) ?>
-        <?php endif; ?>
-
         <?php require 'views/user_form.php'; ?>
 
     </div>

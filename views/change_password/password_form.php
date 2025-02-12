@@ -36,7 +36,7 @@
 
         <div class="d-flex justify-content-center">
 
-            <a class="link-dark link-underline-opacity-0 btn btn-outline-danger" href="account-info">Cancel</a>
+            <a class="link-dark link-underline-opacity-0 btn btn-outline-danger" href="/user/account">Cancel</a>
 
             <button type="submit" class="btn btn-success ms-4">Change Password</button>
         </div>
