@@ -19,8 +19,10 @@ function submitSignupForm(){
     $password = htmlspecialchars($_POST['password']);
     $retypePassword = htmlspecialchars($_POST['retypePassword']);
 
-    signUp($user['first_name'], $user['last_name'], $user['email'], $user['username'], $password);
-    $_SESSION['flash']['signup_success'] = 'Signed up successfully.';
+    $hashedPassword = hashPassword($password);
+    $signup = signUp($user['first_name'], $user['last_name'], $user['email'], $user['username'], $hashedPassword);
+
+    setFlashMessage(['signup' => $signup]);
     redirect('/login');
 
 }

@@ -14,7 +14,7 @@ function ShowProduct($product_id = null)
               FROM products p
               JOIN product_categories pc ON p.id = pc.product_id
               JOIN categories c ON pc.category_id = c.id
-              LEFT JOIN media m ON p.id = m.mediable_id AND m.mediable_type = 'products' AND m.media_type = 'image'";
+              LEFT JOIN media m ON p.id = m.mediable_id AND m.mediable_type = 'products' AND m.media_type LIKE 'image/%'";
 
     if ($product_id !== null) {
         $query .= " WHERE p.id = ?";
@@ -130,16 +130,19 @@ function updateProduct($name, $price, $product_id)
 
 }
 
-function getProductById($product_id) {
+function productExists($product_id) {
+    global $conn; // Ensure database connection is available
 
-    global $conn;
-    $query = "SELECT * FROM products WHERE id = ?";
+    $query = "SELECT EXISTS(SELECT 1 FROM products WHERE id = ?)";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 'i', $product_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    return mysqli_fetch_assoc($result);
+    $row = mysqli_fetch_row($result);
+
+    return (bool) $row; // Return true if product exists, false otherwise
 }
+
 
 function deleteProductById($product_id)
 {

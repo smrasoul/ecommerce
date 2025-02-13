@@ -27,7 +27,10 @@ function submitUserManagementForm(){
     if (isset($_POST['create_role'])) {
 
         $roleName = htmlspecialchars(trim($_POST['role_name']));
-        processNewRole($roleName);
+        $newRoleId = createRole($roleName);
+        setFlashMessage(['new_role' => $newRoleId]);
+        redirect('/admin/user-management');
+
 
     }
 
@@ -35,7 +38,11 @@ function submitUserManagementForm(){
 
         $roleId = $_POST['role_id'];
         $permissionIds = $_POST['permission'] ?? [];
-        processNewRolePermissions($roleId, $permissionIds);
+        $roleDelete = deleteRolePermissions($roleId);
+        $roleAssign = assignPermissionsToRole($roleId, $permissionIds);
+        setFlashMessage(['role_delete' => $roleDelete,
+            'role_assign' => $roleAssign]);
+        redirect('/admin/user-management');
 
     }
 
@@ -43,7 +50,10 @@ function submitUserManagementForm(){
 
         $userId = $_POST['user_id'];
         $newRoleId = $_POST['role_id'];
-        changeUserRole($userId, $newRoleId);
+        $userRole = changeUserRole($userId, $newRoleId);
+        setFlashMessage(['user_role' => $userRole]);
+        redirect('/admin/user-management');
+
 
     }
 }

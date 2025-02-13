@@ -22,7 +22,6 @@ function showProductManagement()
 
     $activePage = 'product';
     $products = showProduct();
-
     renderView('product/product_management_view', ['activePage' => $activePage,
         'products' => $products]);
 
@@ -125,7 +124,6 @@ function submitUpdateProduct($product_id)
 // Delete Product
 function deleteProduct($product_id)
 {
-    $product = getProductById($product_id);
 
     $storageDelete = deletePhotoFromStorage($product_id);
     $mediaDelete = deleteMedia($product_id);

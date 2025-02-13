@@ -55,17 +55,6 @@ function validateLoginMW()
         exit;
     }
 
-    authenticateUser($username, $password);
-
-    if (isset($_SESSION['flash'])) {
-
-        $flash_message = $_SESSION['flash'];
-        unset($_SESSION['flash']);
-
-        renderView('login/login_view', ['flash_message' => $flash_message, 'username' => $username]);
-        exit;
-    }
-
 }
 
 

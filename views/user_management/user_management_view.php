@@ -1,6 +1,6 @@
 <h1 class="my-4">Admin Dashboard</h1>
 
-<?php require 'views/user_management/manage_flash.php'; ?>
+<?php require 'views/Layers/flash_message.php'; ?>
 
 <div class="row">
 

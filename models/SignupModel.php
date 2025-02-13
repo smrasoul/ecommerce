@@ -1,10 +1,9 @@
 <?php
 
-function signUp($firstName, $lastName, $email, $username, $password) {
+function signUp($firstName, $lastName, $email, $username, $hashedPassword) {
 
     global $conn;
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $role_id = 2;
 
     $insertQuery = "INSERT INTO users (first_name, last_name, email, username, password, role_id)
@@ -12,7 +11,6 @@ function signUp($firstName, $lastName, $email, $username, $password) {
     $stmt = mysqli_prepare($conn, $insertQuery);
     mysqli_stmt_bind_param($stmt, 'sssssi', $firstName, $lastName, $email, $username, $hashedPassword, $role_id);
 
-    if (!mysqli_stmt_execute($stmt)) {
-        $_SESSION['signup_failure'] = 'An error occurred while trying to sign up.';
-    }
+    return mysqli_stmt_execute($stmt);
+
 }

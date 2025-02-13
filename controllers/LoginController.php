@@ -5,23 +5,29 @@ require_once 'models/LoginModel.php';
 function showLoginPage()
 {
 
-    $flash_message = '';
-
-    if (isset($_SESSION['flash'])) {
-        $flash_message = $_SESSION['flash'];
-        unset($_SESSION['flash']);
-    }
-
-    renderView('login/login_view', ['flash_message' => $flash_message]);
+    renderView('login/login_view');
 }
 
 // ------------------------------------------------------------------------------------------------------------
 
-function submitLoginForm() {
+function submitLoginForm()
+{
 
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
-    processLogin($username, $password);
+
+    $user = getUserInfoByUsername($username);
+
+    $passwordVerify = verifyPassword($password, $user['password'] ?? '') ?? false;
+
+
+    if ($passwordVerify) {
+        loginUser($user);
+        redirect("/user/dashboard");
+    } else {
+        setFlashMessage(['login' => $passwordVerify]);
+        renderView('login/login_view', ['username' => $username]);
+    }
 
 }
 

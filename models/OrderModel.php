@@ -9,7 +9,7 @@ function getLatestOrder($userId) {
     mysqli_stmt_bind_param($stmt, "i", $userId);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    return $latestOrder = mysqli_fetch_assoc($result);
+    return mysqli_fetch_assoc($result);
 }
 
 function getOrders($userId) {
@@ -21,5 +21,5 @@ function getOrders($userId) {
     mysqli_stmt_bind_param($stmt, "i", $userId);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    return $orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }

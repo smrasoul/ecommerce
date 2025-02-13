@@ -84,7 +84,7 @@ function verifyProductMW()
 
 
     // Fetch the product details using the extracted product_id
-    $product = showProduct($product_id);
+    $product = productExists($product_id);
 
     if (!$product) {
         $error_message = "Product not found.";
@@ -97,21 +97,17 @@ function deleteProductMW()
     // Extract product_id from the URL
     $product_id = getProductIdFromUrl();
 
-
     // Fetch the product details using the extracted product_id
-    $product = getProductById($product_id);
+    $product = productExists($product_id);
 
     if (!$product) {
         $error_message = "Product not found.";
         renderView('error_view', ['error_message'=>$error_message,]);
-        exit;    }
+        exit;
+    }
 }
 
 function validateEditProductMW(){
-
-
-    // Extract product_id from the URL
-    $product_id = getProductIdFromUrl();
 
 
     $categories = getAllCategories();

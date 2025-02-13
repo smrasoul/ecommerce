@@ -30,7 +30,7 @@
                     <img src="/assets/media/<?= htmlspecialchars($product['main_image']) ?>"
                              alt="<?= htmlspecialchars($product['name']) ?>" width="50">
                     <?php else: ?>
-                    <img src="/assets/images/default_product.png" class="card-img-top" alt="No photo" />
+                    <img src="/assets/images/no-image.jpeg" class="card-img-top" alt="No photo" />
                     <?php endif; ?>
                 </td>
                 <td class="align-content-center">
