@@ -13,7 +13,7 @@ function fetchAllProducts()
                 p.price, 
                 m.file_path AS main_image
               FROM products p
-              LEFT JOIN media m ON p.id = m.mediable_id AND m.mediable_type = 'products' AND m.media_type = 'image'";
+              LEFT JOIN media m ON p.id = m.mediable_id AND m.mediable_type = 'products' AND m.media_type LIKE 'image/%'";
 
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_execute($stmt);
